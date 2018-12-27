@@ -8,11 +8,13 @@
     tools:context=".MarkActivity">
 
     <com.xy.www.xylib.camera.XYCamaryView
+        android:id="@+id/xycamaryview"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <Button
         android:text="录制"
+        android:id="@+id/bt_recoder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

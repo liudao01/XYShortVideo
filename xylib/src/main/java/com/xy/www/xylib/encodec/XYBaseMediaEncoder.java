@@ -2,6 +2,8 @@ package com.xy.www.xylib.encodec;
 
 
 import android.content.Context;
+import android.media.AudioFormat;
+import android.media.AudioRecord;
 import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
@@ -77,6 +79,14 @@ public abstract class XYBaseMediaEncoder {
     }
 
 
+    /**
+     * @param eglContext
+     * @param savePath     保存的文件路径
+     * @param width
+     * @param height
+     * @param sampleRate
+     * @param channelcount
+     */
     public void initEncodec(EGLContext eglContext, String savePath, int width, int height, int sampleRate, int channelcount) {
         this.width = width;
         this.height = height;
@@ -191,7 +201,13 @@ public abstract class XYBaseMediaEncoder {
             audioFormat = MediaFormat.createAudioFormat(mimeType, sampleRate, channelCount);
             audioFormat.setInteger(MediaFormat.KEY_BIT_RATE, 96000);//比特率
             audioFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC);//等级
-            audioFormat.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, 4096);
+            int bufferSizeInBytes = AudioRecord.getMinBufferSize(
+                    44100,
+                    AudioFormat.CHANNEL_IN_STEREO,
+                    AudioFormat.ENCODING_PCM_16BIT
+            );
+            LogUtil.d("设置audioFormat 的时候最小的 bufferSizeInBytes = "+bufferSizeInBytes);
+            audioFormat.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, bufferSizeInBytes);
 
             audioEncodec = MediaCodec.createEncoderByType(mimeType);
             audioEncodec.configure(audioFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
@@ -228,7 +244,7 @@ public abstract class XYBaseMediaEncoder {
             isStart = false;
             object = new Object();
             eglHelper = new EglHelper();
-
+//            LogUtil.d("encoder = " + encoder);
             eglHelper.initEgl(encoder.get().surface, encoder.get().eglContext);
             while (true) {
                 if (isExit) {
@@ -236,6 +252,7 @@ public abstract class XYBaseMediaEncoder {
                     break;
                 }
                 if (isStart) {
+//                    LogUtil.d("encoder.get().mRenderMode = " + encoder.get().mRenderMode);
                     if (encoder.get().mRenderMode == RENDERMODE_WHEN_DIRTY) {
                         //手动刷新
                         synchronized (object) {
