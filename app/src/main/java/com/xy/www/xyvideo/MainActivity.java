@@ -1,5 +1,6 @@
 package com.xy.www.xyvideo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -23,12 +24,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initView() {
+        final Intent intent = new Intent(this, MarkActivity.class);
         btAddMark = findViewById(R.id.bt_addMark);
         btAddMark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                xyUtil = XYUtil.getInstance();
-                btAddMark.setText(xyUtil.helloword());
+                startActivity(intent);
             }
         });
     }
