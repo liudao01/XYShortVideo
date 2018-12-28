@@ -1,24 +1,28 @@
 package com.xy.www.xyvideo;
 
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 
-import com.xy.www.xylib.camera.XYCamaryView;
+import com.xy.www.xylib.camera.XYCameraView;
 import com.xy.www.xylib.encodec.XYBaseMediaEncoder;
 import com.xy.www.xylib.encodec.XYMediaEncodec;
 import com.xy.www.xylib.util.AudioRecordUtil;
 import com.xy.www.xylib.util.LogUtil;
+import com.xy.www.xyvideo.base.BaseActivity;
 
-public class MarkActivity extends AppCompatActivity {
+/**
+ * 录制时添加水印
+ */
+public class WaterMarkActivity extends BaseActivity {
 
     private boolean isStart = false;
     private Button btRecoder;
-    private XYCamaryView xycamaryview;
+    private XYCameraView xycamaryview;
     private AudioRecordUtil audioRecordUtil;
     private XYMediaEncodec xyMediaEncodec;
+    private CheckBox cbAddMark;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +33,7 @@ public class MarkActivity extends AppCompatActivity {
 
     private void initView() {
         btRecoder = findViewById(R.id.bt_recoder);
-        xycamaryview = findViewById(R.id.xycamaryview);
+        xycamaryview = findViewById(R.id.xycameraview);
 
         audioRecordUtil = new AudioRecordUtil();
 
@@ -38,6 +42,7 @@ public class MarkActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (isStart) {
                     isStart = false;
+                    btRecoder.setText("录制视频");
                     stopRecoder();
                 } else {
                     isStart = true;
@@ -45,6 +50,7 @@ public class MarkActivity extends AppCompatActivity {
                 }
             }
         });
+        cbAddMark = findViewById(R.id.cb_add_mark);
     }
 
     private void stopRecoder() {
@@ -55,9 +61,11 @@ public class MarkActivity extends AppCompatActivity {
     }
 
     private void startRecoder() {
-        xyMediaEncodec = new XYMediaEncodec(MarkActivity.this, xycamaryview.getTextureId());
+        boolean checked = cbAddMark.isChecked();
+
+        xyMediaEncodec = new XYMediaEncodec(WaterMarkActivity.this, xycamaryview.getTextureId());
         xyMediaEncodec.initEncodec(xycamaryview.getEglContext(),
-                Environment.getExternalStorageDirectory().getAbsolutePath() + "/test_live_recoder.mp4", 1080, 1920, 44100, 2);
+                Constant.fileDir, 1080, 1920, 44100, 2);
         xyMediaEncodec.setOnMediaInfoListener(new XYBaseMediaEncoder.OnMediaInfoListener() {
             @Override
             public void onMediaTime(int times) {
@@ -76,6 +84,7 @@ public class MarkActivity extends AppCompatActivity {
             }
         });
         audioRecordUtil.startRecord();
+        btRecoder.setText("正在录制中...");
         xyMediaEncodec.startRecord();
     }
 

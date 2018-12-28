@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <!-- MODIFY_AUDIO_SETTINGS is needed to use audio effects such as environmental reverb -->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
@@ -27,7 +28,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MarkActivity"></activity>
+        <activity android:name=".WaterMarkActivity" />
+        <activity android:name=".AddWateMarkActivity"></activity>
     </application>
 
 </manifest>

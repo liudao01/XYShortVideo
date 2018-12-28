@@ -16,7 +16,7 @@ import com.xy.www.xylib.util.LogUtil;
  * @explain
  * @time 2018/12/7 15:53
  */
-public class XYCamaryView extends XYEGLSurfaceView {
+public class XYCameraView extends XYEGLSurfaceView {
 
     private XYCameraRender xyCameraRender;
     private XYCamera xyCamera;
@@ -24,15 +24,15 @@ public class XYCamaryView extends XYEGLSurfaceView {
     private int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
     private int textureId = -1;
 
-    public XYCamaryView(Context context) {
+    public XYCameraView(Context context) {
         this(context, null);
     }
 
-    public XYCamaryView(Context context, AttributeSet attrs) {
+    public XYCameraView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public XYCamaryView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public XYCameraView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         xyCameraRender = new XYCameraRender(context);
         xyCamera = new XYCamera(context);
