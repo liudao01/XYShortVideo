@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.xy.www.xylib.camera.XYCameraView;
 import com.xy.www.xylib.encodec.XYBaseMediaEncoder;
@@ -51,6 +52,13 @@ public class WaterMarkActivity extends BaseActivity {
             }
         });
         cbAddMark = findViewById(R.id.cb_add_mark);
+
+        cbAddMark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                xycamaryview.isAddMark = isChecked;
+            }
+        });
     }
 
     private void stopRecoder() {

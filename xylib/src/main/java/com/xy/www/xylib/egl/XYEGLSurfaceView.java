@@ -12,7 +12,7 @@ import javax.microedition.khronos.egl.EGLContext;
 
 /**
  * @author liuml
- * @explain
+ * @explain 仿照GLSurface 写的
  * @time 2018/12/3 10:56
  */
 public abstract class XYEGLSurfaceView extends SurfaceView implements SurfaceHolder.Callback {

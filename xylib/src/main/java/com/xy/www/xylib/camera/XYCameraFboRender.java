@@ -56,12 +56,14 @@ public class XYCameraFboRender {
     private int bitmapTextureid;
     private final float r;//宽高比
 
+    private boolean OpenMark = false; //是否开启水印
+
     public XYCameraFboRender(Context context) {
         this.context = context;
 
 
         //水印
-        bitmap = XYShaderUtil.createTextImage("Lml水印搞起了", 50, "#ffff00", "#00000000", 0);//生成图片
+        bitmap = XYShaderUtil.createTextImage("Lml水印搞起了 FBO的", 50, "#ffff00", "#00000000", 0);//生成图片
 
         //求出宽高比例
         r = 1.0f * bitmap.getWidth() / bitmap.getHeight();
@@ -92,6 +94,10 @@ public class XYCameraFboRender {
                 .asFloatBuffer()
                 .put(fragmentData);
         fragmentBuffer.position(0);
+    }
+
+    public Bitmap getWaterMarkBitmap() {
+        return  bitmap;
     }
 
     public XYCameraFboRender(Context context, int width, int height) {
@@ -187,6 +193,7 @@ public class XYCameraFboRender {
 
     public void onChange(int width, int height) {
         GLES20.glViewport(0, 0, width, height);
+        OpenMark = XYCameraView.isAddMark;
     }
 
 
@@ -214,22 +221,24 @@ public class XYCameraFboRender {
 
 
         //bitmap
+        if (OpenMark) {
 
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, bitmapTextureid);
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, bitmapTextureid);
 
-        GLES20.glEnableVertexAttribArray(vPosition);
-        GLES20.glVertexAttribPointer(vPosition, 2, GLES20.GL_FLOAT, false, 8,
-                32);//偏移32个位置   float  32字节
+            GLES20.glEnableVertexAttribArray(vPosition);
+            GLES20.glVertexAttribPointer(vPosition, 2, GLES20.GL_FLOAT, false, 8,
+                    32);//偏移32个位置   float  32字节
 
-        GLES20.glEnableVertexAttribArray(fPosition);
-        GLES20.glVertexAttribPointer(fPosition, 2, GLES20.GL_FLOAT, false, 8,
-                vertexData.length * 4);
+            GLES20.glEnableVertexAttribArray(fPosition);
+            GLES20.glVertexAttribPointer(fPosition, 2, GLES20.GL_FLOAT, false, 8,
+                    vertexData.length * 4);
 
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
+            GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
 
 
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
+            GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+        }
     }
 
 }

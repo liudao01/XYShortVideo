@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.opengl.GLES20;
 
 import com.xy.www.xylib.R;
+import com.xy.www.xylib.camera.XYCameraView;
 import com.xy.www.xylib.egl.XYEGLSurfaceView;
 import com.xy.www.xylib.egl.XYShaderUtil;
 import com.xy.www.xylib.util.LogUtil;
@@ -20,7 +21,7 @@ import java.nio.FloatBuffer;
  */
 public class XYEncodecRender implements XYEGLSurfaceView.XYGLRender {
 
-    private boolean isAddMark = false;//是否添加水印
+    private boolean isAddMark = true;//是否添加水印
 
     private Context context;
     private float[] vertexData = {
@@ -64,20 +65,7 @@ public class XYEncodecRender implements XYEGLSurfaceView.XYGLRender {
         this.textureId = textureId;
 
 
-        if (isAddMark) {
-            addWaterMark();
-        } else {
-            LogUtil.d("顶点坐标用原始的");
-            float[] vertexDataDefault = {
-                    -1f, -1f,
-                    1f, -1f,
-                    -1f, 1f,
-                    1f, 1f,
-            };
-
-            vertexData = vertexDataDefault;
-
-        }
+        addWaterMark();
 
         vertexBuffer = ByteBuffer.allocateDirect(vertexData.length * 4)
                 .order(ByteOrder.nativeOrder())
@@ -94,8 +82,8 @@ public class XYEncodecRender implements XYEGLSurfaceView.XYGLRender {
 
     private void addWaterMark() {
         //水印
-        bitmap = XYShaderUtil.createTextImage("Lml水印搞起了", 50, "#ff0000", "#00000000", 0);//生成图片
-
+        bitmap = XYShaderUtil.createTextImage("Lml水印搞起了录制的", 50, "#ff00ff", "#00000000", 0);//生成图片
+//        bitmap = X
         //求出宽高比例
         float r = 1.0f * bitmap.getWidth() / bitmap.getHeight();
         //高设置成0.1
@@ -149,15 +137,15 @@ public class XYEncodecRender implements XYEGLSurfaceView.XYGLRender {
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
         //bitmap 获取纹理id
-        if (isAddMark) {
 
         bitmapTextureid = XYShaderUtil.loadBitmapTexture(bitmap);
-        }
+        LogUtil.d("onSurfaceCreated 水印的值 " + isAddMark);
     }
 
     @Override
     public void onSurfaceChanged(int width, int height) {
         GLES20.glViewport(0, 0, width, height);
+
     }
 
     @Override
@@ -184,10 +172,9 @@ public class XYEncodecRender implements XYEGLSurfaceView.XYGLRender {
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
 
         // 绘制bitmap
-
+        LogUtil.d("绘制的时候 ");
         if (isAddMark) {
 
-            LogUtil.d("不绘制bitmap");
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, bitmapTextureid);
 
             GLES20.glEnableVertexAttribArray(vPosition);
@@ -204,6 +191,8 @@ public class XYEncodecRender implements XYEGLSurfaceView.XYGLRender {
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
         }
+        isAddMark = XYCameraView.isAddMark;
+        LogUtil.d("是否加上水印 "+isAddMark);
     }
 
 

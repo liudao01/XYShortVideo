@@ -20,6 +20,8 @@ public class XYCameraView extends XYEGLSurfaceView {
 
     private XYCameraRender xyCameraRender;
     private XYCamera xyCamera;
+
+    public static boolean isAddMark = false;//是否添加水印
     //摄像头
     private int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
     private int textureId = -1;
