@@ -9,5 +9,7 @@ import android.os.Environment;
  */
 public class Constant {
 
-    public  static final String fileDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test_live_recoder.mp4";
+    public  static final String RootDir = Environment.getExternalStorageDirectory().getAbsolutePath() ;
+    public  static final String fileDir = RootDir + "/test_live_recoder.mp4";
+    public  static final String testDir = RootDir + "/药神MP4.mp4";
 }

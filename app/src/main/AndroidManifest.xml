@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".WaterMarkActivity" />
-        <activity android:name=".AddWateMarkActivity"></activity>
+        <activity android:name=".PreViewActivity"></activity>
     </application>
 
 </manifest>

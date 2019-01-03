@@ -19,7 +19,7 @@ import java.nio.FloatBuffer;
  * @explain 录制时渲染的Rendeer
  * @time 2018/12/11 16:43
  */
-public class XYEncodecRender implements XYEGLSurfaceView.XYGLRender {
+public class XYEncodecRender implements XYEGLSurfaceView.XYGLRender  {
 
     private boolean isAddMark = true;//是否添加水印
 
@@ -192,8 +192,6 @@ public class XYEncodecRender implements XYEGLSurfaceView.XYGLRender {
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
         }
         isAddMark = XYCameraView.isAddMark;
-        LogUtil.d("是否加上水印 "+isAddMark);
     }
-
 
 }

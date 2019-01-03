@@ -82,10 +82,10 @@ public abstract class XYBaseMediaEncoder {
     /**
      * @param eglContext
      * @param savePath     保存的文件路径
-     * @param width
-     * @param height
-     * @param sampleRate
-     * @param channelcount
+     * @param width 宽度
+     * @param height    高度
+     * @param sampleRate    采样率
+     * @param channelcount  声道数
      */
     public void initEncodec(EGLContext eglContext, String savePath, int width, int height, int sampleRate, int channelcount) {
         this.width = width;

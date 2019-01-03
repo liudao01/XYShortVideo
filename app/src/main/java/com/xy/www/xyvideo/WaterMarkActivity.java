@@ -24,6 +24,8 @@ public class WaterMarkActivity extends BaseActivity {
     private AudioRecordUtil audioRecordUtil;
     private XYMediaEncodec xyMediaEncodec;
     private CheckBox cbAddMark;
+    private Button btPlay;
+    private CheckBox cbAddDynamicMark;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,22 @@ public class WaterMarkActivity extends BaseActivity {
                 xycamaryview.isAddMark = isChecked;
             }
         });
+        btPlay = findViewById(R.id.bt_play);
+        btPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                readyGo(PreViewActivity.class);
+            }
+        });
+        cbAddDynamicMark = findViewById(R.id.cb_add_dynamic_mark);
+
+        cbAddDynamicMark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                LogUtil.d("调用动态水印");
+                xycamaryview.setIsDyNamicMark(isChecked);
+            }
+        });
     }
 
     private void stopRecoder() {
@@ -69,7 +87,6 @@ public class WaterMarkActivity extends BaseActivity {
     }
 
     private void startRecoder() {
-        boolean checked = cbAddMark.isChecked();
 
         xyMediaEncodec = new XYMediaEncodec(WaterMarkActivity.this, xycamaryview.getTextureId());
         xyMediaEncodec.initEncodec(xycamaryview.getEglContext(),
@@ -77,7 +94,7 @@ public class WaterMarkActivity extends BaseActivity {
         xyMediaEncodec.setOnMediaInfoListener(new XYBaseMediaEncoder.OnMediaInfoListener() {
             @Override
             public void onMediaTime(int times) {
-                LogUtil.d("time = " + times);
+//                LogUtil.d("time = " + times);
             }
         });
 

@@ -1,12 +1,14 @@
 package com.xy.www.xylib.camera;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.xy.www.xylib.R;
+import com.xy.www.xylib.RenderInterface;
 import com.xy.www.xylib.egl.XYEGLSurfaceView;
 import com.xy.www.xylib.egl.XYShaderUtil;
 import com.xy.www.xylib.util.DisplayUtil;
@@ -25,6 +27,7 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
 
     private Context context;
 
+    private RenderInterface imp;
     private float[] vertexData = {
             -1f, -1f,
             1f, -1f,
@@ -93,12 +96,15 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
 
     }
 
+
+
     public void setOnSurfaceCreateListener(OnSurfaceCreateListener onSurfaceCreateListener) {
         this.onSurfaceCreateListener = onSurfaceCreateListener;
     }
 
     @Override
     public void onSurfaceCreated() {
+
 
         xyCameraFboRender.onCreate();
         //获取顶点以及片元属性
@@ -264,7 +270,12 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
     @Override
     public void onFrameAvailable(SurfaceTexture surfaceTexture) {
         //预览的 当有数据会回调这个方法
+    }
 
+    public void setCurrentBitmap(Bitmap bitmap) {
+        if (bitmap != null) {
+            xyCameraFboRender.setWaterMarkBitmap(bitmap);
+        }
     }
 
     public interface OnSurfaceCreateListener {

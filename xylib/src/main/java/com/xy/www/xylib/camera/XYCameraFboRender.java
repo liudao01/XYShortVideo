@@ -54,16 +54,21 @@ public class XYCameraFboRender {
     private Bitmap bitmap;
 
     private int bitmapTextureid;
-    private final float r;//宽高比
+    private float r;//宽高比
 
     private boolean OpenMark = false; //是否开启水印
 
     public XYCameraFboRender(Context context) {
         this.context = context;
-
-
         //水印
+//        bitmap  = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_101);
         bitmap = XYShaderUtil.createTextImage("Lml水印搞起了 FBO的", 50, "#ffff00", "#00000000", 0);//生成图片
+        initData();
+
+    }
+
+    public void initData(){
+
 
         //求出宽高比例
         r = 1.0f * bitmap.getWidth() / bitmap.getHeight();
@@ -95,48 +100,14 @@ public class XYCameraFboRender {
                 .put(fragmentData);
         fragmentBuffer.position(0);
     }
+    public void setWaterMarkBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
 
-    public Bitmap getWaterMarkBitmap() {
-        return  bitmap;
+        initData();
+        //bitmap 获取纹理id
+        bitmapTextureid = XYShaderUtil.loadBitmapTexture(bitmap);
     }
 
-    public XYCameraFboRender(Context context, int width, int height) {
-        this.context = context;
-
-
-        //水印
-        bitmap = XYShaderUtil.createTextImage("Lml水印搞起了", 50, "#ff0000", "#00000000", 0);//生成图片
-
-        //求出宽高比例
-        r = 1.0f * bitmap.getWidth() / bitmap.getHeight();
-        //高设置成0.1
-        float w = r * 0.1f;
-        //在opengl 坐标系中.0.8f是自己设置的起始点, 这里求出左下角X轴
-        vertexData[8] = 0.8f - w;
-        vertexData[9] = -0.8f;//左下角Y轴  这样左下角就求出来了
-        //同理
-        vertexData[10] = 0.8f;
-        vertexData[11] = -0.8f;
-
-        vertexData[12] = 0.8f - w;
-        vertexData[13] = -0.7f;
-
-        vertexData[14] = 0.8f;
-        vertexData[15] = -0.7f;
-
-
-        vertexBuffer = ByteBuffer.allocateDirect(vertexData.length * 4)
-                .order(ByteOrder.nativeOrder())
-                .asFloatBuffer()
-                .put(vertexData);
-        vertexBuffer.position(0);
-
-        fragmentBuffer = ByteBuffer.allocateDirect(fragmentData.length * 4)
-                .order(ByteOrder.nativeOrder())
-                .asFloatBuffer()
-                .put(fragmentData);
-        fragmentBuffer.position(0);
-    }
 
     public void setXYPosition(int width, int height) {
         //高设置成0.1
