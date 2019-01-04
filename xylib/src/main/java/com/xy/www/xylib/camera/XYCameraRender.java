@@ -60,6 +60,8 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
     private int screenW = 1080;
     private int screenH = 1920;
 
+    private int srcImg = 0;
+
     //实际渲染的大小
     private int width;
     private int height;
@@ -274,8 +276,15 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
 
     public void setCurrentBitmap(Bitmap bitmap) {
         if (bitmap != null) {
+
             xyCameraFboRender.setWaterMarkBitmap(bitmap);
         }
+    }
+
+    public void setCurrentImgSrc(int src) {
+        LogUtil.d("src = " + src);
+        srcImg = src;
+//        imgTextureId = WlShaderUtil.loadTexrute(src, context);
     }
 
     public interface OnSurfaceCreateListener {

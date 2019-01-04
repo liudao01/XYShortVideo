@@ -2,6 +2,7 @@ package com.xy.www.xylib.encodec;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 
 import com.xy.www.xylib.R;
@@ -82,7 +83,8 @@ public class XYEncodecRender implements XYEGLSurfaceView.XYGLRender  {
 
     private void addWaterMark() {
         //水印
-        bitmap = XYShaderUtil.createTextImage("Lml水印搞起了录制的", 50, "#ff00ff", "#00000000", 0);//生成图片
+         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_1);
+//        bitmap = XYShaderUtil.createTextImage("Lml水印搞起了录制的", 50, "#ff00ff", "#00000000", 0);//生成图片
 //        bitmap = X
         //求出宽高比例
         float r = 1.0f * bitmap.getWidth() / bitmap.getHeight();
@@ -190,6 +192,7 @@ public class XYEncodecRender implements XYEGLSurfaceView.XYGLRender  {
 
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+
         }
         isAddMark = XYCameraView.isAddMark;
     }
