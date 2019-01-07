@@ -1,6 +1,8 @@
 package com.xy.www.xylib.camera;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.os.Handler;
@@ -9,9 +11,13 @@ import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.WindowManager;
 
+import com.xy.www.xylib.R;
 import com.xy.www.xylib.RenderInterface;
 import com.xy.www.xylib.egl.XYEGLSurfaceView;
 import com.xy.www.xylib.util.LogUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -30,7 +36,7 @@ public class XYCameraView extends XYEGLSurfaceView {
     private XYCameraRender xyCameraRender;
     private XYCamera xyCamera;
 
-    private Context context;
+    private List<Bitmap> bitmapList = new ArrayList<>();
 
     public static boolean isAddMark = false;//是否添加水印
     public static boolean isDyNamicMark = false;//是否动态水印
@@ -40,7 +46,6 @@ public class XYCameraView extends XYEGLSurfaceView {
     private int textureId = -1;
 
     private int count = 0;
-
     public XYCameraView(Context context) {
         this(context, null);
     }
@@ -54,9 +59,7 @@ public class XYCameraView extends XYEGLSurfaceView {
         xyCameraRender = new XYCameraRender(context);
         xyCamera = new XYCamera(context);
         setRender(xyCameraRender);
-//        setRenderMode(RENDERMODE_WHEN_DIRTY);//手动
         previewAngle(context);
-        setDyNamickMark();//动态贴图
         xyCameraRender.setOnSurfaceCreateListener(new XYCameraRender.OnSurfaceCreateListener() {
             @Override
             public void onSurfaceCreate(SurfaceTexture surfaceTexture, int tid) {
@@ -137,23 +140,17 @@ public class XYCameraView extends XYEGLSurfaceView {
         public void run() {
             //do something
             //每隔1s循环执行run方法
-            mHandler.postDelayed(this, 100);
+            mHandler.postDelayed(this, 500);
 
             LogUtil.d("子线程");
             if (isDyNamicMark) {
                 LogUtil.d("当前动态图 = " + count);
-                for (int i = 0; i < 8; i++) {
-                    //拿到资源
-                    int imgsrc = getResources().getIdentifier("img_" + i, "drawable", "com.xyyy.livepusher");
-//                    Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), imgsrc);
-//                    xyCameraRender.setCurrentBitmap(bitmap);
-                    xyCameraRender.setCurrentImgSrc(imgsrc);
-                    if (i == 7) {
-                        i = 0;
-                    }
-
+                LogUtil.d("当前动态图  " + bitmapList.get(count));
+                xyCameraRender.setCurrentBitmap(bitmapList.get(count));
+                count++;
+                if(count==7){
+                    count=0;
                 }
-
 
             }
         }
@@ -163,23 +160,22 @@ public class XYCameraView extends XYEGLSurfaceView {
         this.isDyNamicMark = isDyNamicMark;
         LogUtil.d("isDyNamicMark = " + isDyNamicMark);
         if (isDyNamicMark) {
+            setDyNamickMark();//动态贴图
             mHandler.postDelayed(r, 100);//延时100毫秒
-        } else {
+        }else {
             mHandler.removeCallbacks(r);
         }
     }
 
-    //
-//    public void setCurrentImg(int imgsrc) {
-//        if (xyImgVideoRender != null) {
-//            xyImgVideoRender.setCurrentImgSrc(imgsrc);
-//            requestRender();//手动刷新 调用一次
-//            LogUtil.d("手动刷新 "+imgsrc);
-//        }
-//    }
+
     private void setDyNamickMark() {
+        int[] drawArr = {R.drawable.img_1, R.drawable.img_2, R.drawable.img_3, R.drawable.img_4,
+                R.drawable.img_5, R.drawable.img_6, R.drawable.img_7, R.drawable.img_8};
+        for (int i = 0; i < 8; i++) {
 
-
+            Bitmap bitmap = BitmapFactory.decodeResource(this.getContext().getResources(), drawArr[i]);
+            bitmapList.add(bitmap);
+        }
         LogUtil.d("获取bitmap 数组");
     }
 
@@ -216,7 +212,6 @@ public class XYCameraView extends XYEGLSurfaceView {
 
     public void onDestory() {
         if (xyCamera != null) {
-            mHandler.removeCallbacks(r);
             xyCamera.stopPreview();
         }
     }

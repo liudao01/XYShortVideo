@@ -2,12 +2,10 @@ package com.xy.www.xylib.camera;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 
 import com.xy.www.xylib.R;
 import com.xy.www.xylib.egl.XYShaderUtil;
-import com.xy.www.xylib.util.LogUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -63,13 +61,13 @@ public class XYCameraFboRender {
     public XYCameraFboRender(Context context) {
         this.context = context;
         //水印
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_3);
-//        bitmap = XYShaderUtil.createTextImage("Lml水印搞起了 FBO的", 50, "#ffff00", "#00000000", 0);//生成图片
+//        bitmap  = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_101);
+        bitmap = XYShaderUtil.createTextImage("Lml水印搞起了 FBO的", 50, "#ffff00", "#00000000", 0);//生成图片
         initData();
 
     }
 
-    public void initData() {
+    public void initData(){
 
 
         //求出宽高比例
@@ -102,16 +100,12 @@ public class XYCameraFboRender {
                 .put(fragmentData);
         fragmentBuffer.position(0);
     }
-
     public void setWaterMarkBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
 
-        LogUtil.d("设置bitmap = " + bitmap);
-        if (bitmap != null) {
-            this.bitmap = bitmap;
-            //bitmap 获取纹理id
-//            initData();
-//            onCreate();
-        }
+        initData();
+        //bitmap 获取纹理id
+        bitmapTextureid = XYShaderUtil.loadBitmapTexture(bitmap);
     }
 
 
@@ -199,8 +193,7 @@ public class XYCameraFboRender {
 
         //bitmap
         if (OpenMark) {
-//            bitmapTextureid = XYShaderUtil.loadBitmapTexture(bitmap);
-            LogUtil.d("bitmapTextureid = " + bitmapTextureid);
+
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, bitmapTextureid);
 
             GLES20.glEnableVertexAttribArray(vPosition);

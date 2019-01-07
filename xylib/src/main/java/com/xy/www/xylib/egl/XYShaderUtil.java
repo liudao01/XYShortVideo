@@ -118,7 +118,6 @@ public class XYShaderUtil {
         bitmap.copyPixelsToBuffer(bitmapBuffer);
         bitmapBuffer.flip();
 
-        //根据参数生成2D纹理
         GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, bitmap.getWidth(),
                 bitmap.getHeight(), 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, bitmapBuffer);
         return textureIds[0];
