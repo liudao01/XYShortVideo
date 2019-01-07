@@ -265,6 +265,8 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
         //绘制
         xyCameraFboRender.onDraw(fboTextureid);
 
+
+
     }
 
     @Override
@@ -276,6 +278,11 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
         if (bitmap != null) {
             xyCameraFboRender.setWaterMarkBitmap(bitmap);
         }
+    }
+
+    public void setCurrentImgSrc(int imgsrc) {
+        xyCameraFboRender.setWaterMarkBitmap(imgsrc);
+
     }
 
     public interface OnSurfaceCreateListener {

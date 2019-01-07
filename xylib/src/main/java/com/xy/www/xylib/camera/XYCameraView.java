@@ -45,6 +45,7 @@ public class XYCameraView extends XYEGLSurfaceView {
     private int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
     private int textureId = -1;
 
+    private Context mContext;
     private int count = 0;
     public XYCameraView(Context context) {
         this(context, null);
@@ -56,6 +57,7 @@ public class XYCameraView extends XYEGLSurfaceView {
 
     public XYCameraView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.mContext = context;
         xyCameraRender = new XYCameraRender(context);
         xyCamera = new XYCamera(context);
         setRender(xyCameraRender);
@@ -156,14 +158,21 @@ public class XYCameraView extends XYEGLSurfaceView {
         }
     };
 
-    public void setIsDyNamicMark(final boolean isDyNamicMark) {
-        this.isDyNamicMark = isDyNamicMark;
-        LogUtil.d("isDyNamicMark = " + isDyNamicMark);
-        if (isDyNamicMark) {
-            setDyNamickMark();//动态贴图
-            mHandler.postDelayed(r, 100);//延时100毫秒
-        }else {
-            mHandler.removeCallbacks(r);
+//    public void setIsDyNamicMark(final boolean isDyNamicMark) {
+//        this.isDyNamicMark = isDyNamicMark;
+//        LogUtil.d("isDyNamicMark = " + isDyNamicMark);
+//        if (isDyNamicMark) {
+////            setDyNamickMark();//动态贴图
+//            mHandler.postDelayed(r, 100);//延时100毫秒
+//        }else {
+//            mHandler.removeCallbacks(r);
+//        }
+//    }
+    public void setCurrentImg(int imgsrc) {
+        if (xyCameraRender != null) {
+            xyCameraRender.setCurrentImgSrc(imgsrc);
+//            requestRender();//手动刷新 调用一次
+            LogUtil.d("当前 imgsrc =  "+imgsrc);
         }
     }
 

@@ -2,10 +2,12 @@ package com.xy.www.xylib.camera;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 
 import com.xy.www.xylib.R;
 import com.xy.www.xylib.egl.XYShaderUtil;
+import com.xy.www.xylib.util.LogUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -61,8 +63,8 @@ public class XYCameraFboRender {
     public XYCameraFboRender(Context context) {
         this.context = context;
         //水印
-//        bitmap  = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_101);
-        bitmap = XYShaderUtil.createTextImage("Lml水印搞起了 FBO的", 50, "#ffff00", "#00000000", 0);//生成图片
+        bitmap  = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_1);
+//        bitmap = XYShaderUtil.createTextImage("Lml水印搞起了 FBO的", 50, "#ffff00", "#00000000", 0);//生成图片
         initData();
 
     }
@@ -103,27 +105,17 @@ public class XYCameraFboRender {
     public void setWaterMarkBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
 
-        initData();
         //bitmap 获取纹理id
         bitmapTextureid = XYShaderUtil.loadBitmapTexture(bitmap);
     }
+    public void setWaterMarkBitmap(int imgsrc) {
 
-
-    public void setXYPosition(int width, int height) {
-        //高设置成0.1
-        float w = r * 0.1f;
-        vertexData[8] = 0.8f - w;
-        vertexData[9] = -0.8f;//左下角Y轴  这样左下角就求出来了
-        //同理
-        vertexData[10] = 0.8f;
-        vertexData[11] = -0.8f;
-
-        vertexData[12] = 0.8f - w;
-        vertexData[13] = -0.7f;
-
-        vertexData[14] = 0.8f;
-        vertexData[15] = -0.7f;
+        //img 获取纹理id
+        bitmapTextureid = XYShaderUtil.loadTexrute(imgsrc,context);
+        LogUtil.d("img 获取纹理id = "+bitmapTextureid);
     }
+
+
 
     public void onCreate() {
 
@@ -160,12 +152,14 @@ public class XYCameraFboRender {
 
         //bitmap 获取纹理id
         bitmapTextureid = XYShaderUtil.loadBitmapTexture(bitmap);
+        LogUtil.d("onCreate 调用");
     }
 
     public void onChange(int width, int height) {
         GLES20.glViewport(0, 0, width, height);
         OpenMark = XYCameraView.isAddMark;
     }
+
 
 
     public void onDraw(int textureId) {
@@ -193,7 +187,6 @@ public class XYCameraFboRender {
 
         //bitmap
         if (OpenMark) {
-
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, bitmapTextureid);
 
             GLES20.glEnableVertexAttribArray(vPosition);

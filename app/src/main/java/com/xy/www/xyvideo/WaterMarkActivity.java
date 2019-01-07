@@ -9,6 +9,7 @@ import android.widget.CompoundButton;
 import com.xy.www.xylib.camera.XYCameraView;
 import com.xy.www.xylib.encodec.XYBaseMediaEncoder;
 import com.xy.www.xylib.encodec.XYMediaEncodec;
+import com.xy.www.xylib.util.AppUtils;
 import com.xy.www.xylib.util.AudioRecordUtil;
 import com.xy.www.xylib.util.LogUtil;
 import com.xy.www.xyvideo.base.BaseActivity;
@@ -74,7 +75,7 @@ public class WaterMarkActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 LogUtil.d("调用动态水印");
-                xycamaryview.setIsDyNamicMark(isChecked);
+                startImg();
             }
         });
     }
@@ -84,6 +85,35 @@ public class WaterMarkActivity extends BaseActivity {
             audioRecordUtil.stopRecord();
             xyMediaEncodec.stopRecord();
         }
+    }
+    private void startImg(){
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 8; i++) {
+                    //拿到资源
+                    int imgsrc = getResources().getIdentifier("img_" + i, "drawable", AppUtils.getPackageName(getApplicationContext()));
+                    xycamaryview.setCurrentImg(imgsrc);
+                    if (i == 7) {
+                        i = 0;
+                    }
+                    try {
+                        Thread.sleep(80);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+//                if (xyMediaEncodec != null) {
+//                    wlMusic.stop();
+//                    xyMediaEncodec.stopRecord();
+//                    xyMediaEncodec = null;
+//                }
+            }
+        }).start();
+
     }
 
     private void startRecoder() {
