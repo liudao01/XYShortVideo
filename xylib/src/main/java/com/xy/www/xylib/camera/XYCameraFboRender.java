@@ -20,6 +20,7 @@ import java.nio.FloatBuffer;
  */
 public class XYCameraFboRender {
 
+    private int oldSrc = -1;
     private Context context;
     private float[] vertexData = {
             -1f, -1f,
@@ -63,13 +64,13 @@ public class XYCameraFboRender {
     public XYCameraFboRender(Context context) {
         this.context = context;
         //水印
-        bitmap  = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_1);
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_1);
 //        bitmap = XYShaderUtil.createTextImage("Lml水印搞起了 FBO的", 50, "#ffff00", "#00000000", 0);//生成图片
         initData();
 
     }
 
-    public void initData(){
+    public void initData() {
 
 
         //求出宽高比例
@@ -102,19 +103,27 @@ public class XYCameraFboRender {
                 .put(fragmentData);
         fragmentBuffer.position(0);
     }
+
     public void setWaterMarkBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
 
         //bitmap 获取纹理id
         bitmapTextureid = XYShaderUtil.loadBitmapTexture(bitmap);
     }
+
     public void setWaterMarkBitmap(int imgsrc) {
 
-        //img 获取纹理id
-        bitmapTextureid = XYShaderUtil.loadTexrute(imgsrc,context);
-        LogUtil.d("img 获取纹理id = "+bitmapTextureid);
+        if (imgsrc != oldSrc) {
+            oldSrc = imgsrc;
+            //img 获取纹理id
+//        bitmapTextureid = XYShaderUtil.loadTexrute(imgsrc,context);
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), imgsrc);
+            if (bitmap != null) {
+                bitmapTextureid = XYShaderUtil.loadBitmapTexture(bitmap);
+                LogUtil.d("img 获取纹理id = " + bitmapTextureid);
+            }
+        }
     }
-
 
 
     public void onCreate() {
@@ -161,7 +170,6 @@ public class XYCameraFboRender {
     }
 
 
-
     public void onDraw(int textureId) {
 
 
@@ -187,6 +195,7 @@ public class XYCameraFboRender {
 
         //bitmap
         if (OpenMark) {
+            LogUtil.d("onDraw 调用  右下角小图  bitmapTextureid = " + bitmapTextureid);
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, bitmapTextureid);
 
             GLES20.glEnableVertexAttribArray(vPosition);

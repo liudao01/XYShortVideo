@@ -33,6 +33,7 @@
         添加水印的方式又分两种.
         1. 使用OpenGL 渲染添加水印.
         2 使用ffmpeg 添加水印
+
         其中ffmpeg 添加水印需要操作avframe, 而 avframe 是通过avpacket解出来的 ,然后通过FFMPEG 解码avframe.这是软解码.
         如果是硬解码只会解析到avpacket 然后把avpacket交给mediacodec 进行解码 不会有avframe.
         所以 如果是软解码可以使用ffmpeg 添加水印, 如果是硬解码 需要使用OpenGL 添加水印.
