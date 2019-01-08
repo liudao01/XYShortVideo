@@ -2,16 +2,13 @@ package com.xy.www.xylib.camera;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.WindowManager;
 
-import com.xy.www.xylib.R;
 import com.xy.www.xylib.RenderInterface;
 import com.xy.www.xylib.egl.XYEGLSurfaceView;
 import com.xy.www.xylib.util.LogUtil;
@@ -47,6 +44,13 @@ public class XYCameraView extends XYEGLSurfaceView {
 
     private Context mContext;
     private int count = 0;
+
+    private float mPreviousX;
+    private float mPreviousY;
+
+
+
+
     public XYCameraView(Context context) {
         this(context, null);
     }
@@ -135,39 +139,6 @@ public class XYCameraView extends XYEGLSurfaceView {
         return textureId;
     }
 
-    Handler mHandler = new Handler();
-    Runnable r = new Runnable() {
-
-        @Override
-        public void run() {
-            //do something
-            //每隔1s循环执行run方法
-            mHandler.postDelayed(this, 500);
-
-            LogUtil.d("子线程");
-            if (isDyNamicMark) {
-                LogUtil.d("当前动态图 = " + count);
-                LogUtil.d("当前动态图  " + bitmapList.get(count));
-                xyCameraRender.setCurrentBitmap(bitmapList.get(count));
-                count++;
-                if(count==7){
-                    count=0;
-                }
-
-            }
-        }
-    };
-
-//    public void setIsDyNamicMark(final boolean isDyNamicMark) {
-//        this.isDyNamicMark = isDyNamicMark;
-//        LogUtil.d("isDyNamicMark = " + isDyNamicMark);
-//        if (isDyNamicMark) {
-////            setDyNamickMark();//动态贴图
-//            mHandler.postDelayed(r, 100);//延时100毫秒
-//        }else {
-//            mHandler.removeCallbacks(r);
-//        }
-//    }
     public void setCurrentImg(int imgsrc) {
         if (xyCameraRender != null) {
             xyCameraRender.setCurrentImgSrc(imgsrc);
@@ -178,44 +149,54 @@ public class XYCameraView extends XYEGLSurfaceView {
 
 
     private void setDyNamickMark() {
-        int[] drawArr = {R.drawable.img_1, R.drawable.img_2, R.drawable.img_3, R.drawable.img_4,
-                R.drawable.img_5, R.drawable.img_6, R.drawable.img_7, R.drawable.img_8};
-        for (int i = 0; i < 8; i++) {
-
-            Bitmap bitmap = BitmapFactory.decodeResource(this.getContext().getResources(), drawArr[i]);
-            bitmapList.add(bitmap);
-        }
-        LogUtil.d("获取bitmap 数组");
+//        int[] drawArr = {R.drawable.img_1, R.drawable.img_2, R.drawable.img_3, R.drawable.img_4,
+//                R.drawable.img_5, R.drawable.img_6, R.drawable.img_7, R.drawable.img_8};
+//        for (int i = 0; i < 8; i++) {
+//
+//            Bitmap bitmap = BitmapFactory.decodeResource(this.getContext().getResources(), drawArr[i]);
+//            bitmapList.add(bitmap);
+//        }
+//        LogUtil.d("获取bitmap 数组");
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        //
-        float x = event.getX();
-        float y = event.getY();
+    public boolean onTouchEvent(MotionEvent e) {
+        float x = e.getX();
+        float y = e.getY();
 
-        //If a touch is moved on the screen
-        if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            //Calculate the change
-            float dx = x - oldX;
-            float dy = y - oldY;
-            //Define an upper area of 10% on the screen
-            int upperArea = this.getHeight() / 10;
+        switch (e.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                LogUtil.d("按下 x = "+x);
+                LogUtil.d("按下 y = "+y);
+                break;
+            case MotionEvent.ACTION_MOVE:
 
-            //Zoom in/out if the touch move has been made in the upper
+                float dx = x - mPreviousX; // 从左往有滑动时: x 值增大，dx 为正；反之则否。
+                float dy = y - mPreviousY; // 从上往下滑动时: y 值增大，dy 为正；反之则否。
+//                LogUtil.d("移动时 x  = "+x);
+//                LogUtil.d("移动时 y  = "+y);
+                // OpenGL 绕 z 轴的旋转符合左手定则，即 z 轴朝屏幕里面为正。
+                // 用户面对屏幕时，是从正面向里看（此时 camera 所处的 z 坐标位置为负数），当旋转度数增大时会进行逆时针旋转。
 
-            //A press on the screen
-        } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            //Define an upper area of 10% to define a lower area
-            int upperArea = this.getHeight() / 10;
-            int lowerArea = this.getHeight() - upperArea;
+                // 逆时针旋转判断条件1：触摸点处于 view 水平中线以下时，x 坐标应该要符合从右往左移动，此时 x 是减小的，所以 dx 取负数。
+                if (y > getHeight() / 2) {
+                    dx = dx * -1 ;
+                }
+
+                // 逆时针旋转判断条件2：触摸点处于 view 竖直中线以左时，y 坐标应该要符合从下往上移动，此时 y 是减小的，所以 dy 取负数。
+                if (x < getWidth() / 2) {
+                    dy = dy * -1 ;
+                }
+//                LogUtil.d("dx = "+dx);
+//                LogUtil.d("dy = "+dy);
+//                mRenderer.setAngle(mRenderer.getAngle() + ((dx + dy) * TOUCH_SCALE_FACTOR));
+
+                // 在计算旋转角度后，调用requestRender()来告诉渲染器现在可以进行渲染了
+//                requestRender();
         }
 
-        //Remember the values
-        oldX = x;
-        oldY = y;
-
-        //We handled the event
+        mPreviousX = x;
+        mPreviousY = y;
         return true;
     }
 

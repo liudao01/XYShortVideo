@@ -60,6 +60,7 @@ public class XYCameraFboRender {
     private float r;//宽高比
 
     private boolean OpenMark = false; //是否开启水印
+    private boolean dynamic = false; //是否开启水印
 
     public XYCameraFboRender(Context context) {
         this.context = context;
@@ -167,7 +168,9 @@ public class XYCameraFboRender {
     public void onChange(int width, int height) {
         GLES20.glViewport(0, 0, width, height);
         OpenMark = XYCameraView.isAddMark;
+        dynamic = XYCameraView.isDyNamicMark;
     }
+
 
 
     public void onDraw(int textureId) {
@@ -195,7 +198,46 @@ public class XYCameraFboRender {
 
         //bitmap
         if (OpenMark) {
-            LogUtil.d("onDraw 调用  右下角小图  bitmapTextureid = " + bitmapTextureid);
+
+            if(XYCameraView.isDyNamicMark){
+                LogUtil.d("动态的");
+                //求出宽高比例
+                r = 1.0f * bitmap.getWidth() / bitmap.getHeight();
+//                //高设置成0.1
+                float w = r * 0.5f;
+//                //在opengl 坐标系中.0.8f是自己设置的起始点, 这里求出左下角X轴
+                vertexData[8] = 0.7f - w;
+                vertexData[9] = -0.7f;//左下角Y轴  这样左下角就求出来了
+                //同理
+                vertexData[10] = 0.7f;
+                vertexData[11] = -0.7f;
+
+                vertexData[12] = 0.7f - w;
+                vertexData[13] = -0.6f;
+
+                vertexData[14] = 0.7f;
+                vertexData[15] = -0.6f;
+
+
+                vertexBuffer = ByteBuffer.allocateDirect(vertexData.length * 4)
+                        .order(ByteOrder.nativeOrder())
+                        .asFloatBuffer()
+                        .put(vertexData);
+                vertexBuffer.position(0);
+
+                fragmentBuffer = ByteBuffer.allocateDirect(fragmentData.length * 4)
+                        .order(ByteOrder.nativeOrder())
+                        .asFloatBuffer()
+                        .put(fragmentData);
+                fragmentBuffer.position(0);
+
+//                GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, 0, vertexData.length * 4, vertexBuffer);
+//                GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, vertexData.length * 4, fragmentData.length * 4, fragmentBuffer);
+
+                GLES20.glUniformMatrix2fv(8, 1, false, vertexBuffer);
+//                GLES20.glUniformMatrix2fv(GLES20.GL_ARRAY_BUFFER, vertexData.length * 4, false, fragmentBuffer);
+            }
+//            LogUtil.d("onDraw 调用  右下角小图  bitmapTextureid = " + bitmapTextureid);
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, bitmapTextureid);
 
             GLES20.glEnableVertexAttribArray(vPosition);

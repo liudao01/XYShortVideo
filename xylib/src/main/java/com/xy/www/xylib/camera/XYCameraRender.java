@@ -1,7 +1,6 @@
 package com.xy.www.xylib.camera;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
@@ -44,6 +43,8 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
 
 
     };
+    public volatile float moveX;
+    public volatile float moveY;
 
     private FloatBuffer vertexBuffer;
     private FloatBuffer fragmentBuffer;
@@ -229,6 +230,8 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
 
     }
 
+
+
     @Override
     public void onDrawFrame() {
 
@@ -271,24 +274,42 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
 
     }
 
+
     @Override
     public void onFrameAvailable(SurfaceTexture surfaceTexture) {
         //预览的 当有数据会回调这个方法
     }
-
-    public void setCurrentBitmap(Bitmap bitmap) {
-        if (bitmap != null) {
-            xyCameraFboRender.setWaterMarkBitmap(bitmap);
-        }
-    }
+//
+//    public void setCurrentBitmap(Bitmap bitmap) {
+//        if (bitmap != null) {
+//            xyCameraFboRender.setWaterMarkBitmap(bitmap);
+//        }
+//    }
 
     public void setCurrentImgSrc(int imgsrc) {
-        xyCameraFboRender.setWaterMarkBitmap(imgsrc);
+//        xyCameraFboRender.setWaterMarkBitmap(imgsrc);
 
     }
 
     public interface OnSurfaceCreateListener {
         void onSurfaceCreate(SurfaceTexture surfaceTexture, int textureId);
+    }
+
+
+    public float getMoveX() {
+        return moveX;
+    }
+
+    public void setMoveX(float moveX) {
+        this.moveX = moveX;
+    }
+
+    public float getMoveY() {
+        return moveY;
+    }
+
+    public void setMoveY(float moveY) {
+        this.moveY = moveY;
     }
 
     public int getFboTextureid() {

@@ -27,6 +27,8 @@ public class WaterMarkActivity extends BaseActivity {
     private CheckBox cbAddMark;
     private Button btPlay;
     private CheckBox cbAddDynamicMark;
+    private Thread thread;
+    boolean isDynamic = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,13 @@ public class WaterMarkActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 LogUtil.d("调用动态水印");
-                startImg();
+                isDynamic = isChecked;
+                if (isChecked) {
+
+                    startImg();
+                } else {
+                    xycamaryview.isDyNamicMark = !xycamaryview.isDyNamicMark;
+                }
             }
         });
     }
@@ -86,15 +94,24 @@ public class WaterMarkActivity extends BaseActivity {
             xyMediaEncodec.stopRecord();
         }
     }
-    private void startImg(){
 
-        new Thread(new Runnable() {
+    private void startImg() {
+
+        //拿到资源
+//                if (xyMediaEncodec != null) {
+//                    wlMusic.stop();
+//                    xyMediaEncodec.stopRecord();
+//                    xyMediaEncodec = null;
+//                }
+        thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 for (int i = 0; i < 8; i++) {
+
                     //拿到资源
                     int imgsrc = getResources().getIdentifier("img_" + i, "drawable", AppUtils.getPackageName(getApplicationContext()));
                     xycamaryview.setCurrentImg(imgsrc);
+
                     if (i == 7) {
                         i = 0;
                     }
@@ -103,15 +120,20 @@ public class WaterMarkActivity extends BaseActivity {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+//                    if (!isDynamic) {
+//                        i = 8;
+//                    }
                 }
 
-//                if (xyMediaEncodec != null) {
-//                    wlMusic.stop();
-//                    xyMediaEncodec.stopRecord();
-//                    xyMediaEncodec = null;
-//                }
+                //                if (xyMediaEncodec != null) {
+                //                    wlMusic.stop();
+                //                    xyMediaEncodec.stopRecord();
+                //                    xyMediaEncodec = null;
+                //                }
             }
-        }).start();
+        });
+
+        thread.start();
 
     }
 
