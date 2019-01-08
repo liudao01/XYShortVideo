@@ -187,7 +187,6 @@ public class XYCameraFboRender {
 
         //bitmap
         if (OpenMark) {
-//            LogUtil.d("bitmapTextureid = 渲染");
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, bitmapTextureid);
 
             GLES20.glEnableVertexAttribArray(vPosition);

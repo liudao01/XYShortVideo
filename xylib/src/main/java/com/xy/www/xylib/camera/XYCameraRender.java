@@ -2,7 +2,6 @@ package com.xy.www.xylib.camera;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.SurfaceTexture;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
@@ -29,7 +28,6 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
     private Context context;
 
     private RenderInterface imp;
-    private int srcImg;
     private float[] vertexData = {
             -1f, -1f,
             1f, -1f,
@@ -67,7 +65,7 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
     private int height;
 
     private SurfaceTexture surfaceTexture;
-//    private XYCameraFboRender xyCameraFboRender;
+    private XYCameraFboRender xyCameraFboRender;
 
     private int umatrix;
     private float[] matrix = new float[16];
@@ -81,7 +79,7 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
         screenW = DisplayUtil.getScreenWidth(context);
         screenH = DisplayUtil.getScreenHeight(context);
 
-//        xyCameraFboRender = new XYCameraFboRender(context);
+        xyCameraFboRender = new XYCameraFboRender(context);
 
         vertexBuffer = ByteBuffer.allocateDirect(vertexData.length * 4)
                 .order(ByteOrder.nativeOrder())
@@ -99,6 +97,7 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
     }
 
 
+
     public void setOnSurfaceCreateListener(OnSurfaceCreateListener onSurfaceCreateListener) {
         this.onSurfaceCreateListener = onSurfaceCreateListener;
     }
@@ -107,7 +106,7 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
     public void onSurfaceCreated() {
 
 
-//        xyCameraFboRender.onCreate();
+        xyCameraFboRender.onCreate();
         //获取顶点以及片元属性
         String vertexSource = XYShaderUtil.getRawResource(context, R.raw.vertex_shader);
         String fragmentSource = XYShaderUtil.getRawResource(context, R.raw.fragment_shader);
@@ -190,7 +189,7 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
         surfaceTexture.setOnFrameAvailableListener(this);
 
         if (onSurfaceCreateListener != null) {
-            onSurfaceCreateListener.onSurfaceCreate(surfaceTexture, fboTextureid);
+            onSurfaceCreateListener.onSurfaceCreate(surfaceTexture,fboTextureid);
         }
         GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, 0);
 
@@ -199,13 +198,12 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
     /**
      * 重置矩阵
      */
-    public void resetMatrix() {
+    public void resetMatrix(){
         Matrix.setIdentityM(matrix, 0);
     }
 
     /**
      * 设置角度
-     *
      * @param angle
      * @param x
      * @param y
@@ -233,7 +231,7 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
     public void onDrawFrame() {
 
         surfaceTexture.updateTexImage();
-//        int imgTextureId = XYShaderUtil.loadTexrute(srcImg, context);
+
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         GLES20.glClearColor(1f, 0f, 0f, 1f);
 
@@ -245,7 +243,6 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
 
 
         GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, fboId);
-//        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, fboId);
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vboId);
 
 
@@ -264,14 +261,10 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
 
         GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
 
-//        xyCameraFboRender.onChange(width, height);//
-//
-//        int[] ids = new int[]{fboId};
-//        GLES20.glDeleteTextures(1, ids, 0);
-//
-//        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
+        xyCameraFboRender.onChange(width, height);//
         //绘制
-//        xyCameraFboRender.onDraw(fboTextureid);
+        xyCameraFboRender.onDraw(fboTextureid);
+
 
 
     }
@@ -283,18 +276,13 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
 
     public void setCurrentBitmap(Bitmap bitmap) {
         if (bitmap != null) {
-//            xyCameraFboRender.setWaterMarkBitmap(bitmap);
+            xyCameraFboRender.setWaterMarkBitmap(bitmap);
         }
     }
 
     public void setCurrentImgSrc(int imgsrc) {
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), imgsrc);
-        LogUtil.d("当前的bitmap = "+bitmap);
-        if (bitmap != null) {
-//            xyCameraFboRender.setWaterMarkBitmap(bitmap);
-            this.srcImg = imgsrc;
+        xyCameraFboRender.setWaterMarkBitmap(imgsrc);
 
-        }
     }
 
     public interface OnSurfaceCreateListener {
