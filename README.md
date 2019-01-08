@@ -30,9 +30,12 @@
 12.26 项目搭建 ffmpeg导入  (一点点来, 先实现在左下角添加文字水印)
     0.
     1. 通过预览方式录制视频 在视频左下角放文字水印 .
-        添加水印的方式又分两种. 1. 使用OpenGL 渲染添加水印. 2 使用ffmpeg 添加水印
-        其中ffmpeg 添加水印需要操作avframe, 而 avframe 是通过avpacket解出来的 ,这是软解码.
-        如果是硬解码只会解析到avpacket 然后把avpacket交给mediacodec 进行解码 不会有avframe. 所以 如果是软解码可以使用ffmpeg 添加水印, 如果是硬解码 需要使用OpenGL 添加水印.
+        添加水印的方式又分两种.
+        1. 使用OpenGL 渲染添加水印.
+        2 使用ffmpeg 添加水印
+        其中ffmpeg 添加水印需要操作avframe, 而 avframe 是通过avpacket解出来的 ,然后通过FFMPEG 解码avframe.这是软解码.
+        如果是硬解码只会解析到avpacket 然后把avpacket交给mediacodec 进行解码 不会有avframe.
+        所以 如果是软解码可以使用ffmpeg 添加水印, 如果是硬解码 需要使用OpenGL 添加水印.
 
 12.27  目前已经实现预览水印.  添加水印的方式又分两种.1. 录制视频的时候添加水印保存成为mp4文件, 2. 打开本地视频添加水印.
        这两种其实实现的方式都类似. 因为都需要通过OpenGL 渲染到界面上. 那么我再渲染的时候给加上水印就好了.

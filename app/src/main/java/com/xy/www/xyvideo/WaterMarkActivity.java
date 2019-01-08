@@ -105,7 +105,6 @@ public class WaterMarkActivity extends BaseActivity {
                     }
                 }
 
-
 //                if (xyMediaEncodec != null) {
 //                    wlMusic.stop();
 //                    xyMediaEncodec.stopRecord();
