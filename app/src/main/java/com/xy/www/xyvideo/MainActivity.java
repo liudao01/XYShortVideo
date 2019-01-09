@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.xy.www.xylib.XYUtil;
+import com.xy.www.xyvideo.activity.WaterMarkActivity;
 import com.xy.www.xyvideo.base.BaseActivity;
 
 public class MainActivity extends BaseActivity {

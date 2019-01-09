@@ -6,7 +6,7 @@ android {
 
 
     defaultConfig {
-        minSdkVersion 18
+        minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -16,6 +16,10 @@ android {
             cmake {
                 cppFlags "-frtti -fexceptions"
             }
+
+        }
+        ndk {
+            abiFilters "armeabi-v7a"
         }
     }
 
@@ -32,6 +36,12 @@ android {
         externalNativeBuild {
             cmake {
                 path "CMakeLists.txt"
+            }
+        }
+        sourceSets {
+            main {
+                jniLibs.srcDirs = ['libs']
+                jni.srcDirs = []
             }
         }
     }

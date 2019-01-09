@@ -28,8 +28,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WaterMarkActivity" />
-        <activity android:name=".PreViewActivity"></activity>
+        <activity android:name=".activity.WaterMarkActivity" />
+        <activity android:name=".activity.PreViewActivity"></activity>
     </application>
 
 </manifest>
