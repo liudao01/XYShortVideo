@@ -20,6 +20,7 @@ import com.xy.www.xyvideo.Constant;
 import com.xy.www.xyvideo.CustomBottomSheetDialogFragment;
 import com.xy.www.xyvideo.R;
 import com.xy.www.xyvideo.base.BaseActivity;
+import com.xy.www.xyvideo.util.ProgressDlgUtil;
 
 import java.io.File;
 
@@ -73,7 +74,7 @@ public class PreViewActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         videoView.seekTo(stopPosition);
-//        videoView.start();
+        videoView.start();
     }
 
     private void initView() {
@@ -94,25 +95,33 @@ public class PreViewActivity extends BaseActivity {
         btAddWaterMark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                videoView.stopPlayback();
-//                DialogUtils.getInstance().showLoadingProgress(mContext);
-                String photo = Constant.RootDir + File.separator + "launcher.png";
-                final String photoMarkDir = Constant.RootDir + File.separator + "test_live_ffmpeg_pic2.mp4";
+                String photo = Constant.RootDir + File.separator + "img_1.jpeg";
+                final String photoMarkDir = Constant.RootDir + File.separator + "test_live_ffmpeg_pic.mp4";
                 String[] strings = FFmpegUtil.addWaterMark(Constant.fileDir, photo, photoMarkDir);
                 XYUtil.getInstance().execute(strings, new OnHandleListener() {
                     @Override
                     public void onBegin() {
                         LogUtil.d("开始");
-//                        progressVideo.setVisibility(View.VISIBLE);
-//                        ProgressDlgUtil.showProgressDlg("加载中", mContext);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ProgressDlgUtil.showProgressDlg("添加水印中", mContext);
+
+                            }
+                        });
                     }
 
                     @Override
                     public void onEnd(int result) {
                         LogUtil.d("结束");
-//                        progressVideo.setVisibility(View.GONE);
-//                        ProgressDlgUtil.stopProgressDlg();
-//                        videoInit(photoMarkDir);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                ProgressDlgUtil.stopProgressDlg();
+                                videoInit(photoMarkDir);
+                            }
+                        });
                     }
                 });
 
@@ -149,7 +158,7 @@ public class PreViewActivity extends BaseActivity {
         }
         tvInstruction.setText("Video stored at path " + filePath + "\n" + videoInfo);
         videoView.setVideoURI(Uri.parse(filePath));
-//        videoView.start();
+        videoView.start();
 
 
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {

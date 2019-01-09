@@ -6,12 +6,6 @@
     android:background="@color/colorPrimaryDark"
     tools:context=".activity.PreViewActivity">
 
-    <ProgressBar
-        android:id="@+id/progress_video"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"/>
     <Button
         android:id="@+id/bt_addWaterMark"
         android:layout_width="wrap_content"
