@@ -9,7 +9,7 @@ cmake_minimum_required(VERSION 3.4.1)
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.
 # Gradle automatically packages shared libraries with your APK.
-file(GLOB my_source src/main/cpp/*.cpp src/main/cpp/*.c src/main/cpp/ffmpeg/*.c )
+file(GLOB my_source src/main/cpp/*.cpp src/main/cpp/*.c src/main/cpp/ffmpeg/*.c src/main/cpp/ffmpeg/*.cpp)
 
 
 include_directories(src/main/cpp)
@@ -21,7 +21,7 @@ add_library( # Sets the name of the library.
         SHARED
 
         # Provides a relative path to your source file(s).
-        src/main/cpp/native-lib.cpp
+        src/main/cpp/native-lib.c
         ${my_source})
 
 add_library( ffmpeg

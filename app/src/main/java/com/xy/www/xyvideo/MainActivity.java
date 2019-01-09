@@ -1,5 +1,6 @@
 package com.xy.www.xyvideo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,12 +15,13 @@ public class MainActivity extends BaseActivity {
 
     private Button btAddMark;
     private XYUtil xyUtil;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mContext = this;
         initView();
     }
 
@@ -31,8 +33,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 startActivity(intent);
+//                setBtAddMark();
 //                readyGo(AddWateMarkActivity.class);
             }
         });
-    }
+
+
+        }
+        private void setBtAddMark(){
+
+        }
 }

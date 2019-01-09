@@ -41,3 +41,14 @@
 12.27  目前已经实现预览水印.  添加水印的方式又分两种.1. 录制视频的时候添加水印保存成为mp4文件, 2. 打开本地视频添加水印.
        这两种其实实现的方式都类似. 因为都需要通过OpenGL 渲染到界面上. 那么我再渲染的时候给加上水印就好了.
 
+
+
+参考了很多项目
+
+特别感谢: 万里兄的教程   https://blog.csdn.net/ywl5320/article/details/83581509
+
+其他github参考
+
+https://github.com/qqchenjian318/VideoEditor-For-Android
+
+https://github.com/ICECHN/VideoRecorderWithOpenGL

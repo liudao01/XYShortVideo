@@ -7,15 +7,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.xy.www.xylib.XYUtil;
+import com.xy.www.xylib.listener.OnHandleListener;
+import com.xy.www.xylib.util.FFmpegUtil;
+import com.xy.www.xylib.util.LogUtil;
 import com.xy.www.xyvideo.Constant;
 import com.xy.www.xyvideo.CustomBottomSheetDialogFragment;
 import com.xy.www.xyvideo.R;
 import com.xy.www.xyvideo.base.BaseActivity;
-import com.xy.www.xyvideo.util.ProgressDlgUtil;
+
+import java.io.File;
 
 /**
  * 回放的页面.
@@ -28,6 +34,8 @@ public class PreViewActivity extends BaseActivity {
     private int stopPosition;
     private Button btAddWaterMark;
     private Context mContext;
+    private ProgressBar progressVideo;
+    private boolean isPlay = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +73,7 @@ public class PreViewActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         videoView.seekTo(stopPosition);
-        videoView.start();
+//        videoView.start();
     }
 
     private void initView() {
@@ -77,9 +85,49 @@ public class PreViewActivity extends BaseActivity {
         seekBar = findViewById(R.id.seekBar);
         tvInstruction = findViewById(R.id.tvInstruction);
 
-        String filePath = Constant.fileDir;
+        videoInit(Constant.fileDir);
 
-        String videoInfo = "";
+        btAddWaterMark = findViewById(R.id.bt_addWaterMark);
+        progressVideo = findViewById(R.id.progress_video);
+
+        //ffmpeg 添加水印
+        btAddWaterMark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                videoView.stopPlayback();
+//                DialogUtils.getInstance().showLoadingProgress(mContext);
+                String photo = Constant.RootDir + File.separator + "launcher.png";
+                final String photoMarkDir = Constant.RootDir + File.separator + "test_live_ffmpeg_pic2.mp4";
+                String[] strings = FFmpegUtil.addWaterMark(Constant.fileDir, photo, photoMarkDir);
+                XYUtil.getInstance().execute(strings, new OnHandleListener() {
+                    @Override
+                    public void onBegin() {
+                        LogUtil.d("开始");
+//                        progressVideo.setVisibility(View.VISIBLE);
+//                        ProgressDlgUtil.showProgressDlg("加载中", mContext);
+                    }
+
+                    @Override
+                    public void onEnd(int result) {
+                        LogUtil.d("结束");
+//                        progressVideo.setVisibility(View.GONE);
+//                        ProgressDlgUtil.stopProgressDlg();
+//                        videoInit(photoMarkDir);
+                    }
+                });
+
+            }
+        });
+
+    }
+
+    private void videoInit(String filePath) {
+
+
+        if (videoView != null) {
+            videoView.stopPlayback();
+        }
+        final String videoInfo = "";
         try {
             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
             retriever.setDataSource(filePath);
@@ -101,7 +149,7 @@ public class PreViewActivity extends BaseActivity {
         }
         tvInstruction.setText("Video stored at path " + filePath + "\n" + videoInfo);
         videoView.setVideoURI(Uri.parse(filePath));
-        videoView.start();
+//        videoView.start();
 
 
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -110,7 +158,9 @@ public class PreViewActivity extends BaseActivity {
             public void onPrepared(MediaPlayer mp) {
                 mp.setLooping(true);
                 seekBar.setMax(videoView.getDuration());
-                seekBar.postDelayed(onEverySecond, 1000);
+                if (isPlay) {
+                    seekBar.postDelayed(onEverySecond, 1000);
+                }
             }
         });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -134,13 +184,5 @@ public class PreViewActivity extends BaseActivity {
             }
         });
 
-        btAddWaterMark = findViewById(R.id.bt_addWaterMark);
-        btAddWaterMark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                DialogUtils.getInstance().showLoadingProgress(mContext);
-                ProgressDlgUtil.showProgressDlg("加载中",mContext);
-            }
-        });
     }
 }

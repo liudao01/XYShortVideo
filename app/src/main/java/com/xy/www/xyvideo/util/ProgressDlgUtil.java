@@ -18,7 +18,7 @@ public class ProgressDlgUtil {
      *
      * @param strMessage
      *            进度条显示的信息
-     * @param activity
+     * @param ctx
      *            当前的activity
      */
     public static void showProgressDlg(String strMessage, Context ctx) {
@@ -28,8 +28,8 @@ public class ProgressDlgUtil {
             //设置进度条样式
             progressDlg.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             //设置进度条标题
-//            progressDlg.setTitle(Tool.getApplicationContext().getString(
-//                    R.string.app_name));
+            progressDlg.setTitle(ctx.getString(
+                    R.string.app_name));
             //提示的消息
             progressDlg.setMessage(strMessage);
             progressDlg.setIndeterminate(false);
