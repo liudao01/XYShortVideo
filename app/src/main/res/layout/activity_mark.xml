@@ -18,19 +18,29 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+
         <Button
             android:id="@+id/bt_recoder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="录制" />
+            android:textSize="10dp"
+            android:text="普通录制" />
 
         <Button
             android:id="@+id/bt_play"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textSize="10dp"
             android:text="播放" />
+        <Button
+            android:id="@+id/bt_background_music"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="10dp"
+            android:text="加入背景音乐录制" />
 
         <CheckBox
             android:id="@+id/cb_add_mark"

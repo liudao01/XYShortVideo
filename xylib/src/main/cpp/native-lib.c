@@ -6,11 +6,6 @@
 JNIEXPORT jint JNICALL
 Java_com_xy_www_xylib_XYUtil_handle(JNIEnv *env, jclass type, jobjectArray commands) {
 
-    // TODO
-
-    LOGD("进入了方法")
-
-    //    int argc = env->GetArrayLength(env, commands);
     int argc = (*env)->GetArrayLength(env, commands);
     char **argv = (char **) malloc(argc * sizeof(char *));
     int i;
@@ -30,16 +25,5 @@ Java_com_xy_www_xylib_XYUtil_handle(JNIEnv *env, jclass type, jobjectArray comma
     }
     free(argv);
     return result;
-
-}
-
-
-JNIEXPORT jint JNICALL
-Java_com_xy_www_xylib_XYUtil_helloWorld(JNIEnv *env, jclass type) {
-
-    // TODO
-
-    // TODO
-    return 1;
 
 }

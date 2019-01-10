@@ -14,9 +14,9 @@ import android.widget.VideoView;
 
 import com.xy.www.xylib.XYUtil;
 import com.xy.www.xylib.listener.OnHandleListener;
+import com.xy.www.xylib.util.Constant;
 import com.xy.www.xylib.util.FFmpegUtil;
 import com.xy.www.xylib.util.LogUtil;
-import com.xy.www.xyvideo.Constant;
 import com.xy.www.xyvideo.CustomBottomSheetDialogFragment;
 import com.xy.www.xyvideo.R;
 import com.xy.www.xyvideo.base.BaseActivity;
@@ -98,7 +98,7 @@ public class PreViewActivity extends BaseActivity {
                 String photo = Constant.RootDir + File.separator + "img_1.jpeg";
                 final String photoMarkDir = Constant.RootDir + File.separator + "test_live_ffmpeg_pic.mp4";
                 String[] strings = FFmpegUtil.addWaterMark(Constant.fileDir, photo, photoMarkDir);
-                XYUtil.getInstance().execute(strings, new OnHandleListener() {
+                XYUtil.getInstance(PreViewActivity.this).execute(strings, new OnHandleListener() {
                     @Override
                     public void onBegin() {
                         LogUtil.d("开始");
@@ -140,19 +140,7 @@ public class PreViewActivity extends BaseActivity {
         try {
             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
             retriever.setDataSource(filePath);
-            int bitrate = Integer.parseInt(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_BITRATE));
             retriever.release();
-//            MediaExtractor extractor = new MediaExtractor();
-//            extractor.setDataSource(filePath);
-//            MediaFormat format = extractor.getTrackFormat(VideoUtil.selectTrack(extractor, false));
-//            int frameRate = format.containsKey(MediaFormat.KEY_FRAME_RATE) ? format.getInteger(MediaFormat.KEY_FRAME_RATE) : -1;
-//            int width = format.getInteger(MediaFormat.KEY_WIDTH);
-//            int height = format.getInteger(MediaFormat.KEY_HEIGHT);
-//            int rotation = format.containsKey(MediaFormat.KEY_ROTATION) ? format.getInteger(MediaFormat.KEY_ROTATION) : -1;
-//            long duration = format.containsKey(MediaFormat.KEY_DURATION) ? format.getLong(MediaFormat.KEY_DURATION) : -1;
-//            videoInfo = String.format("size:%dX%d,framerate:%d,rotation:%d,bitrate:%d,duration:%.1fs", width, height, frameRate, rotation, bitrate,
-//                    duration / 1000f / 1000f);
-//            extractor.release();
         } catch (Exception e) {
             e.printStackTrace();
         }
