@@ -1,5 +1,6 @@
 package com.xy.www.xyvideo.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,17 +10,19 @@ import android.widget.CompoundButton;
 import com.xy.www.xylib.XYUtil;
 import com.xy.www.xylib.camera.XYCameraView;
 import com.xy.www.xylib.egl.XYShaderUtil;
+import com.xy.www.xylib.listener.OnHandleListener;
 import com.xy.www.xylib.util.AppUtils;
 import com.xy.www.xylib.util.Constant;
 import com.xy.www.xylib.util.LogUtil;
 import com.xy.www.xyvideo.CustomBottomSheetDialogFragment;
 import com.xy.www.xyvideo.R;
 import com.xy.www.xyvideo.base.BaseActivity;
+import com.xy.www.xyvideo.util.ProgressDlgUtil;
 
 /**
- * 录制时添加水印
+ * 录制时添加水印,添加背景音乐.断点录制
  */
-public class WaterMarkActivity extends BaseActivity implements View.OnClickListener {
+public class CameraPerActivity extends BaseActivity implements View.OnClickListener {
 
     private Button btRecoder;
     private XYCameraView xycamaryview;
@@ -34,6 +37,12 @@ public class WaterMarkActivity extends BaseActivity implements View.OnClickListe
 
     private XYUtil xyUtil;
     private Button btAddMarkContent;
+    private int type = 1;
+    private Button btBreakpoint;
+
+    private Context mContext;
+
+    private int count = 0;//计数器 第一次录制还是第二次
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +52,13 @@ public class WaterMarkActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void initView() {
+        this.mContext = this;
+        type = getIntent().getIntExtra("key", 1);
         xyUtil = XYUtil.getInstance(this);
         btRecoder = findViewById(R.id.bt_recoder);
         xycamaryview = findViewById(R.id.xycameraview);
 
 
-        btRecoder.setOnClickListener(this);
         cbAddMark = findViewById(R.id.cb_add_mark);
 
         //是否使用水印
@@ -59,7 +69,10 @@ public class WaterMarkActivity extends BaseActivity implements View.OnClickListe
             }
         });
         btPlay = findViewById(R.id.bt_play);
-        btPlay.setOnClickListener(this);
+        btBreakpoint = findViewById(R.id.bt_breakpoint);
+        btBackgroundMusic = findViewById(R.id.bt_background_music);
+        btAddMarkContent = findViewById(R.id.bt_addMark_content);
+
 
         cbAddDynamicMark = findViewById(R.id.cb_add_dynamic_mark);
 
@@ -77,10 +90,24 @@ public class WaterMarkActivity extends BaseActivity implements View.OnClickListe
                 }
             }
         });
-        btBackgroundMusic = findViewById(R.id.bt_background_music);
+
+        btRecoder.setOnClickListener(this);
+        btPlay.setOnClickListener(this);
         btBackgroundMusic.setOnClickListener(this);
-        btAddMarkContent = findViewById(R.id.bt_addMark_content);
         btAddMarkContent.setOnClickListener(this);
+        btBreakpoint.setOnClickListener(this);
+
+        switch (type) {
+            case 1:
+                btRecoder.setVisibility(View.VISIBLE);
+                break;
+            case 2:
+                btBackgroundMusic.setVisibility(View.VISIBLE);
+                break;
+            case 3:
+                btBreakpoint.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
 
@@ -142,9 +169,9 @@ public class WaterMarkActivity extends BaseActivity implements View.OnClickListe
                     btBackgroundMusic.setText("正在录制中...");
                 }
                 break;
-            case R.id.bt_addMark_content:
+            case R.id.bt_addMark_content://TODO 暂时不用 后面改
                 final CustomBottomSheetDialogFragment customBottomSheetDialogFragment = new CustomBottomSheetDialogFragment();
-                customBottomSheetDialogFragment.show(getSupportFragmentManager(),null);
+                customBottomSheetDialogFragment.show(getSupportFragmentManager(), null);
                 customBottomSheetDialogFragment.setFragmentCallBack(new CustomBottomSheetDialogFragment.FragmentCallBack() {
                     @Override
                     public void onConfirm(String content) {
@@ -159,8 +186,67 @@ public class WaterMarkActivity extends BaseActivity implements View.OnClickListe
                     }
                 });
                 break;
+            case R.id.bt_breakpoint://断点录制
+                if (count == 2 && !xyUtil.isStart) {
+
+                    //调用合成
+
+                    return;
+                }
+                String url = null;
+                if (xyUtil.isStart) {
+                    if (count == 0) {
+                        btBreakpoint.setText("录制第一个视频");
+                    } else {
+                        btBreakpoint.setText("录制第二个视频");
+                    }
+                    xyUtil.isStart = false;
+                    xyUtil.stopRecoder();
+                } else {
+                    xyUtil.isStart = true;
+                    if (count == 0) {
+                        btBreakpoint.setText("正在录制第一个...");
+                        url = Constant.breakPointfile1;
+                    } else {
+                        btBreakpoint.setText("正在录制第二个...");
+                        url = Constant.breakPointfile2;
+                    }
+                    xyUtil.startRecoder(this, xycamaryview, url);
+                    count++;
+                }
+
+
+                break;
             case R.id.bt_play://播放
-                readyGo(PreViewActivity.class);
+                if (type == 3) {
+                    xyUtil.mergeVideo(Constant.breakPointfile1, Constant.breakPointfile2, Constant.fileDir, new OnHandleListener() {
+                        @Override
+                        public void onBegin() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ProgressDlgUtil.showProgressDlg("正在处理中...", mContext);
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onEnd(int result) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ProgressDlgUtil.stopProgressDlg();
+                                }
+                            });
+                            if (result == 0) {
+                                readyGo(PlayBackActivity.class);
+                            }
+                        }
+                    });
+                }else{
+                readyGo(PlayBackActivity.class);
+                }
                 break;
         }
     }

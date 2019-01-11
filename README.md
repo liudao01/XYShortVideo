@@ -46,6 +46,17 @@
        这两种其实实现的方式都类似. 因为都需要通过OpenGL 渲染到界面上. 那么我再渲染的时候给加上水印就好了.
 
 
+---
+
+ffmpeg 合并视频. 搜了很多命令 都是需要创建一个文本文件 然后把需要合并的视频文件名字放进去. 在这里找到答案.
+ffmpeg -i "concat:input1|input2" -codec copy output
+这种连接方式不适合mp4
+
+ https://superuser.com/questions/1059245/ffmpeg-join-two-mp4-files-with-ffmpeg-on-command-line
+
+
+
+
 
 参考了很多项目
 

@@ -66,6 +66,15 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         Intent intent = new Intent(this, clazz);
         startActivity(intent);
     }
+    protected void readyGo(Class<?> clazz,String type) {
+        Intent intent = new Intent(this, clazz);
+        intent.putExtra("type", type);
+        startActivity(intent);
+    }
+
+    protected String getFrome() {
+        return getIntent().getStringExtra("type");
+    }
 
     private AlertDialog alertDialog;
 

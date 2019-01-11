@@ -34,7 +34,7 @@ public class ProgressDlgUtil {
             progressDlg.setMessage(strMessage);
             progressDlg.setIndeterminate(false);
             progressDlg.setCancelable(false);
-            progressDlg.setIcon(R.drawable.ic_launcher_background);
+//            progressDlg.setIcon(R.drawable.ic_launcher_background);
             progressDlg.show();
         }
     }

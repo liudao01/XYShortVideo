@@ -5,6 +5,7 @@ import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -27,7 +28,7 @@ import java.io.File;
 /**
  * 回放的页面.
  */
-public class PreViewActivity extends BaseActivity {
+public class PlayBackActivity extends BaseActivity {
 
     private VideoView videoView;
     private SeekBar seekBar;
@@ -86,7 +87,13 @@ public class PreViewActivity extends BaseActivity {
         seekBar = findViewById(R.id.seekBar);
         tvInstruction = findViewById(R.id.tvInstruction);
 
-        videoInit(Constant.fileDir);
+        String frome = getFrome();
+        if (TextUtils.isEmpty(frome)) {
+            videoInit(Constant.fileDir);
+        } else {
+
+            videoInit(Constant.fileDir);
+        }
 
         btAddWaterMark = findViewById(R.id.bt_addWaterMark);
         progressVideo = findViewById(R.id.progress_video);
@@ -98,7 +105,7 @@ public class PreViewActivity extends BaseActivity {
                 String photo = Constant.RootDir + File.separator + "img_1.jpeg";
                 final String photoMarkDir = Constant.RootDir + File.separator + "test_live_ffmpeg_pic.mp4";
                 String[] strings = FFmpegUtil.addWaterMark(Constant.fileDir, photo, photoMarkDir);
-                XYUtil.getInstance(PreViewActivity.this).execute(strings, new OnHandleListener() {
+                XYUtil.getInstance(PlayBackActivity.this).execute(strings, new OnHandleListener() {
                     @Override
                     public void onBegin() {
                         LogUtil.d("开始");

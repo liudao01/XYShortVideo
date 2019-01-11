@@ -1,6 +1,7 @@
 package com.xy.www.xylib;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.xy.www.xylib.camera.XYCameraView;
 import com.xy.www.xylib.encodec.XYBaseMediaEncoder;
@@ -8,6 +9,7 @@ import com.xy.www.xylib.encodec.XYMediaEncodec;
 import com.xy.www.xylib.listener.OnHandleListener;
 import com.xy.www.xylib.util.AudioRecordUtil;
 import com.xy.www.xylib.util.Constant;
+import com.xy.www.xylib.util.FFmpegUtil;
 import com.xy.www.xylib.util.LogUtil;
 import com.ywl5320.libmusic.WlMusic;
 import com.ywl5320.listener.OnPreparedListener;
@@ -62,6 +64,8 @@ public class XYUtil {
         wlMusic.setOnPreparedListener(new OnPreparedListener() {
             @Override
             public void onPrepared() {
+                //裁剪0到60s的
+
                 wlMusic.playCutAudio(0, 60);
             }
         });
@@ -71,7 +75,7 @@ public class XYUtil {
             public void onPcmInfo(int samplerate, int bit, int channels) {
                 xyMediaEncodec = new XYMediaEncodec(context, imgvideoview.getTextureId());
                 xyMediaEncodec.initEncodec(imgvideoview.getEglContext(), Constant.fileDir,
-                        1080, 1920, samplerate, channels);
+                        Constant.ScreenWidth, Constant.ScreenHeight, samplerate, channels);
 
                 xyMediaEncodec.startRecord();
             }
@@ -105,11 +109,21 @@ public class XYUtil {
     }
 
     public void startRecoder(Context context, XYCameraView xycamaryview) {
+        startRecoder(context, xycamaryview, "");
+    }
+
+    public void startRecoder(Context context, XYCameraView xycamaryview, String url) {
         isStart = true;
         audioRecordUtil = new AudioRecordUtil();
         xyMediaEncodec = new XYMediaEncodec(context, xycamaryview.getTextureId());
-        xyMediaEncodec.initEncodec(xycamaryview.getEglContext(),
-                Constant.fileDir, 1080, 1920, 44100, 2);
+        if (TextUtils.isEmpty(url)) {
+            xyMediaEncodec.initEncodec(xycamaryview.getEglContext(),
+                    Constant.fileDir, Constant.ScreenWidth, Constant.ScreenHeight, 44100, 2);
+        } else {
+            xyMediaEncodec.initEncodec(xycamaryview.getEglContext(),
+                    url, Constant.ScreenWidth, Constant.ScreenHeight, 44100, 2);
+        }
+
         xyMediaEncodec.setOnMediaInfoListener(new XYBaseMediaEncoder.OnMediaInfoListener() {
             @Override
             public void onMediaTime(int times) {
@@ -131,6 +145,16 @@ public class XYUtil {
         xyMediaEncodec.startRecord();
     }
 
+    /**
+     * 合并视频
+     * @param file1Dir
+     * @param file2Dir
+     * @param outputFile
+     */
+    public void mergeVideo(String file1Dir,String file2Dir,String outputFile,OnHandleListener onHandleListener) {
+        execute(FFmpegUtil.mergeVideo(file1Dir,file2Dir,outputFile),onHandleListener);
+    }
+
     public void execute(final String[] commands, final OnHandleListener onHandleListener) {
 
         new Thread(new Runnable() {
@@ -141,9 +165,9 @@ public class XYUtil {
                 }
                 //调用ffmpeg进行处理
                 LogUtil.d("commands = " + commands);
-//                    result = helloWorld();
 
-                int result = handle(commands);
+                int result = handle(commands);//result 0 是成功
+                LogUtil.d("是否执行成功 result ="+result);
                 if (onHandleListener != null) {
                     onHandleListener.onEnd(result);
                 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.WaterMarkActivity">
+    tools:context=".activity.CameraPerActivity">
 
     <com.xy.www.xylib.camera.XYCameraView
         android:id="@+id/xycameraview"
@@ -24,31 +24,43 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="10dp"
-            android:text="普通录制" />
+            android:text="普通录制"
+            android:visibility="gone"
+            android:textSize="10dp" />
 
         <Button
             android:id="@+id/bt_play"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="10dp"
-            android:text="播放" />
+            android:text="播放"
+            android:textSize="10dp" />
+
         <Button
             android:id="@+id/bt_background_music"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:text="加入背景音乐录制"
             android:textSize="10dp"
-            android:text="加入背景音乐录制" />
+            android:visibility="gone" />
+        <Button
+            android:id="@+id/bt_breakpoint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="断点录制"
+            android:textSize="10dp"
+            android:visibility="gone" />
+
         <Button
             android:id="@+id/bt_addMark_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:text="输入水印内容"
             android:textSize="10dp"
-            android:visibility="gone"
-            android:text="输入水印内容" />
+            android:visibility="gone" />
 
         <CheckBox
             android:id="@+id/cb_add_mark"
@@ -56,12 +68,13 @@
             android:layout_height="wrap_content"
             android:text="是否录制时添加水印"
             android:textColor="@color/colorAccent" />
+
         <CheckBox
-            android:visibility="gone"
             android:id="@+id/cb_add_dynamic_mark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="动态水印"
-            android:textColor="@color/colorAccent" />
+            android:textColor="@color/colorAccent"
+            android:visibility="gone" />
     </LinearLayout>
 </RelativeLayout>
