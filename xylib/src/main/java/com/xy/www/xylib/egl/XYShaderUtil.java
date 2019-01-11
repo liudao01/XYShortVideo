@@ -84,6 +84,9 @@ public class XYShaderUtil {
         return program;
     }
 
+    public static Bitmap getCommon(String str) {
+        return XYShaderUtil.createTextImage(str, 50, "#ff00ff", "#00000000", 0);//生成图片
+    }
     public static Bitmap createTextImage(String text, int textSize, String textColor, String bgColor, int padding) {
 
         Paint paint = new Paint();

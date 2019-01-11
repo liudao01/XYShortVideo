@@ -1,6 +1,7 @@
 package com.xy.www.xylib.camera;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
@@ -288,9 +289,13 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
 
     public void setCurrentImgSrc(int imgsrc) {
 //        xyCameraFboRender.setWaterMarkBitmap(imgsrc);
-
     }
 
+    public void setUpdateBitmap(Bitmap bitmap) {
+        if (bitmap != null) {
+            xyCameraFboRender.setWaterMarkBitmap(bitmap);
+        }
+    }
     public interface OnSurfaceCreateListener {
         void onSurfaceCreate(SurfaceTexture surfaceTexture, int textureId);
     }

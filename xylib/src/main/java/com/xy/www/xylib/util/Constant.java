@@ -12,5 +12,6 @@ public class Constant {
     public static final String RootDir = Environment.getExternalStorageDirectory().getAbsolutePath();
     public static final String fileDir = RootDir + "/test_live_recoder.mp4";
     public static final String musicfileDir = RootDir + "/xjw.mp3";
+    public static  String addMarkText= "Liuml 刘茂林的水印";
     public static final String testDir = RootDir + "/药神MP4.mp4";
 }

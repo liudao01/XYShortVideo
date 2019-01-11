@@ -139,6 +139,13 @@ public class XYCameraView extends XYEGLSurfaceView {
         return textureId;
     }
 
+    public void updateCurrentBitmap(Bitmap bitmap) {
+        if (xyCameraRender != null) {
+            xyCameraRender.setUpdateBitmap(bitmap);
+//            requestRender();//手动刷新 调用一次
+        }
+    }
+
     public void setCurrentImg(int imgsrc) {
         if (xyCameraRender != null) {
             xyCameraRender.setCurrentImgSrc(imgsrc);
@@ -148,16 +155,6 @@ public class XYCameraView extends XYEGLSurfaceView {
     }
 
 
-    private void setDyNamickMark() {
-//        int[] drawArr = {R.drawable.img_1, R.drawable.img_2, R.drawable.img_3, R.drawable.img_4,
-//                R.drawable.img_5, R.drawable.img_6, R.drawable.img_7, R.drawable.img_8};
-//        for (int i = 0; i < 8; i++) {
-//
-//            Bitmap bitmap = BitmapFactory.decodeResource(this.getContext().getResources(), drawArr[i]);
-//            bitmapList.add(bitmap);
-//        }
-//        LogUtil.d("获取bitmap 数组");
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {

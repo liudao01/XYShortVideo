@@ -41,6 +41,14 @@
             android:layout_weight="1"
             android:textSize="10dp"
             android:text="加入背景音乐录制" />
+        <Button
+            android:id="@+id/bt_addMark_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="10dp"
+            android:visibility="gone"
+            android:text="输入水印内容" />
 
         <CheckBox
             android:id="@+id/cb_add_mark"
@@ -49,6 +57,7 @@
             android:text="是否录制时添加水印"
             android:textColor="@color/colorAccent" />
         <CheckBox
+            android:visibility="gone"
             android:id="@+id/cb_add_dynamic_mark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

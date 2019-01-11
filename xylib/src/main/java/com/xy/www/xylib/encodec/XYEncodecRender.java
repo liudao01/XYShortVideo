@@ -8,6 +8,7 @@ import com.xy.www.xylib.R;
 import com.xy.www.xylib.camera.XYCameraView;
 import com.xy.www.xylib.egl.XYEGLSurfaceView;
 import com.xy.www.xylib.egl.XYShaderUtil;
+import com.xy.www.xylib.util.Constant;
 import com.xy.www.xylib.util.LogUtil;
 
 import java.nio.ByteBuffer;
@@ -81,8 +82,8 @@ public class XYEncodecRender implements XYEGLSurfaceView.XYGLRender  {
     }
 
     private void addWaterMark() {
-        //水印
-        bitmap = XYShaderUtil.createTextImage("Lml水印搞起了录制的", 50, "#ff00ff", "#00000000", 0);//生成图片
+        //水印Lml水印搞起了录制的
+        bitmap = XYShaderUtil.getCommon(Constant.addMarkText);
 //        bitmap = X
         //求出宽高比例
         float r = 1.0f * bitmap.getWidth() / bitmap.getHeight();

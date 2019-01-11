@@ -8,9 +8,11 @@ import android.widget.CompoundButton;
 
 import com.xy.www.xylib.XYUtil;
 import com.xy.www.xylib.camera.XYCameraView;
+import com.xy.www.xylib.egl.XYShaderUtil;
 import com.xy.www.xylib.util.AppUtils;
 import com.xy.www.xylib.util.Constant;
 import com.xy.www.xylib.util.LogUtil;
+import com.xy.www.xyvideo.CustomBottomSheetDialogFragment;
 import com.xy.www.xyvideo.R;
 import com.xy.www.xyvideo.base.BaseActivity;
 
@@ -31,6 +33,7 @@ public class WaterMarkActivity extends BaseActivity implements View.OnClickListe
 
 
     private XYUtil xyUtil;
+    private Button btAddMarkContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,8 @@ public class WaterMarkActivity extends BaseActivity implements View.OnClickListe
         });
         btBackgroundMusic = findViewById(R.id.bt_background_music);
         btBackgroundMusic.setOnClickListener(this);
+        btAddMarkContent = findViewById(R.id.bt_addMark_content);
+        btAddMarkContent.setOnClickListener(this);
     }
 
 
@@ -133,9 +138,26 @@ public class WaterMarkActivity extends BaseActivity implements View.OnClickListe
                     btBackgroundMusic.setText("录制视频");
                 } else {
                     xyUtil.isStart = true;
-                    xyUtil.setMusic(this, Constant.musicfileDir,xycamaryview);
+                    xyUtil.setMusic(this, Constant.musicfileDir, xycamaryview);
                     btBackgroundMusic.setText("正在录制中...");
                 }
+                break;
+            case R.id.bt_addMark_content:
+                final CustomBottomSheetDialogFragment customBottomSheetDialogFragment = new CustomBottomSheetDialogFragment();
+                customBottomSheetDialogFragment.show(getSupportFragmentManager(),null);
+                customBottomSheetDialogFragment.setFragmentCallBack(new CustomBottomSheetDialogFragment.FragmentCallBack() {
+                    @Override
+                    public void onConfirm(String content) {
+                        Constant.addMarkText = content;
+//                        bitmap = XYShaderUtil.getCommon(Constant.addMarkText);//添加水印
+                        xycamaryview.updateCurrentBitmap(XYShaderUtil.getCommon(Constant.addMarkText));//添加水印);
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+                });
                 break;
             case R.id.bt_play://播放
                 readyGo(PreViewActivity.class);
