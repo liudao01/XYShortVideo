@@ -318,17 +318,14 @@ public class FFmpegUtil {
     /**
      * 合并视频
      * @param file1
-     * @param file2
      * @param outputFile
      * @return
      */
-    public static String[] mergeVideo(String file1, String file2, String outputFile) {
-        File file = new File("filelist.txt");
-
-        String mergeVideo = "ffmpeg -i concat: %s|%s -c copy %s";
-//        String mergeVideo = "ffmpeg -i concat: %s|%s -c copy %s";
+    public static String[] mergeVideo(File file1,  String outputFile) {
+        String absolutePath = file1.getAbsolutePath();
+        String mergeVideo = "ffmpeg -f concat -i %s -c copy %s";
         LogUtil.d("合并的命令 = "+mergeVideo);
-        mergeVideo = String.format(Locale.CHINESE, mergeVideo, file1, file2, outputFile);
+        mergeVideo = String.format(Locale.CHINESE, mergeVideo, absolutePath, outputFile);
         return mergeVideo.split(" ");
     }
 }

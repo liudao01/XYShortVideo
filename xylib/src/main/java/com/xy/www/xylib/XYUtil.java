@@ -15,6 +15,10 @@ import com.ywl5320.libmusic.WlMusic;
 import com.ywl5320.listener.OnPreparedListener;
 import com.ywl5320.listener.OnShowPcmDataListener;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 /**
  * @author liuml
  * @explain
@@ -147,12 +151,37 @@ public class XYUtil {
 
     /**
      * 合并视频
+     *
      * @param file1Dir
      * @param file2Dir
      * @param outputFile
      */
-    public void mergeVideo(String file1Dir,String file2Dir,String outputFile,OnHandleListener onHandleListener) {
-        execute(FFmpegUtil.mergeVideo(file1Dir,file2Dir,outputFile),onHandleListener);
+    public void mergeVideo(String file1Dir, String file2Dir, String outputFile, OnHandleListener onHandleListener) {
+//        commandLine = FFmpegUtil.toTs(srcFile, ts1);
+//                concatStep ++;
+        String concatVideo = file1Dir;
+        String appendVideo = file2Dir;
+        File concatFile = new File(Constant.RootDir + File.separator + "fileList.txt");
+        if (!concatFile.exists()) {
+            try {
+                concatFile.getParentFile().mkdirs();
+                concatFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(concatFile);
+            fileOutputStream.write(("file \'" + concatVideo + "\'").getBytes());
+            fileOutputStream.write("\n".getBytes());
+            fileOutputStream.write(("file \'" + appendVideo + "\'").getBytes());
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        execute(FFmpegUtil.mergeVideo(concatFile,outputFile),onHandleListener);
     }
 
     public void execute(final String[] commands, final OnHandleListener onHandleListener) {
@@ -167,7 +196,7 @@ public class XYUtil {
                 LogUtil.d("commands = " + commands);
 
                 int result = handle(commands);//result 0 是成功
-                LogUtil.d("是否执行成功 result ="+result);
+                LogUtil.d("是否执行成功 result =" + result);
                 if (onHandleListener != null) {
                     onHandleListener.onEnd(result);
                 }
