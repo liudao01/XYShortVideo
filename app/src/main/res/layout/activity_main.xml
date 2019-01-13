@@ -27,10 +27,25 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="添加背景音乐录制" />
+
     <Button
         android:id="@+id/bt_breakpoint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="断点录制" />
+
+    <Button
+        android:id="@+id/bt_video_convert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="本地转码" />
+
+    <Button
+        android:id="@+id/bt_video_cut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="视频剪辑(抽帧 分割)" />
 </LinearLayout>

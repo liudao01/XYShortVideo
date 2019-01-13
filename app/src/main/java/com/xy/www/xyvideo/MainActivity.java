@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.xy.www.xylib.XYUtil;
@@ -21,7 +20,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Button btAddMark;
     private XYUtil xyUtil;
     private Context mContext;
-    private ProgressBar progressVideo;
     private Button btAddMusic;
     private Button btBreakpoint;
 
@@ -46,7 +44,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btAddMark.setOnClickListener(this);
 
 
-        progressVideo = findViewById(R.id.progress_video);
         btAddMusic = findViewById(R.id.bt_addMusic);
         btBreakpoint = findViewById(R.id.bt_breakpoint);
         btBreakpoint.setOnClickListener(this);
@@ -76,7 +73,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     PermissionsUtils.IPermissionsResult permissionsResult = new PermissionsUtils.IPermissionsResult() {
         @Override
         public void passPermissons() {
-            Toast.makeText(MainActivity.this, "权限通过，可以做其他事情!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "权限通过", Toast.LENGTH_SHORT).show();
         }
 
         @Override

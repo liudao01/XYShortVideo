@@ -9,12 +9,10 @@ import android.widget.CompoundButton;
 
 import com.xy.www.xylib.XYUtil;
 import com.xy.www.xylib.camera.XYCameraView;
-import com.xy.www.xylib.egl.XYShaderUtil;
 import com.xy.www.xylib.listener.OnHandleListener;
 import com.xy.www.xylib.util.AppUtils;
 import com.xy.www.xylib.util.Constant;
 import com.xy.www.xylib.util.LogUtil;
-import com.xy.www.xyvideo.CustomBottomSheetDialogFragment;
 import com.xy.www.xyvideo.R;
 import com.xy.www.xyvideo.base.BaseActivity;
 import com.xy.www.xyvideo.util.ProgressDlgUtil;
@@ -54,7 +52,7 @@ public class CameraPerActivity extends BaseActivity implements View.OnClickListe
     private void initView() {
         this.mContext = this;
         type = getIntent().getIntExtra("key", 1);
-        xyUtil = XYUtil.getInstance(this);
+        xyUtil = XYUtil.getInstance();
         btRecoder = findViewById(R.id.bt_recoder);
         xycamaryview = findViewById(R.id.xycameraview);
 
@@ -170,21 +168,21 @@ public class CameraPerActivity extends BaseActivity implements View.OnClickListe
                 }
                 break;
             case R.id.bt_addMark_content://TODO 暂时不用 后面改
-                final CustomBottomSheetDialogFragment customBottomSheetDialogFragment = new CustomBottomSheetDialogFragment();
-                customBottomSheetDialogFragment.show(getSupportFragmentManager(), null);
-                customBottomSheetDialogFragment.setFragmentCallBack(new CustomBottomSheetDialogFragment.FragmentCallBack() {
-                    @Override
-                    public void onConfirm(String content) {
-                        Constant.addMarkText = content;
-//                        bitmap = XYShaderUtil.getCommon(Constant.addMarkText);//添加水印
-                        xycamaryview.updateCurrentBitmap(XYShaderUtil.getCommon(Constant.addMarkText));//添加水印);
-                    }
-
-                    @Override
-                    public void onCancel() {
-
-                    }
-                });
+//                final CustomBottomSheetDialogFragment customBottomSheetDialogFragment = new CustomBottomSheetDialogFragment();
+//                customBottomSheetDialogFragment.show(getSupportFragmentManager(), null);
+//                customBottomSheetDialogFragment.setFragmentCallBack(new CustomBottomSheetDialogFragment.FragmentCallBack() {
+//                    @Override
+//                    public void onConfirm(String content) {
+//                        Constant.addMarkText = content;
+////                        bitmap = XYShaderUtil.getCommon(Constant.addMarkText);//添加水印
+//                        xycamaryview.updateCurrentBitmap(XYShaderUtil.getCommon(Constant.addMarkText));//添加水印);
+//                    }
+//
+//                    @Override
+//                    public void onCancel() {
+//
+//                    }
+//                });
                 break;
             case R.id.bt_breakpoint://断点录制
                 if (count == 2 && !xyUtil.isStart) {
@@ -244,8 +242,8 @@ public class CameraPerActivity extends BaseActivity implements View.OnClickListe
                             }
                         }
                     });
-                }else{
-                readyGo(PlayBackActivity.class);
+                } else {
+                    readyGo(PlayBackActivity.class);
                 }
                 break;
         }

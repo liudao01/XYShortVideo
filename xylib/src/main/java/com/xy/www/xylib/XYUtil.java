@@ -46,7 +46,7 @@ public class XYUtil {
 
     }
 
-    public static XYUtil getInstance(Context context) {
+    public static XYUtil getInstance() {
         return staticXYUtil.xyUtil;
     }
 
@@ -68,9 +68,8 @@ public class XYUtil {
         wlMusic.setOnPreparedListener(new OnPreparedListener() {
             @Override
             public void onPrepared() {
-                //裁剪0到60s的
-
-                wlMusic.playCutAudio(0, 60);
+                //裁剪0到30s的
+                wlMusic.playCutAudio(0, 30);
             }
         });
 
@@ -181,7 +180,22 @@ public class XYUtil {
             e.printStackTrace();
         }
 
-        execute(FFmpegUtil.mergeVideo(concatFile,outputFile),onHandleListener);
+        execute(FFmpegUtil.mergeVideo(concatFile, outputFile), onHandleListener);
+    }
+
+    /*
+     * 视频抽帧转成图片
+     *
+     * @param inputFile  输入文件
+     * @param startTime  开始时间
+     * @param duration   持续时间
+     * @param frameRate  帧率
+     * @param targetFile 输出文件
+     *
+     */
+    public void videoToImage(String inputFile, int startTime, int duration, int frameRate, String targetFile, OnHandleListener onHandleListener) {
+        String[] strings = FFmpegUtil.videoToImage(inputFile, startTime, duration, frameRate, targetFile);
+        execute(strings, onHandleListener);
     }
 
     public void execute(final String[] commands, final OnHandleListener onHandleListener) {
@@ -203,11 +217,6 @@ public class XYUtil {
             }
         }).start();
     }
-
-
-//    public int handle(String[] commands){
-//        return n_handle(commands);
-//    }
 
 
 }
