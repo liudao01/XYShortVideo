@@ -1,5 +1,6 @@
 package com.xy.www.xyvideo;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,19 +8,14 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.xy.www.xylib.XYUtil;
 import com.xy.www.xyvideo.activity.CameraPerActivity;
 import com.xy.www.xyvideo.base.BaseActivity;
-import com.xy.www.xyvideo.util.Constance;
-import com.xy.www.xyvideo.util.PermissionManager;
-import com.xy.www.xyvideo.util.ToastUtils;
+import com.xy.www.xyvideo.util.PermissionsUtils;
 
-import java.util.List;
-
-import pub.devrel.easypermissions.EasyPermissions;
-
-public class MainActivity extends BaseActivity implements View.OnClickListener ,EasyPermissions.PermissionCallbacks{
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     private Button btAddMark;
@@ -34,6 +30,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener ,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
+        //两个日历权限和一个数据读写权限
+        String[] permissions = new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+//        PermissionsUtils.showSystemSetting = false;//是否支持显示系统设置权限设置窗口跳转
+        //这里的this不是上下文，是Activity对象！
+        PermissionsUtils.getInstance().chekPermissions(this, permissions, permissionsResult);
+
         initView();
     }
 
@@ -51,9 +53,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener ,
         btAddMusic.setOnClickListener(this);
     }
 
-    private void setBtAddMark() {
-
-    }
 
     @Override
     public void onClick(View v) {
@@ -71,43 +70,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener ,
         }
         startActivity(intent);
     }
-    /**
-     * 检查读写权限权限
-     */
-    private void checkWritePermission() {
-        boolean result = PermissionManager.checkPermission(this, Constance.PERMS_WRITE);
-        if (!result) {
-            PermissionManager.requestPermission(this, Constance.WRITE_PERMISSION_TIP, Constance.WRITE_PERMISSION_CODE, Constance.PERMS_WRITE);
+
+
+    //创建监听权限的接口对象
+    PermissionsUtils.IPermissionsResult permissionsResult = new PermissionsUtils.IPermissionsResult() {
+        @Override
+        public void passPermissons() {
+            Toast.makeText(MainActivity.this, "权限通过，可以做其他事情!", Toast.LENGTH_SHORT).show();
         }
-    }
-    /**
-     * 重写onRequestPermissionsResult，用于接受请求结果
-     *
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
-     */
+
+        @Override
+        public void forbitPermissons() {
+//            finish();
+            Toast.makeText(MainActivity.this, "权限不通过!", Toast.LENGTH_SHORT).show();
+        }
+    };
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        //将请求结果传递EasyPermission库处理
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-    /**
-     * 请求权限成功
-     *
-     * @param requestCode
-     * @param perms
-     */
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-        ToastUtils.showToast(getApplicationContext(), "用户授权成功");
-
+        //就多一个参数this
+        PermissionsUtils.getInstance().onRequestPermissionsResult(this, requestCode, permissions, grantResults);
     }
 
-    @Override
-    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-        ToastUtils.showToast(getApplicationContext(), "用户授权失败功");
-    }
 
 }

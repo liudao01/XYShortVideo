@@ -12,8 +12,9 @@ public final class Constance {
      * 写入权限的请求code,提示语，和权限码
      */
     public final static  int WRITE_PERMISSION_CODE=110;
-    public final static  String WRITE_PERMISSION_TIP ="为了正常使用，请允许读写权限!";
-    public final  static String[] PERMS_WRITE ={Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    public final static  String WRITE_PERMISSION_TIP ="为了正常使用，请允许权限!";
+    public final  static String[] CAMERA ={Manifest.permission.CAMERA};
+    public final  static String[] STORAGE ={Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE};
     /**
      * 相机，图库的请求code
      */
