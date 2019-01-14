@@ -28,13 +28,17 @@
         android:id="@+id/videoView_clip"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_weight="1" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recylerview"
-        android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_gravity="bottom"
         android:paddingLeft="40dp">
 
     </android.support.v7.widget.RecyclerView>
