@@ -9,16 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.leon.lfilepickerlibrary.LFilePicker;
-import com.leon.lfilepickerlibrary.utils.Constant;
 import com.xy.www.xylib.XYUtil;
-import com.xy.www.xylib.util.Constants;
 import com.xy.www.xyvideo.activity.CameraPerActivity;
+import com.xy.www.xyvideo.activity.VideoClipActivity;
 import com.xy.www.xyvideo.base.BaseActivity;
 import com.xy.www.xyvideo.util.PermissionsUtils;
-import com.xy.www.xyvideo.util.ToastUtils;
-
-import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -30,7 +25,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Button btBreakpoint;
     private Button btVideoConvert;
     private Button btVideoCut;
-    private int requestcode_from_activity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +77,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.bt_video_convert:
                 break;
-            case R.id.bt_video_cut:
-                fileChooser();
+            case R.id.bt_video_cut://视频剪辑
+                intent = new Intent(this, VideoClipActivity.class);
                 break;
         }
         if (intent != null) {
@@ -92,31 +87,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    public void fileChooser() {
-        requestcode_from_activity = 1000;
-        new LFilePicker()
-                .withActivity(MainActivity.this)
-                .withRequestCode(requestcode_from_activity)
-                .withStartPath(Constants.rootDir)//指定初始显示路径
-                .withIsGreater(true)//过滤文件大小 小于指定大小的文件
-                .withFileSize(500)//指定文件大小为500K
-                .start();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == requestcode_from_activity) {
-                List<String> list = data.getStringArrayListExtra(Constant.RESULT_INFO);
-                Toast.makeText(getApplicationContext(), "选中了" + list.size() + "个文件", Toast.LENGTH_SHORT).show();
-                ToastUtils.showToast(this,list.get(0));
-            }
-        }
-
-
-    }
-//    }
 
     //创建监听权限的接口对象
     PermissionsUtils.IPermissionsResult permissionsResult = new PermissionsUtils.IPermissionsResult() {

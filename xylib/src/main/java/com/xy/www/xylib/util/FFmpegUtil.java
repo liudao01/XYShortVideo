@@ -311,6 +311,7 @@ public class FFmpegUtil {
         String toImage = "ffmpeg -i %s -ss %s -t %s -r %s %s";
         toImage = String.format(Locale.CHINESE, toImage, inputFile, startTime, duration, frameRate, targetFile);
         toImage = toImage + "%3d.jpg";
+        LogUtil.d("命令 = "+toImage);
         return toImage.split(" ");
     }
 

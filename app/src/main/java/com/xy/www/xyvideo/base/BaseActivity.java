@@ -1,15 +1,12 @@
 package com.xy.www.xyvideo.base;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 
-import com.xy.www.xyvideo.R;
+import com.xy.www.xyvideo.util.ProgressDlgUtil;
 
 
 interface IActivity {
@@ -79,26 +76,28 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     private AlertDialog alertDialog;
 
     public void showLoadingDialog() {
-        alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable());
-        alertDialog.setCancelable(false);
-        alertDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_BACK)
-                    return true;
-                return false;
-            }
-        });
-        alertDialog.show();
-        alertDialog.setContentView(R.layout.dialog_view);
-        alertDialog.setCanceledOnTouchOutside(false);
+//        alertDialog = new AlertDialog.Builder(this).create();
+//        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable());
+//        alertDialog.setCancelable(false);
+//        alertDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+//            @Override
+//            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+//                if (keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_BACK)
+//                    return true;
+//                return false;
+//            }
+//        });
+//        alertDialog.show();
+//        alertDialog.setContentView(R.layout.dialog_view);
+//        alertDialog.setCanceledOnTouchOutside(false);
+        ProgressDlgUtil.showProgressDlg("正在处理中...", this);
     }
 
     public void dismissLoadingDialog() {
-        if (null != alertDialog && alertDialog.isShowing()) {
-            alertDialog.dismiss();
-        }
+//        if (null != alertDialog && alertDialog.isShowing()) {
+//            alertDialog.dismiss();
+//        }
+        ProgressDlgUtil.stopProgressDlg();
     }
 
 
