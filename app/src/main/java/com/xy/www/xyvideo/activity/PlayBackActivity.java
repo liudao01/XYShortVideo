@@ -105,7 +105,7 @@ public class PlayBackActivity extends BaseActivity {
                 String photo = Constant.RootDir + File.separator + "img_1.jpeg";
                 final String photoMarkDir = Constant.RootDir + File.separator + "test_live_ffmpeg_pic.mp4";
                 String[] strings = FFmpegUtil.addWaterMark(Constant.fileDir, photo, photoMarkDir);
-                XYUtil.getInstance(PlayBackActivity.this).execute(strings, new OnHandleListener() {
+                XYUtil.getInstance().execute(strings, new OnHandleListener() {
                     @Override
                     public void onBegin() {
                         LogUtil.d("开始");
