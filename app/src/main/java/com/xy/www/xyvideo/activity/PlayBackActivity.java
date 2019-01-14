@@ -15,10 +15,10 @@ import android.widget.VideoView;
 
 import com.xy.www.xylib.XYUtil;
 import com.xy.www.xylib.listener.OnHandleListener;
-import com.xy.www.xylib.util.Constant;
+import com.xy.www.xylib.util.Constants;
 import com.xy.www.xylib.util.FFmpegUtil;
 import com.xy.www.xylib.util.LogUtil;
-import com.xy.www.xyvideo.CustomBottomSheetDialogFragment;
+import com.xy.www.xyvideo.fragment.CustomBottomSheetDialogFragment;
 import com.xy.www.xyvideo.R;
 import com.xy.www.xyvideo.base.BaseActivity;
 import com.xy.www.xyvideo.util.ProgressDlgUtil;
@@ -89,10 +89,10 @@ public class PlayBackActivity extends BaseActivity {
 
         String frome = getFrome();
         if (TextUtils.isEmpty(frome)) {
-            videoInit(Constant.fileDir);
+            videoInit(Constants.fileDir);
         } else {
 
-            videoInit(Constant.fileDir);
+            videoInit(Constants.fileDir);
         }
 
         btAddWaterMark = findViewById(R.id.bt_addWaterMark);
@@ -102,9 +102,9 @@ public class PlayBackActivity extends BaseActivity {
         btAddWaterMark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String photo = Constant.RootDir + File.separator + "img_1.jpeg";
-                final String photoMarkDir = Constant.RootDir + File.separator + "test_live_ffmpeg_pic.mp4";
-                String[] strings = FFmpegUtil.addWaterMark(Constant.fileDir, photo, photoMarkDir);
+                String photo = Constants.rootDir + File.separator + "img_1.jpeg";
+                final String photoMarkDir = Constants.rootDir + File.separator + "test_live_ffmpeg_pic.mp4";
+                String[] strings = FFmpegUtil.addWaterMark(Constants.fileDir, photo, photoMarkDir);
                 XYUtil.getInstance().execute(strings, new OnHandleListener() {
                     @Override
                     public void onBegin() {

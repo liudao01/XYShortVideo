@@ -8,7 +8,7 @@ import com.xy.www.xylib.encodec.XYBaseMediaEncoder;
 import com.xy.www.xylib.encodec.XYMediaEncodec;
 import com.xy.www.xylib.listener.OnHandleListener;
 import com.xy.www.xylib.util.AudioRecordUtil;
-import com.xy.www.xylib.util.Constant;
+import com.xy.www.xylib.util.Constants;
 import com.xy.www.xylib.util.FFmpegUtil;
 import com.xy.www.xylib.util.LogUtil;
 import com.ywl5320.libmusic.WlMusic;
@@ -77,8 +77,8 @@ public class XYUtil {
             @Override
             public void onPcmInfo(int samplerate, int bit, int channels) {
                 xyMediaEncodec = new XYMediaEncodec(context, imgvideoview.getTextureId());
-                xyMediaEncodec.initEncodec(imgvideoview.getEglContext(), Constant.fileDir,
-                        Constant.ScreenWidth, Constant.ScreenHeight, samplerate, channels);
+                xyMediaEncodec.initEncodec(imgvideoview.getEglContext(), Constants.fileDir,
+                        Constants.ScreenWidth, Constants.ScreenHeight, samplerate, channels);
 
                 xyMediaEncodec.startRecord();
             }
@@ -121,10 +121,10 @@ public class XYUtil {
         xyMediaEncodec = new XYMediaEncodec(context, xycamaryview.getTextureId());
         if (TextUtils.isEmpty(url)) {
             xyMediaEncodec.initEncodec(xycamaryview.getEglContext(),
-                    Constant.fileDir, Constant.ScreenWidth, Constant.ScreenHeight, 44100, 2);
+                    Constants.fileDir, Constants.ScreenWidth, Constants.ScreenHeight, 44100, 2);
         } else {
             xyMediaEncodec.initEncodec(xycamaryview.getEglContext(),
-                    url, Constant.ScreenWidth, Constant.ScreenHeight, 44100, 2);
+                    url, Constants.ScreenWidth, Constants.ScreenHeight, 44100, 2);
         }
 
         xyMediaEncodec.setOnMediaInfoListener(new XYBaseMediaEncoder.OnMediaInfoListener() {
@@ -160,7 +160,7 @@ public class XYUtil {
 //                concatStep ++;
         String concatVideo = file1Dir;
         String appendVideo = file2Dir;
-        File concatFile = new File(Constant.RootDir + File.separator + "fileList.txt");
+        File concatFile = new File(Constants.rootDir + File.separator + "fileList.txt");
         if (!concatFile.exists()) {
             try {
                 concatFile.getParentFile().mkdirs();

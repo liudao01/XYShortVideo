@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-
     <uses-feature android:name="android.hardware.camera" />
     <!-- MODIFY_AUDIO_SETTINGS is needed to use audio effects such as environmental reverb -->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
@@ -29,7 +28,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.CameraPerActivity" />
-        <activity android:name=".activity.PlayBackActivity"></activity>
+        <activity android:name=".activity.PlayBackActivity" />
+        <activity android:name=".activity.VideoClipActivity"></activity>
     </application>
 
 </manifest>

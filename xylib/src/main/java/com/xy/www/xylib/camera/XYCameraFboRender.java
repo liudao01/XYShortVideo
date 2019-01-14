@@ -7,7 +7,7 @@ import android.opengl.GLES20;
 
 import com.xy.www.xylib.R;
 import com.xy.www.xylib.egl.XYShaderUtil;
-import com.xy.www.xylib.util.Constant;
+import com.xy.www.xylib.util.Constants;
 import com.xy.www.xylib.util.LogUtil;
 
 import java.nio.ByteBuffer;
@@ -67,7 +67,7 @@ public class XYCameraFboRender {
         this.context = context;
         //水印
 //        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_1);
-        bitmap = XYShaderUtil.getCommon(Constant.addMarkText);//添加水印
+        bitmap = XYShaderUtil.getCommon(Constants.addMarkText);//添加水印
         initData();
 
     }

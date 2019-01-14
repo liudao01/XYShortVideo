@@ -11,7 +11,7 @@ import com.xy.www.xylib.XYUtil;
 import com.xy.www.xylib.camera.XYCameraView;
 import com.xy.www.xylib.listener.OnHandleListener;
 import com.xy.www.xylib.util.AppUtils;
-import com.xy.www.xylib.util.Constant;
+import com.xy.www.xylib.util.Constants;
 import com.xy.www.xylib.util.LogUtil;
 import com.xy.www.xyvideo.R;
 import com.xy.www.xyvideo.base.BaseActivity;
@@ -163,7 +163,7 @@ public class CameraPerActivity extends BaseActivity implements View.OnClickListe
                     btBackgroundMusic.setText("录制视频");
                 } else {
                     xyUtil.isStart = true;
-                    xyUtil.setMusic(this, Constant.musicfileDir, xycamaryview);
+                    xyUtil.setMusic(this, Constants.musicfileDir, xycamaryview);
                     btBackgroundMusic.setText("正在录制中...");
                 }
                 break;
@@ -204,10 +204,10 @@ public class CameraPerActivity extends BaseActivity implements View.OnClickListe
                     xyUtil.isStart = true;
                     if (count == 0) {
                         btBreakpoint.setText("正在录制第一个...");
-                        url = Constant.breakPointfile1;
+                        url = Constants.breakPointfile1;
                     } else {
                         btBreakpoint.setText("正在录制第二个...");
-                        url = Constant.breakPointfile2;
+                        url = Constants.breakPointfile2;
                     }
                     xyUtil.startRecoder(this, xycamaryview, url);
                     count++;
@@ -217,7 +217,7 @@ public class CameraPerActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_play://播放
                 if (type == 3) {
-                    xyUtil.mergeVideo(Constant.breakPointfile1, Constant.breakPointfile2, Constant.fileDir, new OnHandleListener() {
+                    xyUtil.mergeVideo(Constants.breakPointfile1, Constants.breakPointfile2, Constants.fileDir, new OnHandleListener() {
                         @Override
                         public void onBegin() {
                             runOnUiThread(new Runnable() {

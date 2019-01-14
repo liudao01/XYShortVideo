@@ -1,4 +1,4 @@
-package com.xy.www.xyvideo;
+package com.xy.www.xyvideo.fragment;
 
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.xy.www.xylib.util.Constant;
+import com.xy.www.xylib.util.Constants;
+import com.xy.www.xyvideo.R;
 
 /**
  * @author liuml
@@ -59,7 +60,7 @@ public class CustomBottomSheetDialogFragment extends BottomSheetDialogFragment i
             case R.id.tv_confirm:
                 if (fragmentCallBack != null) {
                     if (etMarkContent.getText().toString().isEmpty()) {
-                        fragmentCallBack.onConfirm(Constant.addMarkText);
+                        fragmentCallBack.onConfirm(Constants.addMarkText);
                     } else {
                         fragmentCallBack.onConfirm(etMarkContent.getText().toString());
                     }
