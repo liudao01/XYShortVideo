@@ -18,15 +18,41 @@
             android:layout_height="wrap_content"
             android:text="选择文件" />
 
+
+        <Button
+            android:id="@+id/bt_video_to_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="视频抽帧" />
+        <Button
+            android:id="@+id/bt_cut_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="裁剪文件" />
+
         <TextView
             android:id="@+id/tv_file_dir"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
     </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/seekBar_cut_video"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginLeft="20dp"
+        android:id="@+id/tv_seekBar_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <VideoView
         android:id="@+id/videoView_clip"
         android:layout_width="match_parent"
+        android:layout_gravity="center"
         android:layout_height="0dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"

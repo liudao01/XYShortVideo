@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -16,7 +16,6 @@ import com.xy.www.xylib.XYUtil;
 import com.xy.www.xylib.listener.OnHandleListener;
 import com.xy.www.xylib.util.Constants;
 import com.xy.www.xylib.util.FileUtils;
-import com.xy.www.xylib.util.GlideUtils;
 import com.xy.www.xylib.util.LogUtil;
 import com.xy.www.xyvideo.R;
 import com.xy.www.xyvideo.base.BaseActivity;
@@ -26,7 +25,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VideoClipActivity extends BaseActivity implements View.OnClickListener {
+public class VideoClipActivity extends BaseActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
     private VideoView videoViewClip;
     private RecyclerView recylerview;
@@ -34,7 +33,11 @@ public class VideoClipActivity extends BaseActivity implements View.OnClickListe
     private TextView tvFileDir;
     private String url;
     private int alltime;
-    private ImageView image;
+    private Button btCutVideo;
+    private SeekBar seekBarCutVideo;
+    private TextView tvSeekBarProgress;
+    private int currentProgress = 0;
+    private Button btVideoToImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,11 @@ public class VideoClipActivity extends BaseActivity implements View.OnClickListe
         btFileChooser = findViewById(R.id.bt_fileChooser);
         btFileChooser.setOnClickListener(this);
         tvFileDir = findViewById(R.id.tv_file_dir);
+        btCutVideo = findViewById(R.id.bt_cut_video);
 
+        seekBarCutVideo = findViewById(R.id.seekBar_cut_video);
+        tvSeekBarProgress = findViewById(R.id.tv_seekBar_progress);
+        btVideoToImage = findViewById(R.id.bt_video_to_image);
 
         videoViewClip.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -59,39 +66,16 @@ public class VideoClipActivity extends BaseActivity implements View.OnClickListe
                 alltime = videoViewClip.getDuration() / 1000;
                 boolean orExistsDir = FileUtils.createOrExistsDir(Constants.shortVideo);
                 LogUtil.d("orExistsDir = " + orExistsDir);
-                XYUtil.getInstance().videoToImage(url, 0, alltime, 1, Constants.shortVideo, new OnHandleListener() {
-                    @Override
-                    public void onBegin() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                showLoadingDialog();
-                            }
-                        });
+                seekBarCutVideo.setMax(alltime);
 
-                    }
-
-                    @Override
-                    public void onEnd(final int result) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                dismissLoadingDialog();
-                                if (Constants.handleSuccess == result) {
-
-                                    handlePic();
-                                }
-
-                            }
-                        });
-
-                    }
-                });
 
             }
         });
 
-        image = findViewById(R.id.image);
+        seekBarCutVideo.setOnSeekBarChangeListener(this);
+        btCutVideo.setOnClickListener(this);
+
+        btVideoToImage.setOnClickListener(this);
     }
 
     /**
@@ -101,7 +85,7 @@ public class VideoClipActivity extends BaseActivity implements View.OnClickListe
         //Constants.shortVideo
         //获取文件夹内的图片
         List<String> imagePathFromSD = getImagePathFromSD(Constants.shortVideo);
-        GlideUtils.loadImage(this,imagePathFromSD.get(0),image);
+//        GlideUtils.loadImage(this, imagePathFromSD.get(0), image);
     }
 
     public void fileChooser() {
@@ -114,6 +98,7 @@ public class VideoClipActivity extends BaseActivity implements View.OnClickListe
         url = FileChooserUtil.getInstanse(this).onActivityResult(requestCode, resultCode, data);
         tvFileDir.setText(url);
         videoViewClip.setVideoURI(Uri.parse(url));
+//        videoViewClip.start();
     }
 
 
@@ -168,6 +153,114 @@ public class VideoClipActivity extends BaseActivity implements View.OnClickListe
             case R.id.bt_fileChooser:
                 fileChooser();
                 break;
+            case R.id.bt_cut_video:
+                cutVideo();
+                break;
+            case R.id.bt_video_to_image:
+                videoToImage();
+                break;
+        }
+    }
+
+    /**
+     * 视频抽帧
+     */
+    private void videoToImage() {
+
+        XYUtil.getInstance().videoToImage(url, 0, alltime, 1, Constants.shortVideo, new OnHandleListener() {
+            @Override
+            public void onBegin() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showLoadingDialog();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onEnd(final int result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dismissLoadingDialog();
+                        if (Constants.handleSuccess == result) {
+
+                            //视频转图片
+                            handlePic();
+                        }
+
+                    }
+                });
+
+            }
+        });
+    }
+
+    /**
+     * 裁剪文件
+     */
+    private void cutVideo() {
+        LogUtil.d("currentProgress = " + currentProgress);
+        /**
+         *  @param srcFile    源文件
+         *      * @param startTime  剪切的开始时间(单位为秒)
+         *      * @param duration   剪切时长(单位为秒)
+         *      * @param targetFile 目标文件
+         */
+        XYUtil.getInstance().cutVideo(url, 0, currentProgress, Constants.rootDir + File.separator + "output.mp4", new OnHandleListener() {
+            @Override
+            public void onBegin() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showLoadingDialog();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onEnd(final int result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dismissLoadingDialog();
+                        if (Constants.handleSuccess == result) {
+                            LogUtil.d("成功");
+                        }
+
+                    }
+                });
+
+            }
+        });
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        //正在拖动
+        tvSeekBarProgress.setText("裁剪秒数 : " + progress);
+
+
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+        //开始拖动
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        //停止拖动
+        // 当进度条停止修改的时候触发
+        // 取得当前进度条的刻度
+        int progress = seekBar.getProgress();
+        if (videoViewClip != null) {
+            // 设置当前播放的位置
+            videoViewClip.seekTo(progress * 100);
+            currentProgress = progress;
         }
     }
 }

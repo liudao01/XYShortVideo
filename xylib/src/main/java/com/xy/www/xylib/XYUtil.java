@@ -198,6 +198,21 @@ public class XYUtil {
         execute(strings, onHandleListener);
     }
 
+    /**
+     * 使用ffmpeg命令行进行视频剪切
+     *
+     * @param srcFile    源文件
+     * @param startTime  剪切的开始时间(单位为秒)
+     * @param duration   剪切时长(单位为秒)
+     * @param targetFile 目标文件
+     * @return 剪切后的文件
+     */
+    public void cutVideo(String srcFile, int startTime, int duration, String targetFile,OnHandleListener onHandleListener) {
+        String[] strings = FFmpegUtil.cutVideo(srcFile, startTime, duration, targetFile);
+        execute(strings, onHandleListener);
+
+    }
+
     public void execute(final String[] commands, final OnHandleListener onHandleListener) {
 
         new Thread(new Runnable() {
