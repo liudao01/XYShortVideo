@@ -19,14 +19,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="添加水印录制" />
+        android:text="录制时添加水印/录制完成添加水印" />
 
     <Button
         android:id="@+id/bt_addMusic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="添加背景音乐录制" />
+        android:text="录制时添加背景音乐" />
 
     <Button
         android:id="@+id/bt_breakpoint"
@@ -48,4 +48,18 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="视频剪辑(抽帧 分割)" />
+
+    <Button
+        android:id="@+id/bt_fitter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="滤镜" />
+
+    <Button
+        android:id="@+id/bt_beautiful_face"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="美颜" />
 </LinearLayout>

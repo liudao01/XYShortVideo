@@ -25,6 +25,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Button btBreakpoint;
     private Button btVideoConvert;
     private Button btVideoCut;
+    private Button btFitter;
+    private Button btBeautifulFace;
 
 
     @Override
@@ -56,6 +58,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btVideoCut = findViewById(R.id.bt_video_cut);
         btVideoConvert.setOnClickListener(this);
         btVideoCut.setOnClickListener(this);
+        btFitter = findViewById(R.id.bt_fitter);
+        btFitter.setOnClickListener(this);
+        btBeautifulFace = findViewById(R.id.bt_beautiful_face);
+        btBeautifulFace.setOnClickListener(this);
     }
 
 
@@ -75,11 +81,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 intent = new Intent(this, CameraPerActivity.class);
                 intent.putExtra("key", 3);
                 break;
-            case R.id.bt_video_convert:
+            case R.id.bt_video_convert://视频转换
                 break;
             case R.id.bt_video_cut://视频剪辑
                 intent = new Intent(this, VideoClipActivity.class);
                 break;
+            case R.id.bt_fitter://滤镜
+
+                break;
+            case R.id.bt_beautiful_face://美颜
+
+                break;
+
         }
         if (intent != null) {
 

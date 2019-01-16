@@ -8,7 +8,6 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.xy.www.xylib.R;
-import com.xy.www.xylib.RenderInterface;
 import com.xy.www.xylib.egl.XYEGLSurfaceView;
 import com.xy.www.xylib.egl.XYShaderUtil;
 import com.xy.www.xylib.util.DisplayUtil;
@@ -27,7 +26,6 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
 
     private Context context;
 
-    private RenderInterface imp;
     private float[] vertexData = {
             -1f, -1f,
             1f, -1f,

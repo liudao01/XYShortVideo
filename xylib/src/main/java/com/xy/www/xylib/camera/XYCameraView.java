@@ -9,7 +9,6 @@ import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.WindowManager;
 
-import com.xy.www.xylib.RenderInterface;
 import com.xy.www.xylib.egl.XYEGLSurfaceView;
 import com.xy.www.xylib.util.LogUtil;
 
@@ -29,7 +28,6 @@ public class XYCameraView extends XYEGLSurfaceView {
     private final float TOUCH_SCALE = 0.2f;        //Proved to be good for normal rotation ( NEW )
 
 
-    private RenderInterface renderInterface;
     private XYCameraRender xyCameraRender;
     private XYCamera xyCamera;
 
