@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.xy.www.xylib.XYUtil;
 import com.xy.www.xyvideo.activity.CameraPerActivity;
+import com.xy.www.xyvideo.activity.Picture2VideoActivity;
 import com.xy.www.xyvideo.activity.VideoClipActivity;
 import com.xy.www.xyvideo.base.BaseActivity;
 import com.xy.www.xyvideo.util.PermissionsUtils;
@@ -62,6 +63,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btFitter.setOnClickListener(this);
         btBeautifulFace = findViewById(R.id.bt_beautiful_face);
         btBeautifulFace.setOnClickListener(this);
+        Button btPicture2Video=findViewById(R.id.bt_picture2video);
+        btPicture2Video.setOnClickListener(this);
     }
 
 
@@ -86,6 +89,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.bt_video_cut://视频剪辑
                 intent = new Intent(this, VideoClipActivity.class);
                 break;
+            case R.id.bt_picture2video:
+                //图片转视频
+                intent = new Intent(this, Picture2VideoActivity.class);
+                break;
+                default:
+                    break;
             case R.id.bt_fitter://滤镜
 
                 break;

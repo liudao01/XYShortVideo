@@ -215,7 +215,7 @@ public class FFmpegUtil {
     }
 
     /**
-     * 使用ffmpeg命令行进行图片合成视频
+     * 使用ffmpeg命令行进行图片合成视频（单张图片转视频）
      *
      * @param srcFile    源文件
      * @param targetFile 目标文件(mpg格式)
@@ -224,9 +224,10 @@ public class FFmpegUtil {
     @SuppressLint("DefaultLocale")
     public static String[] pictureToVideo(String srcFile, String targetFile) {
         //-f image2：代表使用image2格式，需要放在输入文件前面
-        String combineVideo = "ffmpeg -f image2 -r 1 -i %simg#d.jpg -vcodec mpeg4 %s";
+        //String combineVideo = "ffmpeg -f image2 -r 1 -i %s -vcodec mpeg4 %s";
+        String combineVideo = "ffmpeg -f image2 -r 1 -loop 1 -i %s -vcodec mpeg4 -t 3 %s";
         combineVideo = String.format(combineVideo, srcFile, targetFile);
-        combineVideo = combineVideo.replace("#", "%");
+        //combineVideo = combineVideo.replace("#", "%");
         Log.i("VideoHandleActivity", "combineVideo=" + combineVideo);
         return combineVideo.split(" ");//以空格分割为字符串数组
     }

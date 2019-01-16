@@ -1,5 +1,6 @@
 package com.xy.www.xyvideo.base;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,6 +25,8 @@ interface IActivity {
  */
 public abstract class BaseActivity extends AppCompatActivity implements IActivity {
 
+    protected String TAG = getClass().getSimpleName();
+    protected Context context;
 
     /**
      * 是否禁止旋转屏幕
@@ -37,6 +40,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context=this;
         // 一些系统配置
         //方法拆分
 //        setContentView(getLayoutId());
