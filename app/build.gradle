@@ -37,6 +37,6 @@ dependencies {
     implementation 'com.leon:lfilepickerlibrary:1.8.0'
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+//    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     implementation project(':xylib')
 }
