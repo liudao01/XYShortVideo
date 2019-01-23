@@ -39,6 +39,7 @@ public class CameraFilterActivity extends AppCompatActivity implements View.OnCl
         XYCamera xyCamera = new XYCamera(getApplicationContext());
         xyCamera.initCamera(Camera.CameraInfo.CAMERA_FACING_BACK);
         gpuImageView.setUpCamera(xyCamera.getCamera());
+        gpuImageView.setRenderMode(GPUImageView.RENDERMODE_CONTINUOUSLY);
     }
 
     @Override
