@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-
 android {
     compileSdkVersion 28
 
@@ -47,8 +46,6 @@ android {
     }
 
 }
-
-
 //ext {
 //    bintrayRepo = 'maven'
 //    bintrayName = 'gpuimage'
@@ -71,3 +68,5 @@ android {
 //
 //apply from: 'https://gist.githubusercontent.com/wasabeef/cf14805bee509baf7461974582f17d26/raw/bintray-v1.gradle'
 //apply from: 'https://gist.githubusercontent.com/wasabeef/cf14805bee509baf7461974582f17d26/raw/install-v1.gradle'
+dependencies {
+}
