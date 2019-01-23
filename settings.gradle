@@ -1,1 +1,1 @@
-include ':app', ':xylib'
+include ':app', ':xylib', ':filterlibrary', ':landmarklibrary', ':utilslibrary'
