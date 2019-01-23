@@ -1,0 +1,73 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+
+
+
+    defaultConfig {
+        minSdkVersion 18
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        externalNativeBuild {
+            cmake {
+                cppFlags "-frtti -fexceptions"
+            }
+
+        }
+        ndk {
+            abiFilters "armeabi-v7a"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        repositories {
+            flatDir {
+                dirs 'libs'
+            }
+        }
+//        externalNativeBuild {
+//            cmake {
+//                path "CMakeLists.txt"
+//            }
+//        }
+        sourceSets {
+            main {
+                jniLibs.srcDirs = ['libs']
+                jni.srcDirs = []
+            }
+        }
+    }
+
+}
+
+
+//ext {
+//    bintrayRepo = 'maven'
+//    bintrayName = 'gpuimage'
+//    bintrayUserOrg = 'cats-oss'
+//    publishedGroupId = 'jp.co.cyberagent.android'
+//    libraryName = 'gpuimage'
+//    artifact = 'gpuimage'
+//    libraryDescription = 'Image filters for Android with OpenGL (based on GPUImage for iOS)'
+//    siteUrl = 'https://github.com/cats-oss/android-gpuimage'
+//    gitUrl = 'https://github.com/cats-oss/android-gpuimage.git'
+//    issueUrl = 'https://github.com/cats-oss/android-gpuimage/issues'
+//    libraryVersion = VERSION_NAME
+//    developerId = 'cats'
+//    developerName = 'CATS'
+//    developerEmail = 'dadadada.chop@gmail.com'
+//    licenseName = 'The Apache Software License, Version 2.0'
+//    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//    allLicenses = ["Apache-2.0"]
+//}
+//
+//apply from: 'https://gist.githubusercontent.com/wasabeef/cf14805bee509baf7461974582f17d26/raw/bintray-v1.gradle'
+//apply from: 'https://gist.githubusercontent.com/wasabeef/cf14805bee509baf7461974582f17d26/raw/install-v1.gradle'
