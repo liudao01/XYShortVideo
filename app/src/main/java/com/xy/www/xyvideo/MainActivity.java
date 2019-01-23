@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.xy.www.xylib.XYUtil;
+import com.xy.www.xyvideo.activity.CameraFilterActivity;
 import com.xy.www.xyvideo.activity.CameraPerActivity;
 import com.xy.www.xyvideo.activity.Picture2VideoActivity;
 import com.xy.www.xyvideo.activity.VideoClipActivity;
@@ -97,6 +98,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     break;
             case R.id.bt_fitter://滤镜
 
+                intent = new Intent(this, CameraFilterActivity.class);
                 break;
             case R.id.bt_beautiful_face://美颜
 

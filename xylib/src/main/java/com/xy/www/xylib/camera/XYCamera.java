@@ -39,6 +39,26 @@ public class XYCamera {
         setCameraParm(cameraId);
     }
 
+    public void initCamera(int cameraId){
+            camera = Camera.open(cameraId);
+//            camera.setPreviewTexture(surfaceTexture);
+            Camera.Parameters parameters = camera.getParameters();
+
+            parameters.setFlashMode("off");//闪光灯
+            parameters.setPreviewFormat(ImageFormat.NV21);
+
+            Camera.Size size = getFitSize(parameters.getSupportedPictureSizes());
+            parameters.setPictureSize(size.width, size.height);
+
+            size = getFitSize(parameters.getSupportedPreviewSizes());
+            parameters.setPreviewSize(size.width, size.height);
+
+            camera.setParameters(parameters);
+            camera.startPreview();
+
+
+    }
+
     private void setCameraParm(int cameraId) {
         try {
             camera = Camera.open(cameraId);
@@ -78,6 +98,10 @@ public class XYCamera {
         }
         setCameraParm(cameraId);
 
+    }
+
+    public  Camera getCamera(){
+        return camera;
     }
 
     /**

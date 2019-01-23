@@ -32,11 +32,11 @@ android {
                 dirs 'libs'
             }
         }
-//        externalNativeBuild {
-//            cmake {
-//                path "CMakeLists.txt"
-//            }
-//        }
+        externalNativeBuild {
+            cmake {
+                path "CMakeLists.txt"
+            }
+        }
         sourceSets {
             main {
                 jniLibs.srcDirs = ['libs']
