@@ -7,6 +7,7 @@ import android.opengl.GLES20;
 
 import com.xy.www.xylib.R;
 import com.xy.www.xylib.egl.XYShaderUtil;
+import com.xy.www.xylib.util.Constants;
 import com.xy.www.xylib.util.LogUtil;
 
 import java.nio.ByteBuffer;
@@ -65,8 +66,8 @@ public class XYCameraFboRender {
     public XYCameraFboRender(Context context) {
         this.context = context;
         //水印
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_1);
-//        bitmap = XYShaderUtil.createTextImage("Lml水印搞起了 FBO的", 50, "#ffff00", "#00000000", 0);//生成图片
+//        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_1);
+        bitmap = XYShaderUtil.getCommon(Constants.addMarkText);//添加水印
         initData();
 
     }
@@ -200,42 +201,6 @@ public class XYCameraFboRender {
         if (OpenMark) {
 
             if(XYCameraView.isDyNamicMark){
-                LogUtil.d("动态的");
-                //求出宽高比例
-                r = 1.0f * bitmap.getWidth() / bitmap.getHeight();
-//                //高设置成0.1
-                float w = r * 0.5f;
-//                //在opengl 坐标系中.0.8f是自己设置的起始点, 这里求出左下角X轴
-                vertexData[8] = 0.7f - w;
-                vertexData[9] = -0.7f;//左下角Y轴  这样左下角就求出来了
-                //同理
-                vertexData[10] = 0.7f;
-                vertexData[11] = -0.7f;
-
-                vertexData[12] = 0.7f - w;
-                vertexData[13] = -0.6f;
-
-                vertexData[14] = 0.7f;
-                vertexData[15] = -0.6f;
-
-
-                vertexBuffer = ByteBuffer.allocateDirect(vertexData.length * 4)
-                        .order(ByteOrder.nativeOrder())
-                        .asFloatBuffer()
-                        .put(vertexData);
-                vertexBuffer.position(0);
-
-                fragmentBuffer = ByteBuffer.allocateDirect(fragmentData.length * 4)
-                        .order(ByteOrder.nativeOrder())
-                        .asFloatBuffer()
-                        .put(fragmentData);
-                fragmentBuffer.position(0);
-
-//                GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, 0, vertexData.length * 4, vertexBuffer);
-//                GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, vertexData.length * 4, fragmentData.length * 4, fragmentBuffer);
-
-                GLES20.glUniformMatrix2fv(8, 1, false, vertexBuffer);
-//                GLES20.glUniformMatrix2fv(GLES20.GL_ARRAY_BUFFER, vertexData.length * 4, false, fragmentBuffer);
             }
 //            LogUtil.d("onDraw 调用  右下角小图  bitmapTextureid = " + bitmapTextureid);
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, bitmapTextureid);

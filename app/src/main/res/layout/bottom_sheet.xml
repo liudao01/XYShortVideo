@@ -6,19 +6,41 @@
     android:background="@color/colorgary_haf"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
     <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/colorgary_haf"
         android:gravity="center"
-        android:text="贴图选择" />
+        android:text="取消" />
+    <TextView
+        android:id="@+id/tv_confirm"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorgary_haf"
+        android:gravity="center"
+        android:text="确定选择" />
+    </LinearLayout>
 
+    <EditText
+        android:id="@+id/et_mark_content"
+        android:textSize="12dp"
+        android:hint="请输入水印内容"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="260dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="内容"
         android:textColor="@android:color/white" />
 
 </LinearLayout>

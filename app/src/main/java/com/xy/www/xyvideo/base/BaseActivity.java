@@ -1,9 +1,13 @@
 package com.xy.www.xyvideo.base;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+
+import com.xy.www.xyvideo.util.ProgressDlgUtil;
 
 
 interface IActivity {
@@ -21,6 +25,8 @@ interface IActivity {
  */
 public abstract class BaseActivity extends AppCompatActivity implements IActivity {
 
+    protected String TAG = getClass().getSimpleName();
+    protected Context context;
 
     /**
      * 是否禁止旋转屏幕
@@ -34,6 +40,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context=this;
         // 一些系统配置
         //方法拆分
 //        setContentView(getLayoutId());
@@ -60,5 +67,42 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         Intent intent = new Intent(this, clazz);
         startActivity(intent);
     }
+    protected void readyGo(Class<?> clazz,String type) {
+        Intent intent = new Intent(this, clazz);
+        intent.putExtra("type", type);
+        startActivity(intent);
+    }
+
+    protected String getFrome() {
+        return getIntent().getStringExtra("type");
+    }
+
+    private AlertDialog alertDialog;
+
+    public void showLoadingDialog() {
+//        alertDialog = new AlertDialog.Builder(this).create();
+//        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable());
+//        alertDialog.setCancelable(false);
+//        alertDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+//            @Override
+//            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+//                if (keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_BACK)
+//                    return true;
+//                return false;
+//            }
+//        });
+//        alertDialog.show();
+//        alertDialog.setContentView(R.layout.dialog_view);
+//        alertDialog.setCanceledOnTouchOutside(false);
+        ProgressDlgUtil.showProgressDlg("正在处理中...", this);
+    }
+
+    public void dismissLoadingDialog() {
+//        if (null != alertDialog && alertDialog.isShowing()) {
+//            alertDialog.dismiss();
+//        }
+        ProgressDlgUtil.stopProgressDlg();
+    }
+
 
 }
