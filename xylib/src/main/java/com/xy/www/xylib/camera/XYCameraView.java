@@ -48,6 +48,7 @@ public class XYCameraView extends XYEGLSurfaceView {
 
 
 
+
     public XYCameraView(Context context) {
         this(context, null);
     }
