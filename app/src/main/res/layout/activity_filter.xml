@@ -28,6 +28,7 @@
 
         <Button
             android:text="录制"
+            android:visibility="gone"
             android:id="@+id/bt_record"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

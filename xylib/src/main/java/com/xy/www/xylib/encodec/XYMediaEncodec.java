@@ -16,6 +16,5 @@ public class XYMediaEncodec extends XYBaseMediaEncoder {
         xyEncodecRender = new XYEncodecRender(context, textureId);
         setRender(xyEncodecRender);
         setmRenderMode(XYBaseMediaEncoder.RENDERMODE_CONTINUOUSLY);
-
     }
 }
