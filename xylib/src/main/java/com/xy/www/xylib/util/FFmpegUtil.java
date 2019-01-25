@@ -181,7 +181,14 @@ public class FFmpegUtil {
 
 
     public static String[] rotate(String srcFile, String targetFile, int rotate) {
-        String rotateVideoCmd = "ffmpeg -i %s -metadata:s:v rotate=\"180\" -codec copy %s ";
+        /**
+         * 垂直旋转： Vertical rotation: ffmpeg -i INPUT -vf vflip -c:a copy OUTPUT
+         * 水平旋转 Horizontal rotation: ffmpeg -i INPUT -vf hflip -c:a copy OUTPUT
+         * 顺时针旋转90度 90 degrees clockwise rotation: ffmpeg -i INPUT -vf transpose=1 -c:a copy OUTPUT
+         * 逆时针旋转90度 90 degrees counterclockwise rotation: ffmpeg -i INPUT -vf transpose=2 -c:a copy OUTPUT
+         */
+        String rotateVideoCmd = "ffmpeg -i %s -vf transpose=1 -c:a copy %s";
+//        String rotateVideoCmd = "ffmpeg -i %s -metadata:s:v rotate=\"180\" -codec copy %s ";
         rotateVideoCmd = String.format(rotateVideoCmd, srcFile, targetFile);
         LogUtil.d("执行的命令 = " + rotateVideoCmd);
         return rotateVideoCmd.split(" ");//以空格分割为字符串数组
