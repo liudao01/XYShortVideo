@@ -104,6 +104,7 @@ public class CameraPerActivity extends BaseActivity implements View.OnClickListe
                 btBackgroundMusic.setVisibility(View.VISIBLE);
                 break;
             case 3:
+                btPlay.setText("合并视频播放");
                 btBreakpoint.setVisibility(View.VISIBLE);
                 break;
         }
