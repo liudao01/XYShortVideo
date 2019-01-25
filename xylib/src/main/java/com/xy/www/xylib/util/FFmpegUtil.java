@@ -197,9 +197,10 @@ public class FFmpegUtil {
          * 2 = 90CounterClockwise
          * 3 = 90Clockwise and Vertical Flip
          */
-        String rotateVideoCmd = "ffmpeg -i %s -vf transpose=1 -c:a copy %s";
-//        String rotateVideoCmd = "ffmpeg -i %s -metadata:s:v rotate=\"180\" -codec copy %s ";
-        rotateVideoCmd = String.format(rotateVideoCmd, srcFile, targetFile);
+//        String rotateVideoCmd = "ffmpeg -vfilters rotate = 90 -i %s %s";
+        String rotateVideoCmd = "ffmpeg -i %s -codec copy -map_metadata 0 -metadata:s:v:0 rotate=%s %s";
+//        String rotateVideoCmd = "ffmpeg -i %s -vf transpose=1 -c:a copy %s";
+        rotateVideoCmd = String.format(rotateVideoCmd, srcFile, String.valueOf(rotate), targetFile);
         LogUtil.d("执行的命令 = " + rotateVideoCmd);
         return rotateVideoCmd.split(" ");//以空格分割为字符串数组
     }

@@ -204,7 +204,7 @@ public class VideoClipActivity extends BaseActivity implements View.OnClickListe
     }
     private void rotateVideo() {
 
-        XYUtil.getInstance().rotateVideo(url,Constants.rotateFile, 0,new OnHandleListener() {
+        XYUtil.getInstance().rotateVideo(url,Constants.rotateFile, 90,new OnHandleListener() {
             @Override
             public void onBegin() {
                 runOnUiThread(new Runnable() {
