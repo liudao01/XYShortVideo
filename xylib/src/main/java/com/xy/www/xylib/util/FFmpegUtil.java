@@ -186,6 +186,16 @@ public class FFmpegUtil {
          * 水平旋转 Horizontal rotation: ffmpeg -i INPUT -vf hflip -c:a copy OUTPUT
          * 顺时针旋转90度 90 degrees clockwise rotation: ffmpeg -i INPUT -vf transpose=1 -c:a copy OUTPUT
          * 逆时针旋转90度 90 degrees counterclockwise rotation: ffmpeg -i INPUT -vf transpose=2 -c:a copy OUTPUT
+         *
+         * Rotate 90 clockwise:
+         *
+         * ffmpeg -i in.mov -vf "transpose=1" out.mov
+         * For the transpose parameter you can pass:
+         *
+         * 0 = 90CounterCLockwise and Vertical Flip (default)
+         * 1 = 90Clockwise
+         * 2 = 90CounterClockwise
+         * 3 = 90Clockwise and Vertical Flip
          */
         String rotateVideoCmd = "ffmpeg -i %s -vf transpose=1 -c:a copy %s";
 //        String rotateVideoCmd = "ffmpeg -i %s -metadata:s:v rotate=\"180\" -codec copy %s ";
