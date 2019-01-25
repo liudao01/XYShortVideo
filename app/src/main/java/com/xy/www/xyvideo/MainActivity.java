@@ -36,7 +36,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
-        //两个日历权限和一个数据读写权限
+        //权限
         String[] permissions = new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
 //        PermissionsUtils.showSystemSetting = false;//是否支持显示系统设置权限设置窗口跳转
         //这里的this不是上下文，是Activity对象！
