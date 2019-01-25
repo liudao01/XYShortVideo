@@ -199,8 +199,8 @@ public class FFmpegUtil {
          */
 //        String rotateVideoCmd = "ffmpeg -i %s -c copy -metadata:s:v:0 rotate=0 %s";
         //标记模式
-        String rotateVideoCmd = "ffmpeg -i %s -codec copy -metadata:s:v:0 rotate=%s %s";
-//        String rotateVideoCmd = "ffmpeg -i %s -codec copy -map_metadata 0 -metadata:s:v:0 rotate=%s %s";
+//        String rotateVideoCmd = "ffmpeg -i %s -codec copy -metadata:s:v:0 rotate=%s %s";
+        String rotateVideoCmd = "ffmpeg -i %s -codec copy -map_metadata 0 -metadata:s:v:0 rotate=%s %s";
         //重新编码
 //        String rotateVideoCmd = "ffmpeg -i %s -vf transpose=1 -c:a copy %s";
 //        rotateVideoCmd = String.format(rotateVideoCmd, srcFile,  targetFile);
