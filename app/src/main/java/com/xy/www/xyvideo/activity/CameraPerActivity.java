@@ -16,6 +16,7 @@ import com.xy.www.xylib.util.LogUtil;
 import com.xy.www.xyvideo.R;
 import com.xy.www.xyvideo.base.BaseActivity;
 import com.xy.www.xyvideo.util.ProgressDlgUtil;
+import com.xy.www.xyvideo.util.ToastUtils;
 
 /**
  * 录制时添加水印,添加背景音乐.断点录制
@@ -103,6 +104,7 @@ public class CameraPerActivity extends BaseActivity implements View.OnClickListe
                 btBackgroundMusic.setVisibility(View.VISIBLE);
                 break;
             case 3:
+                btPlay.setText("合并视频播放");
                 btBreakpoint.setVisibility(View.VISIBLE);
                 break;
         }
@@ -186,7 +188,7 @@ public class CameraPerActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_breakpoint://断点录制
                 if (count == 2 && !xyUtil.isStart) {
-
+                    ToastUtils.showToast(context,"当前只未开始或者录制超过两个视频");
                     //调用合成
 
                     return;

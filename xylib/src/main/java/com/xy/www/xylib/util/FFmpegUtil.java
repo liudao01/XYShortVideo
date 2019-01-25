@@ -146,7 +146,7 @@ public class FFmpegUtil {
     public static String[] cutVideo(String srcFile, int startTime, int duration, String targetFile) {
         String cutVideoCmd = "ffmpeg -i %s -ss %d -t %d -acodec copy -vcodec copy %s";
         cutVideoCmd = String.format(cutVideoCmd, srcFile, startTime, duration, targetFile);
-        LogUtil.d("裁剪命令 = "+cutVideoCmd);
+        LogUtil.d("裁剪命令 = " + cutVideoCmd);
         return cutVideoCmd.split(" ");//以空格分割为字符串数组
     }
 
@@ -177,6 +177,36 @@ public class FFmpegUtil {
         waterMarkCmd = String.format(waterMarkCmd, srcFile, waterMark, targetFile);
         LogUtil.d("执行的命令 = " + waterMarkCmd);
         return waterMarkCmd.split(" ");//以空格分割为字符串数组
+    }
+
+
+    public static String[] rotate(String srcFile, String targetFile, int rotate) {
+        /**
+         * 垂直旋转： Vertical rotation: ffmpeg -i INPUT -vf vflip -c:a copy OUTPUT
+         * 水平旋转 Horizontal rotation: ffmpeg -i INPUT -vf hflip -c:a copy OUTPUT
+         * 顺时针旋转90度 90 degrees clockwise rotation: ffmpeg -i INPUT -vf transpose=1 -c:a copy OUTPUT
+         * 逆时针旋转90度 90 degrees counterclockwise rotation: ffmpeg -i INPUT -vf transpose=2 -c:a copy OUTPUT
+         *
+         * Rotate 90 clockwise:
+         *
+         * ffmpeg -i in.mov -vf "transpose=1" out.mov
+         * For the transpose parameter you can pass:
+         *
+         * 0 = 90CounterCLockwise and Vertical Flip (default)
+         * 1 = 90Clockwise
+         * 2 = 90CounterClockwise
+         * 3 = 90Clockwise and Vertical Flip
+         */
+//        String rotateVideoCmd = "ffmpeg -i %s -c copy -metadata:s:v:0 rotate=0 %s";
+        //标记模式
+//        String rotateVideoCmd = "ffmpeg -i %s -codec copy -metadata:s:v:0 rotate=%s %s";
+        String rotateVideoCmd = "ffmpeg -i %s -codec copy -map_metadata 0 -metadata:s:v:0 rotate=%s %s";
+        //重新编码
+//        String rotateVideoCmd = "ffmpeg -i %s -vf transpose=1 -c:a copy %s";
+//        rotateVideoCmd = String.format(rotateVideoCmd, srcFile,  targetFile);
+        rotateVideoCmd = String.format(rotateVideoCmd, srcFile, String.valueOf(rotate), targetFile);
+        LogUtil.d("执行的命令 = " + rotateVideoCmd);
+        return rotateVideoCmd.split(" ");//以空格分割为字符串数组
     }
 
     /**
@@ -313,21 +343,22 @@ public class FFmpegUtil {
         String toImage = "ffmpeg -i %s -ss %s -t %s -r %s %s";
         toImage = String.format(Locale.CHINESE, toImage, inputFile, startTime, duration, frameRate, targetFile);
         toImage = toImage + "%3d.jpg";
-        LogUtil.d("命令 = "+toImage);
+        LogUtil.d("命令 = " + toImage);
         return toImage.split(" ");
     }
 
 
     /**
      * 合并视频
+     *
      * @param file1
      * @param outputFile
      * @return
      */
-    public static String[] mergeVideo(File file1,  String outputFile) {
+    public static String[] mergeVideo(File file1, String outputFile) {
         String absolutePath = file1.getAbsolutePath();
         String mergeVideo = "ffmpeg -f concat -i %s -c copy %s";
-        LogUtil.d("合并的命令 = "+mergeVideo);
+        LogUtil.d("合并的命令 = " + mergeVideo);
         mergeVideo = String.format(Locale.CHINESE, mergeVideo, absolutePath, outputFile);
         return mergeVideo.split(" ");
     }

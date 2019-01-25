@@ -130,7 +130,7 @@ public class XYCameraFboRender {
 
     public void onCreate() {
 
-        //用于透明
+        //用于透明   使用OpenGL的混合功能
         GLES20.glEnable(GLES20.GL_BLEND);
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
         //===结束

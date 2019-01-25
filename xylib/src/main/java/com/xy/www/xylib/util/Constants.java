@@ -13,6 +13,7 @@ public class Constants {
 
     public static final String rootDir = Environment.getExternalStorageDirectory().getAbsolutePath();
     public static final String fileDir = rootDir + "/test_live_recoder.mp4";
+    public static final String rotateFile = rootDir + "/rotate_test_live_recoder.mp4";
     public static final String breakPointfile1 = rootDir + "/test_live_recoder1.mp4";
     public static final String breakPointfile2 = rootDir + "/test_live_recoder2.mp4";
     public static final String shortVideo = rootDir + "/MyshortVideo"+File.separator;

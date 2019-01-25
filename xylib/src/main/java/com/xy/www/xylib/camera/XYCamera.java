@@ -39,6 +39,49 @@ public class XYCamera {
         setCameraParm(cameraId);
     }
 
+    public void initCamera(int cameraId) {
+        camera = Camera.open(cameraId);
+        try {
+            camera.setPreviewTexture(surfaceTexture);
+            Camera.Parameters parameters = camera.getParameters();
+
+            parameters.setFlashMode("off");//闪光灯
+            parameters.setPreviewFormat(ImageFormat.NV21);
+
+            Camera.Size size = getFitSize(parameters.getSupportedPictureSizes());
+            parameters.setPictureSize(size.width, size.height);
+
+            size = getFitSize(parameters.getSupportedPreviewSizes());
+            parameters.setPreviewSize(size.width, size.height);
+
+            camera.setParameters(parameters);
+            camera.startPreview();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void initFilterCamera(int cameraId) {
+        camera = Camera.open(cameraId);
+//            camera.setPreviewTexture(surfaceTexture);
+        Camera.Parameters parameters = camera.getParameters();
+
+        parameters.setFlashMode("off");//闪光灯
+        parameters.setPreviewFormat(ImageFormat.NV21);
+
+        Camera.Size size = getFitSize(parameters.getSupportedPictureSizes());
+        parameters.setPictureSize(size.width, size.height);
+
+        size = getFitSize(parameters.getSupportedPreviewSizes());
+        parameters.setPreviewSize(size.width, size.height);
+
+        camera.setParameters(parameters);
+        camera.startPreview();
+
+
+    }
+
     private void setCameraParm(int cameraId) {
         try {
             camera = Camera.open(cameraId);
@@ -80,8 +123,13 @@ public class XYCamera {
 
     }
 
+    public Camera getCamera() {
+        return camera;
+    }
+
     /**
      * 动态的设置宽高
+     *
      * @param sizes
      * @return
      */

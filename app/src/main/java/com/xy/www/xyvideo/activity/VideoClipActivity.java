@@ -38,6 +38,9 @@ public class VideoClipActivity extends BaseActivity implements View.OnClickListe
     private TextView tvSeekBarProgress;
     private int currentProgress = 0;
     private Button btVideoToImage;
+    private Button btRotateVideo;
+
+    private int rotate = 90;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,8 @@ public class VideoClipActivity extends BaseActivity implements View.OnClickListe
         seekBarCutVideo = findViewById(R.id.seekBar_cut_video);
         tvSeekBarProgress = findViewById(R.id.tv_seekBar_progress);
         btVideoToImage = findViewById(R.id.bt_video_to_image);
-
+        btRotateVideo = findViewById(R.id.bt_rotate_video);
+        btRotateVideo.setOnClickListener(this);
         videoViewClip.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) { //监听视频准备好
@@ -159,6 +163,13 @@ public class VideoClipActivity extends BaseActivity implements View.OnClickListe
             case R.id.bt_video_to_image:
                 videoToImage();
                 break;
+            case R.id.bt_rotate_video:
+                if (rotate > 360) {
+                    rotate = 90;
+                }
+                rotateVideo();
+                rotate+=90;
+                break;
         }
     }
 
@@ -189,6 +200,37 @@ public class VideoClipActivity extends BaseActivity implements View.OnClickListe
 
                             //视频转图片
                             handlePic();
+                        }
+
+                    }
+                });
+
+            }
+        });
+    }
+    private void rotateVideo() {
+
+        XYUtil.getInstance().rotateVideo(url,Constants.rotateFile, rotate,new OnHandleListener() {
+            @Override
+            public void onBegin() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showLoadingDialog();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onEnd(final int result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dismissLoadingDialog();
+                        if (Constants.handleSuccess == result) {
+
+                            LogUtil.d("旋转成功");
                         }
 
                     }

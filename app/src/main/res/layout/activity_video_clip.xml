@@ -29,14 +29,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="裁剪文件" />
-
-        <TextView
-            android:id="@+id/tv_file_dir"
+        <Button
+            android:id="@+id/bt_rotate_video"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="旋转文件" />
+
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_file_dir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <SeekBar
         android:id="@+id/seekBar_cut_video"
         style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
