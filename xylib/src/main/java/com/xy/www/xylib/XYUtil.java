@@ -198,6 +198,8 @@ public class XYUtil {
         execute(strings, onHandleListener);
     }
 
+
+
     /**
      * 使用ffmpeg命令行进行视频剪切
      *
@@ -209,6 +211,19 @@ public class XYUtil {
      */
     public void cutVideo(String srcFile, int startTime, int duration, String targetFile,OnHandleListener onHandleListener) {
         String[] strings = FFmpegUtil.cutVideo(srcFile, startTime, duration, targetFile);
+        execute(strings, onHandleListener);
+
+    }
+
+    /**
+     * 旋转视频
+     * @param srcFile
+     * @param targetFile
+     * @param rotate
+     * @param onHandleListener
+     */
+    public void rotateVideo(String srcFile, String targetFile,int rotate,OnHandleListener onHandleListener) {
+        String[] strings = FFmpegUtil.rotate(srcFile, targetFile,rotate);
         execute(strings, onHandleListener);
 
     }

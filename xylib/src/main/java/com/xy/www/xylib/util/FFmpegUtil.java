@@ -146,7 +146,7 @@ public class FFmpegUtil {
     public static String[] cutVideo(String srcFile, int startTime, int duration, String targetFile) {
         String cutVideoCmd = "ffmpeg -i %s -ss %d -t %d -acodec copy -vcodec copy %s";
         cutVideoCmd = String.format(cutVideoCmd, srcFile, startTime, duration, targetFile);
-        LogUtil.d("裁剪命令 = "+cutVideoCmd);
+        LogUtil.d("裁剪命令 = " + cutVideoCmd);
         return cutVideoCmd.split(" ");//以空格分割为字符串数组
     }
 
@@ -177,6 +177,14 @@ public class FFmpegUtil {
         waterMarkCmd = String.format(waterMarkCmd, srcFile, waterMark, targetFile);
         LogUtil.d("执行的命令 = " + waterMarkCmd);
         return waterMarkCmd.split(" ");//以空格分割为字符串数组
+    }
+
+
+    public static String[] rotate(String srcFile, String targetFile, int rotate) {
+        String rotateVideoCmd = "ffmpeg -i %s -metadata:s:v rotate=\"180\" -codec copy %s ";
+        rotateVideoCmd = String.format(rotateVideoCmd, srcFile, targetFile);
+        LogUtil.d("执行的命令 = " + rotateVideoCmd);
+        return rotateVideoCmd.split(" ");//以空格分割为字符串数组
     }
 
     /**
@@ -313,21 +321,22 @@ public class FFmpegUtil {
         String toImage = "ffmpeg -i %s -ss %s -t %s -r %s %s";
         toImage = String.format(Locale.CHINESE, toImage, inputFile, startTime, duration, frameRate, targetFile);
         toImage = toImage + "%3d.jpg";
-        LogUtil.d("命令 = "+toImage);
+        LogUtil.d("命令 = " + toImage);
         return toImage.split(" ");
     }
 
 
     /**
      * 合并视频
+     *
      * @param file1
      * @param outputFile
      * @return
      */
-    public static String[] mergeVideo(File file1,  String outputFile) {
+    public static String[] mergeVideo(File file1, String outputFile) {
         String absolutePath = file1.getAbsolutePath();
         String mergeVideo = "ffmpeg -f concat -i %s -c copy %s";
-        LogUtil.d("合并的命令 = "+mergeVideo);
+        LogUtil.d("合并的命令 = " + mergeVideo);
         mergeVideo = String.format(Locale.CHINESE, mergeVideo, absolutePath, outputFile);
         return mergeVideo.split(" ");
     }

@@ -41,7 +41,8 @@
         <activity
             android:name=".activity.Picture2VideoActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.CameraFilterActivity"></activity>
+        <activity android:name=".activity.CameraFilterActivity" />
+        <activity android:name=".activity.BeautifyActivity"></activity>
     </application>
 
 </manifest>

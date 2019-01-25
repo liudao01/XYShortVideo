@@ -14,6 +14,7 @@ import com.xy.www.xyvideo.R;
 
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageColorBlendFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
 
 /**
  * 相机滤镜
@@ -24,7 +25,7 @@ public class CameraFilterActivity extends AppCompatActivity implements View.OnCl
     private Button btSelectFilter;
     private Button btRecord;
     private GPUImageView gpuImageView;
-    GPUImageColorBlendFilter gpuImageColorBlendFilter = null;
+    GPUImageFilter gpuImageColorBlendFilter = null;
     //摄像头
     private int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
 
