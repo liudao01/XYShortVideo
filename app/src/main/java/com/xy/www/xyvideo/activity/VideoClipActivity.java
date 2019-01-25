@@ -40,6 +40,8 @@ public class VideoClipActivity extends BaseActivity implements View.OnClickListe
     private Button btVideoToImage;
     private Button btRotateVideo;
 
+    private int rotate = 90;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,7 +164,11 @@ public class VideoClipActivity extends BaseActivity implements View.OnClickListe
                 videoToImage();
                 break;
             case R.id.bt_rotate_video:
+                if (rotate > 360) {
+                    rotate = 90;
+                }
                 rotateVideo();
+                rotate+=90;
                 break;
         }
     }
@@ -204,7 +210,7 @@ public class VideoClipActivity extends BaseActivity implements View.OnClickListe
     }
     private void rotateVideo() {
 
-        XYUtil.getInstance().rotateVideo(url,Constants.rotateFile, 90,new OnHandleListener() {
+        XYUtil.getInstance().rotateVideo(url,Constants.rotateFile, rotate,new OnHandleListener() {
             @Override
             public void onBegin() {
                 runOnUiThread(new Runnable() {
