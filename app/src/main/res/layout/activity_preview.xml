@@ -15,6 +15,17 @@
         android:text="使用ffmpeg添加水印"
         android:textSize="10dp" />
 
+    <Button
+        android:id="@+id/bt_addBackMusic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvInstruction"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="0dp"
+        android:text="使用ffmpeg背景音乐"
+        android:textSize="10dp" />
+
     <VideoView
         android:id="@+id/videoView"
         android:layout_width="match_parent"

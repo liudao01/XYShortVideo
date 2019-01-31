@@ -3,13 +3,11 @@ package com.xy.www.xyvideo.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.xy.www.xyvideo.R;
-
 public class BeautifyActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_beauify);
+//        setContentView(R.layout.activity_beauify);
     }
 }
