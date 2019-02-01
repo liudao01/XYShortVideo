@@ -221,4 +221,8 @@ public class XYCameraFboRender {
         }
     }
 
+    public void onChangeRender(){
+
+    }
+
 }

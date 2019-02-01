@@ -195,4 +195,9 @@ public class XYEncodecRender implements XYEGLSurfaceView.XYGLRender  {
         isAddMark = XYCameraView.isAddMark;
     }
 
+    @Override
+    public void changeRender() {
+
+    }
+
 }

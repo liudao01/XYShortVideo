@@ -273,6 +273,14 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
 
     }
 
+    @Override
+    public void changeRender() {
+
+    }
+
+    public void setCurrentFilter(){
+        
+    }
 
     @Override
     public void onFrameAvailable(SurfaceTexture surfaceTexture) {

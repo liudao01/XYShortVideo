@@ -42,6 +42,7 @@ public class CameraPerActivity extends BaseActivity implements View.OnClickListe
     private Context mContext;
 
     private int count = 0;//计数器 第一次录制还是第二次
+    private Button btSelectFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class CameraPerActivity extends BaseActivity implements View.OnClickListe
         cbAddDynamicMark = findViewById(R.id.cb_add_dynamic_mark);
 
         cbAddDynamicMark.setVisibility(View.GONE);
+        btSelectFilter = findViewById(R.id.bt_select_filter);
 
         cbAddDynamicMark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -95,6 +97,7 @@ public class CameraPerActivity extends BaseActivity implements View.OnClickListe
         btBackgroundMusic.setOnClickListener(this);
         btAddMarkContent.setOnClickListener(this);
         btBreakpoint.setOnClickListener(this);
+        btSelectFilter.setOnClickListener(this);
 
         switch (type) {
             case 1:
@@ -188,7 +191,7 @@ public class CameraPerActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_breakpoint://断点录制
                 if (count == 2 && !xyUtil.isStart) {
-                    ToastUtils.showToast(context,"当前只未开始或者录制超过两个视频");
+                    ToastUtils.showToast(context, "当前只未开始或者录制超过两个视频");
                     //调用合成
 
                     return;
@@ -214,6 +217,10 @@ public class CameraPerActivity extends BaseActivity implements View.OnClickListe
                     xyUtil.startRecoder(this, xycamaryview, url);
                     count++;
                 }
+
+
+                break;
+            case R.id.bt_select_filter://选择滤镜
 
 
                 break;

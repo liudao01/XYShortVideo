@@ -111,6 +111,8 @@ public abstract class XYEGLSurfaceView extends SurfaceView implements SurfaceHol
         void onSurfaceChanged(int width, int height);
 
         void onDrawFrame();
+
+        void changeRender();
     }
 
     static class XYEGLThread extends Thread {

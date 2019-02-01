@@ -47,8 +47,6 @@ public class XYCameraView extends XYEGLSurfaceView {
     private float mPreviousY;
 
 
-
-
     public XYCameraView(Context context) {
         this(context, null);
     }

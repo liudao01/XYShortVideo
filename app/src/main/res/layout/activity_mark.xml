@@ -52,6 +52,14 @@
             android:text="断点录制"
             android:textSize="10dp"
             android:visibility="gone" />
+        <Button
+            android:id="@+id/bt_select_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="选择滤镜"
+            android:textSize="10dp"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/bt_addMark_content"
@@ -68,6 +76,7 @@
             android:layout_height="wrap_content"
             android:text="是否录制时添加水印"
             android:textColor="@color/colorAccent" />
+
 
         <CheckBox
             android:id="@+id/cb_add_dynamic_mark"
