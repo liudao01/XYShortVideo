@@ -19,42 +19,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="录制时添加水印/录制完成添加水印" />
+        android:text="录制时添加水印/录制完成添加水印(OpenGl)" />
 
     <Button
         android:id="@+id/bt_addMusic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="录制时添加背景音乐" />
+        android:text="录制时添加背景音乐(OpenGl)" />
 
     <Button
         android:id="@+id/bt_breakpoint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="断点录制" />
+        android:text="断点录制(FFMPEG)" />
 
     <Button
         android:id="@+id/bt_video_convert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="本地转码" />
+        android:text="本地转码(FFMPEG)" />
 
     <Button
         android:id="@+id/bt_video_cut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="视频剪辑(抽帧 分割 旋转)" />
+        android:text="视频剪辑(抽帧 分割 旋转)(FFMPEG)" />
 
     <Button
         android:id="@+id/bt_picture2video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="图片转视频" />
+        android:text="图片转视频(FFMPEG)" />
 
     <Button
         android:id="@+id/bt_fitter"

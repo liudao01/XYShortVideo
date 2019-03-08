@@ -9,7 +9,7 @@ import android.opengl.Matrix;
 
 import com.xy.www.xylib.R;
 import com.xy.www.xylib.egl.XYEGLSurfaceView;
-import com.xy.www.xylib.egl.XYShaderUtil;
+import com.xy.www.xylib.util.XYShaderUtil;
 import com.xy.www.xylib.util.DisplayUtil;
 import com.xy.www.xylib.util.LogUtil;
 
@@ -39,8 +39,6 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
             1f, 1f,
             0f, 0f,
             1f, 0f
-
-
     };
     public volatile float moveX;
     public volatile float moveY;

@@ -6,12 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".activity.CameraFilterActivity">
 
-    <!--<jp.co.cyberagent.android.gpuimage.GPUImageView-->
-        <!--android:id="@+id/gpuImageView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--app:gpuimage_show_loading="false"-->
-        <!--app:gpuimage_surface_type="texture_view" /> &lt;!&ndash; surface_view or texture_view &ndash;&gt;-->
 
     <LinearLayout
         android:id="@+id/ll_bottom"

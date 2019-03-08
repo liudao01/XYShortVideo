@@ -20,8 +20,6 @@ public class CameraFilterActivity extends AppCompatActivity implements View.OnCl
     private LinearLayout llBottom;
     private Button btSelectFilter;
     private Button btRecord;
-//    private GPUImageView gpuImageView;
-//    GPUImageFilter gpuImageColorBlendFilter = null;
     //摄像头
     private int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
 
@@ -38,10 +36,8 @@ public class CameraFilterActivity extends AppCompatActivity implements View.OnCl
         btRecord = findViewById(R.id.bt_record);
         btSelectFilter.setOnClickListener(this);
         btRecord.setOnClickListener(this);
-//        gpuImageView = findViewById(R.id.gpuImageView);
         XYCamera xyCamera = new XYCamera(getApplicationContext());
         xyCamera.initFilterCamera(Camera.CameraInfo.CAMERA_FACING_BACK);
-//        gpuImageView.setRenderMode(GPUImageView.RENDERMODE_CONTINUOUSLY);
 
         int angle = ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
 //        gpuImageView.setRatio(Ra);
@@ -52,7 +48,6 @@ public class CameraFilterActivity extends AppCompatActivity implements View.OnCl
             result = (90 - angle) % 360;
         }
 
-//        gpuImageView.setUpCamera(xyCamera.getCamera(), result, false, false);
     }
 
     @Override
@@ -62,10 +57,6 @@ public class CameraFilterActivity extends AppCompatActivity implements View.OnCl
 
                 break;
             case R.id.bt_select_filter://切换滤镜
-//                if (gpuImageColorBlendFilter == null) {
-//                    gpuImageColorBlendFilter = new GPUImageColorBlendFilter();
-//                }
-//                gpuImageView.setFilter(gpuImageColorBlendFilter);
                 break;
         }
     }

@@ -7,7 +7,7 @@ import android.opengl.GLES20;
 import com.xy.www.xylib.R;
 import com.xy.www.xylib.camera.XYCameraView;
 import com.xy.www.xylib.egl.XYEGLSurfaceView;
-import com.xy.www.xylib.egl.XYShaderUtil;
+import com.xy.www.xylib.util.XYShaderUtil;
 import com.xy.www.xylib.util.Constants;
 import com.xy.www.xylib.util.LogUtil;
 

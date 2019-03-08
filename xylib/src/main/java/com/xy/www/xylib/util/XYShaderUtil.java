@@ -1,4 +1,4 @@
-package com.xy.www.xylib.egl;
+package com.xy.www.xylib.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,8 +8,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
-
-import com.xy.www.xylib.util.LogUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
