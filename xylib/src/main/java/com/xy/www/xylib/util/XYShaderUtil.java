@@ -21,7 +21,12 @@ import java.nio.ByteBuffer;
  */
 public class XYShaderUtil {
 
-    //从raw读取数据
+    /**
+     * 从raw内读取GLSE 数据
+     * @param context
+     * @param rawId
+     * @return
+     */
     public static String getRawResource(Context context, int rawId) {
         InputStream inputStream = context.getResources().openRawResource(rawId);
         BufferedReader reader = new BufferedReader((new InputStreamReader(inputStream)));
@@ -38,16 +43,34 @@ public class XYShaderUtil {
         return sb.toString();
     }
 
+    /**
+     * 加载shader  编译片段着色器
+     *
+     * @param shaderType  着色器类型
+     * @param source 编译代码
+     * @return 着色器对象ID
+     */
     public static int loadShader(int shaderType, String source) {
-
+        //1. 创建一个新的着色器对象
         int shader = GLES20.glCreateShader(shaderType);
+        // 2.获取创建状态
         if (shader != 0) {
+            // 3.将着色器代码上传到着色器对象中
             GLES20.glShaderSource(shader, source);
+            // 4.编译着色器对象
             GLES20.glCompileShader(shader);
+            // 5.获取编译状态：OpenGL将想要获取的值放入长度为1的数组的首位
             int[] compile = new int[1];
             GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compile, 0);
+            // 打印编译的着色器信息
+            LogUtil.d( "Results of compiling source:" + "\n" + shaderType + "\n:"
+                    + GLES20.glGetShaderInfoLog(shader));
+            // 6.验证编译状态
             if (compile[0] != GLES20.GL_TRUE) {
+                // 在OpenGL中，都是通过整型值去作为OpenGL对象的引用。之后进行操作的时候都是将这个整型值传回给OpenGL进行操作。
+                // 返回值0代表着创建对象失败。
                 LogUtil.e("shader compile error");
+                // 如果编译失败，则删除创建的着色器对象
                 GLES20.glDeleteShader(shader);
                 shader = 0;
             }
@@ -55,6 +78,12 @@ public class XYShaderUtil {
         return shader;
     }
 
+    /**
+     * 创建OpenGL程序：通过链接顶点着色器、片段着色器
+     * @param vertexSource  顶点着色器ID
+     * @param fragmentSource 片段着色器ID
+     * @return OpenGL程序ID
+     */
     public static int createProgram(String vertexSource, String fragmentSource) {
 
         int vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, vertexSource);
@@ -66,25 +95,44 @@ public class XYShaderUtil {
         if (fragmentShader == 0) {
             return 0;
         }
+
+        // 1.创建一个OpenGL程序对象
         int program = GLES20.glCreateProgram();
+        // 2.获取创建状态
         if (program != 0) {
+            // 3.将顶点着色器依附到OpenGL程序对象
             GLES20.glAttachShader(program, vertexShader);
+            // 3.将片段着色器依附到OpenGL程序对象
             GLES20.glAttachShader(program, fragmentShader);
+            // 4.将两个着色器链接到OpenGL程序对象
             GLES20.glLinkProgram(program);
+            // 5.获取链接状态：OpenGL将想要获取的值放入长度为1的数组的首位
             int[] lineSatus = new int[1];
             GLES20.glGetProgramiv(program, GLES20.GL_LINK_STATUS, lineSatus, 0);
+            // 6.验证链接状态
             if (lineSatus[0] != GLES20.GL_TRUE) {
                 LogUtil.e("link program error");
+                // 链接失败则删除程序对象
                 GLES20.glDeleteProgram(program);
+                // 7.返回程序对象：失败，为0
                 program = 0;
             }
         }
         return program;
     }
 
+//    public static boolean validateProgram(int program){
+//        GLES20.glValidateProgram(program);
+//
+//        int[] validataStatus = new int[1];
+//        GLES20.glGetProgramiv();
+//
+//    }
+
     public static Bitmap getCommon(String str) {
         return XYShaderUtil.createTextImage(str, 50, "#ff00ff", "#00000000", 0);//生成图片
     }
+
     public static Bitmap createTextImage(String text, int textSize, String textColor, String bgColor, int padding) {
 
         Paint paint = new Paint();
