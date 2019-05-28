@@ -27,7 +27,7 @@ import java.io.IOException;
 public class XYUtil {
 
     private int result = 0;
-    public boolean isStart = false;
+    public boolean isRecording = false;
 
     private native static int handle(String[] commands);
 
@@ -76,7 +76,7 @@ public class XYUtil {
         wlMusic.setOnShowPcmDataListener(new OnShowPcmDataListener() {
             @Override
             public void onPcmInfo(int samplerate, int bit, int channels) {
-                xyMediaEncodec = new XYMediaEncodec(context, imgvideoview.getTextureId());
+                xyMediaEncodec = XYMediaEncodec.getInstance(context, imgvideoview.getTextureId());
                 xyMediaEncodec.initEncodec(imgvideoview.getEglContext(), Constants.fileDir,
                         Constants.ScreenWidth, Constants.ScreenHeight, samplerate, channels);
 
@@ -86,7 +86,7 @@ public class XYUtil {
             @Override
             public void onPcmData(byte[] pcmdata, int size, long clock) {
 
-                if (xyMediaEncodec != null) {
+                if (xyMediaEncodec != null && isRecording) {
                     xyMediaEncodec.putPCMData(pcmdata, size);
                 }
             }
@@ -99,7 +99,7 @@ public class XYUtil {
 
 
     public void stopRecoder() {
-        isStart = false;
+        isRecording = false;
         if (audioRecordUtil != null) {
             audioRecordUtil.stopRecord();
         }
@@ -116,9 +116,10 @@ public class XYUtil {
     }
 
     public void startRecoder(Context context, XYCameraView xycamaryview, String url) {
-        isStart = true;
-        audioRecordUtil = new AudioRecordUtil();
-        xyMediaEncodec = new XYMediaEncodec(context, xycamaryview.getTextureId());
+        isRecording = true;
+        audioRecordUtil = AudioRecordUtil.getInstance();
+        xyMediaEncodec =  XYMediaEncodec.getInstance(context, xycamaryview.getTextureId());
+
         if (TextUtils.isEmpty(url)) {
             xyMediaEncodec.initEncodec(xycamaryview.getEglContext(),
                     Constants.fileDir, Constants.ScreenWidth, Constants.ScreenHeight, 44100, 2);
@@ -148,6 +149,39 @@ public class XYUtil {
         xyMediaEncodec.startRecord();
     }
 
+    public void pauseRecoder(){
+        isRecording = false;
+        audioRecordUtil = AudioRecordUtil.getInstance();
+//        xyMediaEncodec = XYMediaEncodec.getInstance(context, xycamaryview.getTextureId());
+//
+//        if (TextUtils.isEmpty(url)) {
+//            xyMediaEncodec.initEncodec(xycamaryview.getEglContext(),
+//                    Constants.fileDir, Constants.ScreenWidth, Constants.ScreenHeight, 44100, 2);
+//        } else {
+//            xyMediaEncodec.initEncodec(xycamaryview.getEglContext(),
+//                    url, Constants.ScreenWidth, Constants.ScreenHeight, 44100, 2);
+//        }
+
+        xyMediaEncodec.setOnMediaInfoListener(new XYBaseMediaEncoder.OnMediaInfoListener() {
+            @Override
+            public void onMediaTime(int times) {
+//                LogUtil.d("time = " + times);
+            }
+        });
+
+        audioRecordUtil.setOnRecordListener(new AudioRecordUtil.OnRecordListener() {
+            @Override
+            public void recordByte(byte[] audioData, int readSize) {
+
+                if (xyMediaEncodec != null) {
+                    xyMediaEncodec.putPCMData(audioData, readSize);
+                }
+
+            }
+        });
+        audioRecordUtil.startRecord();
+        xyMediaEncodec.startRecord();
+    }
     /**
      * 合并视频
      *

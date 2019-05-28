@@ -13,6 +13,7 @@ import com.xy.www.xylib.XYUtil;
 import com.xy.www.xyvideo.activity.CameraFilterActivity;
 import com.xy.www.xyvideo.activity.CameraPerActivity;
 import com.xy.www.xyvideo.activity.Picture2VideoActivity;
+import com.xy.www.xyvideo.activity.RecordVideoActivity;
 import com.xy.www.xyvideo.activity.VideoClipActivity;
 import com.xy.www.xyvideo.base.BaseActivity;
 import com.xy.www.xyvideo.util.PermissionsUtils;
@@ -30,6 +31,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Button btFitter;
     private Button btBeautifulFace;
 
+        private Button btRecordVideo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +50,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void initView() {
 
+        btRecordVideo = findViewById(R.id.bt_recordVideo);
+
         btAddMark = findViewById(R.id.bt_addMark);
         btAddMark.setOnClickListener(this);
 
-
+        btRecordVideo.setOnClickListener(this);
         btAddMusic = findViewById(R.id.bt_addMusic);
         btBreakpoint = findViewById(R.id.bt_breakpoint);
         btBreakpoint.setOnClickListener(this);
@@ -73,6 +77,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         Intent intent = null;
         switch (v.getId()) {
+            case R.id.bt_recordVideo:
+                //正式录制视频 UI 写好点
+                intent = new Intent(this, RecordVideoActivity.class);
+                intent.putExtra("key", 0);
+                break;
             case R.id.bt_addMark://添加水印录制
                 intent = new Intent(this, CameraPerActivity.class);
                 intent.putExtra("key", 1);

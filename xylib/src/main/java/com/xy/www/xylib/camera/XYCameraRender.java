@@ -9,9 +9,9 @@ import android.opengl.Matrix;
 
 import com.xy.www.xylib.R;
 import com.xy.www.xylib.egl.XYEGLSurfaceView;
-import com.xy.www.xylib.util.XYShaderUtil;
 import com.xy.www.xylib.util.DisplayUtil;
 import com.xy.www.xylib.util.LogUtil;
+import com.xy.www.xylib.util.XYShaderUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -95,14 +95,12 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
     }
 
 
-
     public void setOnSurfaceCreateListener(OnSurfaceCreateListener onSurfaceCreateListener) {
         this.onSurfaceCreateListener = onSurfaceCreateListener;
     }
 
     @Override
     public void onSurfaceCreated() {
-
 
         xyCameraFboRender.onCreate();
         //获取顶点以及片元属性
@@ -116,62 +114,15 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
         umatrix = GLES20.glGetUniformLocation(program, "u_Matrix");
 
         //VBO
-        int[] vbos = new int[1];
-//        1、创建VBO
-        GLES20.glGenBuffers(1, vbos, 0);
-        vboId = vbos[0];
-        //2.绑定VBO
-        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vboId);
-//        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, vertexData.length * 4, null, GLES20.GL_STATIC_DRAW);
-
-        //3. 分配VBO需要的缓冲大小
-        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, vertexData.length * 4 + fragmentData.length * 4, null, GLES20.GL_STATIC_DRAW);
-
-        //4,为VBO设置顶点数据的值(这里想象内存区域 先偏移0用于存储顶点坐标,再偏移顶点坐标的大小,用于存储片元坐标) 大小是顶点坐标加上片元坐标大小
-        GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, 0, vertexData.length * 4, vertexBuffer);
-        GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, vertexData.length * 4, fragmentData.length * 4, fragmentBuffer);
-//        5、解绑VBO
-        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
-
-
+        creatVBO();
         //fbo
-        int[] fbos = new int[1];
-        GLES20.glGenBuffers(1, fbos, 0);
-        fboId = fbos[0];
-
-        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, fboId);
-
-
-        int[] textureIds = new int[1];
-        GLES20.glGenTextures(1, textureIds, 0);
-        fboTextureid = textureIds[0];
-
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, fboTextureid);
-//        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-//        GLES20.glUniform1i(sampler, 0);
-
-        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_REPEAT);
-        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_REPEAT);
-
-        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
-        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
-
-
-
-        GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, screenW, screenH, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, null);
-        GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, fboTextureid, 0);//把纹理绑定到FBO上
-
-        if (GLES20.glCheckFramebufferStatus(GLES20.GL_FRAMEBUFFER) != GLES20.GL_FRAMEBUFFER_COMPLETE) {
-            LogUtil.e("fbo wrong");
-        } else {
-            LogUtil.e("fbo success");
-        }
-
-
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
-
+        createFBO();
         //扩展纹理  eos
+        createEOS();
+
+    }
+
+    private void createEOS() {
         int[] textureidsEos = new int[1];
         GLES20.glGenTextures(1, textureidsEos, 0);
         cameraTextureid = textureidsEos[0];
@@ -189,21 +140,83 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
         surfaceTexture.setOnFrameAvailableListener(this);
 
         if (onSurfaceCreateListener != null) {
-            onSurfaceCreateListener.onSurfaceCreate(surfaceTexture,fboTextureid);
+            onSurfaceCreateListener.onSurfaceCreate(surfaceTexture, fboTextureid);
         }
         GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, 0);
+    }
+
+
+    private void creatVBO() {
+        int[] vbos = new int[1];
+//        1、创建VBO
+        GLES20.glGenBuffers(1, vbos, 0);
+        vboId = vbos[0];
+        //2.绑定VBO
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vboId);
+//        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, vertexData.length * 4, null, GLES20.GL_STATIC_DRAW);
+
+        //3. 分配VBO需要的缓冲大小
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, vertexData.length * 4 + fragmentData.length * 4, null, GLES20.GL_STATIC_DRAW);
+
+        //4,为VBO设置顶点数据的值(这里想象内存区域 先偏移0用于存储顶点坐标,再偏移顶点坐标的大小,用于存储片元坐标) 大小是顶点坐标加上片元坐标大小
+        GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, 0, vertexData.length * 4, vertexBuffer);
+        GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, vertexData.length * 4, fragmentData.length * 4, fragmentBuffer);
+//        5、解绑VBO
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+
+    }
+
+    private void createFBO() {
+        int[] fbos = new int[1];
+        GLES20.glGenBuffers(1, fbos, 0);
+        fboId = fbos[0];
+
+        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, fboId);
+
+
+        int[] textureIds = new int[1];
+        GLES20.glGenTextures(1, textureIds, 0);
+        fboTextureid = textureIds[0];
+
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, fboTextureid);
+        /**
+         * glActiveTexture 设置激活的纹理单元（texture unit）。每一个纹理单元有多个纹理目标（texture targets）选择（GL_TEXTURE_1D, 2D, 3D or CUBE_MAP之一）。
+         *
+         *  必须先调用glActiveTexture 设置纹理单元（初始化为GL_TEXTURE0）， 然后绑定纹理目标(一个或多个)到纹理单元(译：只能为一个)。
+         */
+//        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+//        GLES20.glUniform1i(sampler, 0);
+
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_REPEAT);
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_REPEAT);
+
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+
+        GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, screenW, screenH, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, null);
+        GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, fboTextureid, 0);//把纹理绑定到FBO上
+
+        if (GLES20.glCheckFramebufferStatus(GLES20.GL_FRAMEBUFFER) != GLES20.GL_FRAMEBUFFER_COMPLETE) {
+            LogUtil.e("fbo wrong");
+        } else {
+            LogUtil.e("fbo success");
+        }
+
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
+        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
 
     }
 
     /**
      * 重置矩阵
      */
-    public void resetMatrix(){
+    public void resetMatrix() {
         Matrix.setIdentityM(matrix, 0);
     }
 
     /**
      * 设置角度
+     *
      * @param angle
      * @param x
      * @param y
@@ -228,25 +241,24 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
     }
 
 
-
     @Override
     public void onDrawFrame() {
-
+        //调用触发onFrameAvailable
         surfaceTexture.updateTexImage();
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+        //设置背景颜色
         GLES20.glClearColor(1f, 0f, 0f, 1f);
-
+        //使用程序
         GLES20.glUseProgram(program);
 
         GLES20.glViewport(0, 0, screenW, screenH);
         //使用program后调用矩阵
         GLES20.glUniformMatrix4fv(umatrix, 1, false, matrix, 0);
 
-
+        //绑定fbo
         GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, fboId);
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vboId);
-
 
         GLES20.glEnableVertexAttribArray(vPosition);
         GLES20.glVertexAttribPointer(vPosition, 2, GLES20.GL_FLOAT, false, 8,
@@ -268,7 +280,6 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
         xyCameraFboRender.onDraw(fboTextureid);
 
 
-
     }
 
     @Override
@@ -276,8 +287,8 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
 
     }
 
-    public void setCurrentFilter(){
-        
+    public void setCurrentFilter() {
+
     }
 
     @Override
@@ -300,6 +311,7 @@ public class XYCameraRender implements XYEGLSurfaceView.XYGLRender, SurfaceTextu
             xyCameraFboRender.setWaterMarkBitmap(bitmap);
         }
     }
+
     public interface OnSurfaceCreateListener {
         void onSurfaceCreate(SurfaceTexture surfaceTexture, int textureId);
     }

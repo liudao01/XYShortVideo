@@ -22,7 +22,7 @@ import java.nio.FloatBuffer;
  */
 public class XYEncodecRender implements XYEGLSurfaceView.XYGLRender  {
 
-    private boolean isAddMark = true;//是否添加水印
+    private boolean isAddMark = false;//是否添加水印
 
     private Context context;
     private float[] vertexData = {
@@ -173,7 +173,7 @@ public class XYEncodecRender implements XYEGLSurfaceView.XYGLRender  {
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
 
         // 绘制bitmap
-        LogUtil.d("绘制的时候 ");
+//        LogUtil.d("绘制的时候 ");
         if (isAddMark) {
 
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, bitmapTextureid);

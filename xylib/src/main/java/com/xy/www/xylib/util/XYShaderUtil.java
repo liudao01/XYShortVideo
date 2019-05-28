@@ -16,13 +16,14 @@ import java.nio.ByteBuffer;
 
 /**
  * @author liuml
- * @explain
+ * @explain 着色器帮助类
  * @time 2018/11/15 16:54
  */
 public class XYShaderUtil {
 
     /**
-     * 从raw内读取GLSE 数据
+     * 从raw内读取GLSE的数据
+     *
      * @param context
      * @param rawId
      * @return
@@ -46,8 +47,8 @@ public class XYShaderUtil {
     /**
      * 加载shader  编译片段着色器
      *
-     * @param shaderType  着色器类型
-     * @param source 编译代码
+     * @param shaderType 着色器类型
+     * @param source     编译代码
      * @return 着色器对象ID
      */
     public static int loadShader(int shaderType, String source) {
@@ -63,7 +64,7 @@ public class XYShaderUtil {
             int[] compile = new int[1];
             GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compile, 0);
             // 打印编译的着色器信息
-            LogUtil.d( "Results of compiling source:" + "\n" + shaderType + "\n:"
+            LogUtil.d("Results of compiling source:" + "\n" + shaderType + "\n:"
                     + GLES20.glGetShaderInfoLog(shader));
             // 6.验证编译状态
             if (compile[0] != GLES20.GL_TRUE) {
@@ -80,21 +81,27 @@ public class XYShaderUtil {
 
     /**
      * 创建OpenGL程序：通过链接顶点着色器、片段着色器
-     * @param vertexSource  顶点着色器ID
+     *
+     * @param vertexSource   顶点着色器ID
      * @param fragmentSource 片段着色器ID
      * @return OpenGL程序ID
      */
     public static int createProgram(String vertexSource, String fragmentSource) {
 
+        // 步骤1：编译顶点着色器
+
         int vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, vertexSource);
         if (vertexShader == 0) {
             return 0;
         }
+        // 步骤2：编译片段着色器
 
         int fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentSource);
         if (fragmentShader == 0) {
             return 0;
         }
+
+        // 步骤3：将顶点着色器、片段着色器进行链接，组装成一个OpenGL程序
 
         // 1.创建一个OpenGL程序对象
         int program = GLES20.glCreateProgram();
@@ -118,21 +125,42 @@ public class XYShaderUtil {
                 program = 0;
             }
         }
+        //步骤4：通知OpenGL开始使用该程序
         return program;
     }
 
-//    public static boolean validateProgram(int program){
-//        GLES20.glValidateProgram(program);
-//
-//        int[] validataStatus = new int[1];
-//        GLES20.glGetProgramiv();
-//
-//    }
+
+    /**
+     * 验证OpenGL程序对象状态
+     *
+     * @param program
+     * @return
+     */
+    public static boolean validateProgram(int program) {
+        GLES20.glValidateProgram(program);
+
+        int[] validateStatus = new int[1];
+        GLES20.glGetProgramiv(program, GLES20.GL_VALIDATE_STATUS, validateStatus, 0);
+        LogUtil.d("Results of validating program: " + validateStatus[0]
+                + "\nLog:" + GLES20.glGetProgramInfoLog(program));
+        return validateStatus[0] != 0;
+
+    }
 
     public static Bitmap getCommon(String str) {
         return XYShaderUtil.createTextImage(str, 50, "#ff00ff", "#00000000", 0);//生成图片
     }
 
+    /**
+     * 创建图片
+     *
+     * @param text
+     * @param textSize
+     * @param textColor
+     * @param bgColor
+     * @param padding
+     * @return
+     */
     public static Bitmap createTextImage(String text, int textSize, String textColor, String bgColor, int padding) {
 
         Paint paint = new Paint();
@@ -154,6 +182,12 @@ public class XYShaderUtil {
         return bm;
     }
 
+    /**
+     * 加载
+     *
+     * @param bitmap
+     * @return
+     */
     public static int loadBitmapTexture(Bitmap bitmap) {
         int[] textureIds = new int[1];
         GLES20.glGenTextures(1, textureIds, 0);

@@ -9,12 +9,24 @@ import android.content.Context;
  */
 public class XYMediaEncodec extends XYBaseMediaEncoder {
 
+    private static volatile XYMediaEncodec instance;
     private XYEncodecRender xyEncodecRender;
 
-    public XYMediaEncodec(Context context,int textureId) {
+    private XYMediaEncodec(Context context, int textureId) {
         super(context);
         xyEncodecRender = new XYEncodecRender(context, textureId);
         setRender(xyEncodecRender);
         setmRenderMode(XYBaseMediaEncoder.RENDERMODE_CONTINUOUSLY);
+    }
+
+    public static XYMediaEncodec getInstance(Context context, int textureId) {
+        if (instance == null) {
+            synchronized (XYMediaEncodec.class) {
+                if (instance == null) {
+                    instance = new XYMediaEncodec(context, textureId);
+                }
+            }
+        }
+        return instance;
     }
 }

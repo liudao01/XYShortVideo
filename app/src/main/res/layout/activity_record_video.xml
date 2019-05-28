@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.CameraPerActivity">
+
+
+    <com.xy.www.xylib.camera.XYCameraView
+        android:id="@+id/xycameraview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:id="@+id/matching_back"
+        android:layout_width="80dp"
+        android:layout_height="80dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/bigicon_close" />
+    </LinearLayout>
+
+    <Chronometer
+        android:id="@+id/chronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/btn_gray_normal"
+        android:gravity="center_horizontal"
+        android:textColor="#FFF" />
+    <Button
+        android:id="@+id/video_record_finish_iv"
+        android:layout_width="65dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/tv_red_bg"
+        android:text="下一步"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/record_type_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/video_record_finish_iv"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="分段"
+        android:drawableTop="@drawable/bigicon_mask" />
+    <FrameLayout
+        android:id="@+id/record_btn_ll"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="53dp"
+            android:layout_marginRight="48dp">
+
+            <LinearLayout
+                android:id="@+id/index_delete"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableTop="@drawable/bigicon_deletion"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:text="回删"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/index_album"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableTop="@drawable/index_album"
+                android:drawablePadding="6dp"
+                android:gravity="center"
+                android:text="本地上传"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+
+        <ImageView
+            android:id="@+id/recorder_start"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:src="@drawable/em_video_recorder_start_btn"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/recorder_stop"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:src="@drawable/em_video_recorder_stop_btn"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/count_down_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginLeft="54dp"
+            android:layout_marginRight="53dp"
+            android:drawableTop="@drawable/bigicon_countdown"
+            android:drawablePadding="6dp"
+            android:text="倒计时"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:visibility="gone" />
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_above="@+id/record_btn_ll"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/meet_mask"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="19dp"
+            android:src="@drawable/bigicon_mask" />
+
+        <ImageView
+            android:id="@+id/video_filter"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/bigicon_filter" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/count_time_down_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/bigicon_timeout3"
+        android:visibility="gone" />
+
+</RelativeLayout>

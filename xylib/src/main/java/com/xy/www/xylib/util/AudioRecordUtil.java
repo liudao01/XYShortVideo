@@ -11,13 +11,14 @@ import android.media.MediaRecorder;
  */
 public class AudioRecordUtil {
 
+    private static AudioRecordUtil audioRecordUtil  = new AudioRecordUtil();
     private AudioRecord audioRecord;
     private int bufferSizeInBytes;
     private boolean start = false;
     private int readSize;
     private OnRecordListener onRecordListener;
 
-    public AudioRecordUtil() {
+    private AudioRecordUtil() {
         bufferSizeInBytes = AudioRecord.getMinBufferSize(
                 44100,
                 AudioFormat.CHANNEL_IN_STEREO,
@@ -34,6 +35,9 @@ public class AudioRecordUtil {
                 bufferSizeInBytes);
     }
 
+    public static AudioRecordUtil getInstance(){
+        return audioRecordUtil;
+    }
     public void setOnRecordListener(OnRecordListener onRecordListener) {
         this.onRecordListener = onRecordListener;
     }

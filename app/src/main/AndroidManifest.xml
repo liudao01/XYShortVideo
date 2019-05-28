@@ -30,6 +30,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activity.RecordVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.CameraPerActivity"
             android:screenOrientation="portrait" />
         <activity
