@@ -119,7 +119,6 @@ public class XYUtil {
         isRecording = true;
         audioRecordUtil = AudioRecordUtil.getInstance();
         xyMediaEncodec =  XYMediaEncodec.getInstance(context, xycamaryview.getTextureId());
-
         if (TextUtils.isEmpty(url)) {
             xyMediaEncodec.initEncodec(xycamaryview.getEglContext(),
                     Constants.fileDir, Constants.ScreenWidth, Constants.ScreenHeight, 44100, 2);

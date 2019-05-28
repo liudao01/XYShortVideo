@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.xy.www.xylib.XYUtil;
 import com.xy.www.xylib.camera.XYCameraView;
-import com.xy.www.xylib.util.Constants;
+import com.xy.www.xylib.util.LogUtil;
 import com.xy.www.xyvideo.R;
 import com.xy.www.xyvideo.base.BaseActivity;
 
@@ -82,16 +82,16 @@ public class RecordVideoActivity extends BaseActivity implements View.OnClickLis
                 onRecordStart();
 
                 // 重置其他
-                if (xyUtil.isRecording) {
-//                    btRecoder.setText("录制视频");
-                    xyUtil.stopRecoder();
-                } else {
-                    xyUtil.startRecoder(this, xycameraview,Constants.fileDir);
+
+                xyUtil.isRecording = true;
+                xyUtil.startRecoder(this, xycameraview);
 //                    btRecoder.setText("正在录制中...");
-                }
+                LogUtil.d("开始录制");
                 break;
 
             case R.id.recorder_stop:
+                LogUtil.d("结束录制");
+                xyUtil.stopRecoder();
                 onRecordPause();
                 chronometer.stop();
                 recorderStop.setVisibility(View.GONE);
@@ -109,6 +109,7 @@ public class RecordVideoActivity extends BaseActivity implements View.OnClickLis
                 finish();
                 break;
         }
+
     }
 
     /**

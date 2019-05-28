@@ -64,7 +64,7 @@ public class XYShaderUtil {
             int[] compile = new int[1];
             GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compile, 0);
             // 打印编译的着色器信息
-            LogUtil.d("Results of compiling source:" + "\n" + shaderType + "\n:"
+            LogUtil.d("Results of compiling source:" + " " + shaderType + " : "
                     + GLES20.glGetShaderInfoLog(shader));
             // 6.验证编译状态
             if (compile[0] != GLES20.GL_TRUE) {
