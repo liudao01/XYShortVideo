@@ -80,11 +80,11 @@ public class RecordVideoActivity extends BaseActivity implements View.OnClickLis
                 recorderStop.setVisibility(View.VISIBLE);
                 recorderStart.setVisibility(View.GONE);
                 onRecordStart();
-
-                // 重置其他
-
-                xyUtil.isRecording = true;
-                xyUtil.startRecoder(this, xycameraview);
+                if (baseTime != 0) {
+                    xyUtil.startRecoder(this, xycameraview);
+                } else {
+                    xyUtil.startRecoder(this, xycameraview);
+                }
 //                    btRecoder.setText("正在录制中...");
                 LogUtil.d("开始录制");
                 break;

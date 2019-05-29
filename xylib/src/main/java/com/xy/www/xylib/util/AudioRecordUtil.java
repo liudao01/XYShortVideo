@@ -4,6 +4,10 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 
+import com.xy.www.xylib.XYUtil;
+import com.xy.www.xyvideo.constant.RecordState;
+
+
 /**
  * @author liuml
  * @explain
@@ -11,11 +15,12 @@ import android.media.MediaRecorder;
  */
 public class AudioRecordUtil {
 
-    private static AudioRecordUtil audioRecordUtil  = new AudioRecordUtil();
+    private static AudioRecordUtil audioRecordUtil = new AudioRecordUtil();
     private AudioRecord audioRecord;
     private int bufferSizeInBytes;
     private boolean start = false;
     private int readSize;
+
     private OnRecordListener onRecordListener;
 
     private AudioRecordUtil() {
@@ -35,16 +40,17 @@ public class AudioRecordUtil {
                 bufferSizeInBytes);
     }
 
-    public static AudioRecordUtil getInstance(){
+    public static AudioRecordUtil getInstance() {
         return audioRecordUtil;
     }
+
     public void setOnRecordListener(OnRecordListener onRecordListener) {
         this.onRecordListener = onRecordListener;
     }
 
 
-
     public void startRecord() {
+
         new Thread() {
             @Override
             public void run() {
@@ -55,7 +61,7 @@ public class AudioRecordUtil {
 
                 while (start) {
                     readSize = audioRecord.read(audiodata, 0, bufferSizeInBytes);
-                    if (onRecordListener != null) {
+                    if (onRecordListener != null && XYUtil.recordState.equals(RecordState.RECORDING)) {
                         onRecordListener.recordByte(audiodata, readSize);
                     }
                 }
@@ -69,6 +75,7 @@ public class AudioRecordUtil {
         }.start();
     }
 
+
     public void stopRecord() {
         start = false;
     }
@@ -77,7 +84,7 @@ public class AudioRecordUtil {
         void recordByte(byte[] audioData, int readSize);
     }
 
-    public boolean isStart(){
+    public boolean isStart() {
         return start;
     }
 

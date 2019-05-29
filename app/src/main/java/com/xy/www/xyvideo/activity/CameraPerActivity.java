@@ -15,6 +15,7 @@ import com.xy.www.xylib.util.Constants;
 import com.xy.www.xylib.util.LogUtil;
 import com.xy.www.xyvideo.R;
 import com.xy.www.xyvideo.base.BaseActivity;
+import com.xy.www.xyvideo.constant.RecordState;
 import com.xy.www.xyvideo.util.ProgressDlgUtil;
 import com.xy.www.xyvideo.util.ToastUtils;
 
@@ -150,24 +151,20 @@ public class CameraPerActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_recoder://录制
-                if (xyUtil.isRecording) {
-                    xyUtil.isRecording = false;
+                if (xyUtil.recordState.equals(RecordState.RECORDING)) {
                     btRecoder.setText("录制视频");
                     xyUtil.stopRecoder();
                 } else {
-                    xyUtil.isRecording = true;
                     xyUtil.startRecoder(this, xycamaryview);
                     btRecoder.setText("正在录制中...");
                 }
                 break;
 
             case R.id.bt_background_music://加入背景音乐录制
-                if (xyUtil.isRecording) {
-                    xyUtil.isRecording = false;
+                if (xyUtil.recordState.equals(RecordState.RECORDING)) {
                     xyUtil.stopRecoder();
                     btBackgroundMusic.setText("录制视频");
                 } else {
-                    xyUtil.isRecording = true;
                     xyUtil.setMusic(this, Constants.musicfileDir, xycamaryview);
                     btBackgroundMusic.setText("正在录制中...");
                 }
@@ -190,23 +187,21 @@ public class CameraPerActivity extends BaseActivity implements View.OnClickListe
 //                });
                 break;
             case R.id.bt_breakpoint://断点录制
-                if (count == 2 && !xyUtil.isRecording) {
+                if (count == 2 && !xyUtil.recordState.equals(RecordState.RECORDING)) {
                     ToastUtils.showToast(context, "当前只未开始或者录制超过两个视频");
                     //调用合成
 
                     return;
                 }
                 String url = null;
-                if (xyUtil.isRecording) {
+                if (xyUtil.recordState.equals(RecordState.RECORDING)) {
                     if (count == 0) {
                         btBreakpoint.setText("录制第一个视频");
                     } else {
                         btBreakpoint.setText("录制第二个视频");
                     }
-                    xyUtil.isRecording = false;
                     xyUtil.stopRecoder();
                 } else {
-                    xyUtil.isRecording = true;
                     if (count == 0) {
                         btBreakpoint.setText("正在录制第一个...");
                         url = Constants.breakPointfile1;

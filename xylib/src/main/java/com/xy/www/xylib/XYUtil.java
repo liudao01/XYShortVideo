@@ -11,6 +11,7 @@ import com.xy.www.xylib.util.AudioRecordUtil;
 import com.xy.www.xylib.util.Constants;
 import com.xy.www.xylib.util.FFmpegUtil;
 import com.xy.www.xylib.util.LogUtil;
+import com.xy.www.xyvideo.constant.RecordState;
 import com.ywl5320.libmusic.WlMusic;
 import com.ywl5320.listener.OnPreparedListener;
 import com.ywl5320.listener.OnShowPcmDataListener;
@@ -27,11 +28,10 @@ import java.io.IOException;
 public class XYUtil {
 
     private int result = 0;
-    public boolean isRecording = false;
 
     private native static int handle(String[] commands);
 
-
+    public static RecordState recordState = RecordState.DEFAULT;
     private AudioRecordUtil audioRecordUtil;
     private XYMediaEncodec xyMediaEncodec;
 
@@ -86,7 +86,7 @@ public class XYUtil {
             @Override
             public void onPcmData(byte[] pcmdata, int size, long clock) {
 
-                if (xyMediaEncodec != null && isRecording) {
+                if (xyMediaEncodec != null && recordState == RecordState.RECORDING) {
                     xyMediaEncodec.putPCMData(pcmdata, size);
                 }
             }
@@ -99,7 +99,7 @@ public class XYUtil {
 
 
     public void stopRecoder() {
-        isRecording = false;
+        recordState = RecordState.RECORD_STOP;
         if (audioRecordUtil != null) {
             audioRecordUtil.stopRecord();
         }
@@ -112,13 +112,15 @@ public class XYUtil {
     }
 
     public void startRecoder(Context context, XYCameraView xycamaryview) {
+
         startRecoder(context, xycamaryview, "");
     }
 
+
     public void startRecoder(Context context, XYCameraView xycamaryview, String url) {
-        isRecording = true;
+        recordState = RecordState.RECORDING;
         audioRecordUtil = AudioRecordUtil.getInstance();
-        xyMediaEncodec =  XYMediaEncodec.getInstance(context, xycamaryview.getTextureId());
+        xyMediaEncodec = XYMediaEncodec.getInstance(context, xycamaryview.getTextureId());
         if (TextUtils.isEmpty(url)) {
             xyMediaEncodec.initEncodec(xycamaryview.getEglContext(),
                     Constants.fileDir, Constants.ScreenWidth, Constants.ScreenHeight, 44100, 2);
@@ -148,8 +150,8 @@ public class XYUtil {
         xyMediaEncodec.startRecord();
     }
 
-    public void pauseRecoder(){
-        isRecording = false;
+    public void pauseRecoder() {
+        recordState = RecordState.RECORDING;
         audioRecordUtil = AudioRecordUtil.getInstance();
 //        xyMediaEncodec = XYMediaEncodec.getInstance(context, xycamaryview.getTextureId());
 //
@@ -181,6 +183,7 @@ public class XYUtil {
         audioRecordUtil.startRecord();
         xyMediaEncodec.startRecord();
     }
+
     /**
      * 合并视频
      *
