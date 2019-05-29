@@ -91,7 +91,8 @@ public class RecordVideoActivity extends BaseActivity implements View.OnClickLis
 
             case R.id.recorder_stop:
                 LogUtil.d("结束录制");
-                xyUtil.stopRecoder();
+                xyUtil.pauseRecoder();//暂停录制
+//                xyUtil.stopRecoder();
                 onRecordPause();
                 chronometer.stop();
                 recorderStop.setVisibility(View.GONE);

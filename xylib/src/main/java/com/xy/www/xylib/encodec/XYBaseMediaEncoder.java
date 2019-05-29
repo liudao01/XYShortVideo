@@ -10,9 +10,11 @@ import android.media.MediaFormat;
 import android.media.MediaMuxer;
 import android.view.Surface;
 
+import com.xy.www.xylib.XYUtil;
 import com.xy.www.xylib.egl.EglHelper;
 import com.xy.www.xylib.egl.XYEGLSurfaceView;
 import com.xy.www.xylib.util.LogUtil;
+import com.xy.www.xyvideo.constant.RecordState;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -82,10 +84,10 @@ public abstract class XYBaseMediaEncoder {
     /**
      * @param eglContext
      * @param savePath     保存的文件路径
-     * @param width 宽度
-     * @param height    高度
-     * @param sampleRate    采样率
-     * @param channelcount  声道数
+     * @param width        宽度
+     * @param height       高度
+     * @param sampleRate   采样率
+     * @param channelcount 声道数
      */
     public void initEncodec(EGLContext eglContext, String savePath, int width, int height, int sampleRate, int channelcount) {
         this.width = width;
@@ -101,7 +103,6 @@ public abstract class XYBaseMediaEncoder {
 
     public void startRecord() {
         if (surface != null && eglContext != null) {
-
             audioPts = 0;
             audioExit = false;
             videoExit = false;
@@ -206,7 +207,7 @@ public abstract class XYBaseMediaEncoder {
                     AudioFormat.CHANNEL_IN_STEREO,
                     AudioFormat.ENCODING_PCM_16BIT
             );
-            LogUtil.d("设置audioFormat 的时候最小的 bufferSizeInBytes = "+bufferSizeInBytes);
+            LogUtil.d("设置audioFormat 的时候最小的 bufferSizeInBytes = " + bufferSizeInBytes);
             audioFormat.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, bufferSizeInBytes);
 
             audioEncodec = MediaCodec.createEncoderByType(mimeType);
@@ -274,6 +275,7 @@ public abstract class XYBaseMediaEncoder {
                 }
 
                 onCreate();
+
                 onChange(encoder.get().width, encoder.get().height);
                 onDraw();
                 isStart = true;
@@ -382,40 +384,42 @@ public abstract class XYBaseMediaEncoder {
 
                     break;
                 }
-                //得到队列中可用的输出的索引
-                int outputBufferIndex = videoEncodec.dequeueOutputBuffer(videoBufferInfo, 0);
-                if (outputBufferIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
-                    videoTrackIndex = mediaMuxer.addTrack(videoEncodec.getOutputFormat());
-                    //判断音频是否开启编码
-                    if (encoder.get().audioEncodecThread.audioTrackIndex != -1) {
-                        mediaMuxer.start();
-                        encoder.get().encodecStart = true;
-                    }
-                } else {
-                    while (outputBufferIndex >= 0) {
 
-                        if (encoder.get().encodecStart) {
-                            ByteBuffer outputBuffer = videoEncodec.getOutputBuffers()[outputBufferIndex];
-                            outputBuffer.position(videoBufferInfo.offset);
-                            outputBuffer.limit(videoBufferInfo.offset + videoBufferInfo.size);
-                            //outputBuffer 编码
-                            if (pts == 0) {
-                                pts = videoBufferInfo.presentationTimeUs;
-                            }
-                            videoBufferInfo.presentationTimeUs = videoBufferInfo.presentationTimeUs - pts;//实现pts递增
-                            mediaMuxer.writeSampleData(videoTrackIndex, outputBuffer, videoBufferInfo);
-
-                            if (encoder.get().onMediaInfoListener != null) {
-                                encoder.get().onMediaInfoListener.onMediaTime((int) videoBufferInfo.presentationTimeUs / 1000000);
-                            }
+                if (XYUtil.recordState.equals(RecordState.RECORDING)) {
+                    //得到队列中可用的输出的索引
+                    int outputBufferIndex = videoEncodec.dequeueOutputBuffer(videoBufferInfo, 0);
+                    if (outputBufferIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
+                        videoTrackIndex = mediaMuxer.addTrack(videoEncodec.getOutputFormat());
+                        //判断音频是否开启编码
+                        if (encoder.get().audioEncodecThread.audioTrackIndex != -1) {
+                            mediaMuxer.start();
+                            encoder.get().encodecStart = true;
                         }
+                    } else {
+                        while (outputBufferIndex >= 0) {
 
-                        //编码完了释放
-                        videoEncodec.releaseOutputBuffer(outputBufferIndex, false);
-                        outputBufferIndex = videoEncodec.dequeueOutputBuffer(videoBufferInfo, 0);
+                            if (encoder.get().encodecStart) {
+                                ByteBuffer outputBuffer = videoEncodec.getOutputBuffers()[outputBufferIndex];
+                                outputBuffer.position(videoBufferInfo.offset);
+                                outputBuffer.limit(videoBufferInfo.offset + videoBufferInfo.size);
+                                //outputBuffer 编码
+                                if (pts == 0) {
+                                    pts = videoBufferInfo.presentationTimeUs;
+                                }
+                                videoBufferInfo.presentationTimeUs = videoBufferInfo.presentationTimeUs - pts;//实现pts递增
+                                mediaMuxer.writeSampleData(videoTrackIndex, outputBuffer, videoBufferInfo);
+
+                                if (encoder.get().onMediaInfoListener != null) {
+                                    encoder.get().onMediaInfoListener.onMediaTime((int) videoBufferInfo.presentationTimeUs / 1000000);
+                                }
+                            }
+
+                            //编码完了释放
+                            videoEncodec.releaseOutputBuffer(outputBufferIndex, false);
+                            outputBufferIndex = videoEncodec.dequeueOutputBuffer(videoBufferInfo, 0);
+                        }
                     }
                 }
-
             }
         }
 

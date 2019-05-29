@@ -60,8 +60,8 @@ public class AudioRecordUtil {
                 byte[] audiodata = new byte[bufferSizeInBytes];
 
                 while (start) {
-                    readSize = audioRecord.read(audiodata, 0, bufferSizeInBytes);
                     if (onRecordListener != null && XYUtil.recordState.equals(RecordState.RECORDING)) {
+                        readSize = audioRecord.read(audiodata, 0, bufferSizeInBytes);
                         onRecordListener.recordByte(audiodata, readSize);
                     }
                 }

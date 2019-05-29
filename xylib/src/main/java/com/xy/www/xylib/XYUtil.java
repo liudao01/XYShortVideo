@@ -114,10 +114,15 @@ public class XYUtil {
     public void startRecoder(Context context, XYCameraView xycamaryview) {
 
         startRecoder(context, xycamaryview, "");
+
     }
 
 
     public void startRecoder(Context context, XYCameraView xycamaryview, String url) {
+        if (recordState.equals(RecordState.RECORD_PAUSE)) {
+            recordState = RecordState.RECORDING;
+            return;
+        }
         recordState = RecordState.RECORDING;
         audioRecordUtil = AudioRecordUtil.getInstance();
         xyMediaEncodec = XYMediaEncodec.getInstance(context, xycamaryview.getTextureId());
@@ -152,7 +157,7 @@ public class XYUtil {
 
     public void pauseRecoder() {
         recordState = RecordState.RECORDING;
-        audioRecordUtil = AudioRecordUtil.getInstance();
+//        audioRecordUtil = AudioRecordUtil.getInstance();
 //        xyMediaEncodec = XYMediaEncodec.getInstance(context, xycamaryview.getTextureId());
 //
 //        if (TextUtils.isEmpty(url)) {
@@ -163,25 +168,26 @@ public class XYUtil {
 //                    url, Constants.ScreenWidth, Constants.ScreenHeight, 44100, 2);
 //        }
 
-        xyMediaEncodec.setOnMediaInfoListener(new XYBaseMediaEncoder.OnMediaInfoListener() {
-            @Override
-            public void onMediaTime(int times) {
+//        xyMediaEncodec.setOnMediaInfoListener(new XYBaseMediaEncoder.OnMediaInfoListener() {
+//            @Override
+//            public void onMediaTime(int times) {
 //                LogUtil.d("time = " + times);
-            }
-        });
+//            }
+//        });
 
-        audioRecordUtil.setOnRecordListener(new AudioRecordUtil.OnRecordListener() {
-            @Override
-            public void recordByte(byte[] audioData, int readSize) {
+//        audioRecordUtil.setOnRecordListener(new AudioRecordUtil.OnRecordListener() {
+//            @Override
+//            public void recordByte(byte[] audioData, int readSize) {
+//
+//                if (xyMediaEncodec != null) {
+//                    xyMediaEncodec.putPCMData(audioData, readSize);
+//                }
+//
+//            }
+//        });
+//        audioRecordUtil.startRecord();
+//        xyMediaEncodec.startRecord();
 
-                if (xyMediaEncodec != null) {
-                    xyMediaEncodec.putPCMData(audioData, readSize);
-                }
-
-            }
-        });
-        audioRecordUtil.startRecord();
-        xyMediaEncodec.startRecord();
     }
 
     /**
