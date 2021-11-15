@@ -1,4 +1,7 @@
 
+/PushSDK/build/
+.apk
+
 ### Android template
 # Built application files
 *.apk
@@ -68,3 +71,5 @@ signing.properties
 out/
 build/
 .gradle/
+.idea/vcs.xml
+

@@ -11,6 +11,8 @@ cmake_minimum_required(VERSION 3.4.1)
 # Gradle automatically packages shared libraries with your APK.
 file(GLOB my_source src/main/cpp/*.cpp src/main/cpp/*.c src/main/cpp/ffmpeg/*.c src/main/cpp/ffmpeg/*.cpp)
 
+#set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI})
+
 
 include_directories(src/main/cpp)
 include_directories(src/main/cpp/include)
