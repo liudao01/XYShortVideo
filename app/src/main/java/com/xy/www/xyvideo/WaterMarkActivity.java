@@ -47,7 +47,7 @@ public class WaterMarkActivity extends BaseActivity {
                     stopRecoder();
                 } else {
                     isStart = true;
-                    startRecoder();
+                    startRecoder(720,1080);
                 }
             }
         });
@@ -68,12 +68,12 @@ public class WaterMarkActivity extends BaseActivity {
         }
     }
 
-    private void startRecoder() {
+    private void startRecoder(int width, int height) {
         boolean checked = cbAddMark.isChecked();
 
         xyMediaEncodec = new XYMediaEncodec(WaterMarkActivity.this, xycamaryview.getTextureId());
         xyMediaEncodec.initEncodec(xycamaryview.getEglContext(),
-                Constant.fileDir, 1080, 1920, 44100, 2);
+                Constant.fileDir, width, height, 44100, 2);
         xyMediaEncodec.setOnMediaInfoListener(new XYBaseMediaEncoder.OnMediaInfoListener() {
             @Override
             public void onMediaTime(int times) {
@@ -94,6 +94,10 @@ public class WaterMarkActivity extends BaseActivity {
         audioRecordUtil.startRecord();
         btRecoder.setText("正在录制中...");
         xyMediaEncodec.startRecord();
+    }
+
+    private void startRecoder() {
+        startRecoder(720, 1080);
     }
 
 

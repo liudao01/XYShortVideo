@@ -166,8 +166,10 @@ public abstract class XYBaseMediaEncoder {
             LogUtil.d("mimeType = " + mimeType + " width = " + width + "  height = " + height);
             videoFormat = MediaFormat.createVideoFormat(mimeType, width, height);
             videoFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);//Surface
-            videoFormat.setInteger(MediaFormat.KEY_BIT_RATE, width * height * 4);//码率
-            videoFormat.setInteger(MediaFormat.KEY_FRAME_RATE, 30);//帧率
+            videoFormat.setInteger(MediaFormat.KEY_BIT_RATE, 900 * 1024);//码率
+            videoFormat.setInteger(MediaFormat.KEY_FRAME_RATE, 25);//帧率
+//            videoFormat.setInteger(MediaFormat.KEY_BIT_RATE, width * height * 4);//码率
+//            videoFormat.setInteger(MediaFormat.KEY_FRAME_RATE, 30);//帧率
             videoFormat.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 1);//I帧 关键帧的间隔  设置为1秒
 
             //编码

@@ -68,3 +68,4 @@ signing.properties
 out/
 build/
 .gradle/
+.cxx/
